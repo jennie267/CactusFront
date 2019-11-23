@@ -13,16 +13,13 @@
           <th>일자</th>
           <th>이름</th>
           <th>내용</th>
-          <th>Users</th>
           <th></th>
         </template>
 
         <template slot-scope="{row}">
           <th scope="row">
             <div class="media align-items-center">
-              <a href="#" class="avatar rounded-circle mr-3">
-                <img alt="Image placeholder" :src="row.img">
-              </a>
+
               <div class="media-body">
                 <span class="name mb-0 text-sm">{{row.date}}</span>
               </div>
@@ -30,39 +27,19 @@
           </th>
           <td class="name">
             {{row.name}}
+            <a href="#" class="avatar avatar-sm rounded-circle">
+              <img alt="Image placeholder" :src="row.img">
+            </a>
           </td>
           <td>
-            <badge class="badge-dot mr-4" :type="row.statusType">
-              <i :class="`bg-${row.statusType}`"></i>
-              <span class="status">{{row.status}}</span>
+            <badge class="badge-dot mr-4" >
+              <span class="status">{{row.content}}</span>
             </badge>
-          </td>
-          <td>
-            <div class="avatar-group">
-              <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Ryan Tompson">
-                <img alt="Image placeholder" src="img/theme/team-1-800x800.jpg">
-              </a>
-              <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Romina Hadid">
-                <img alt="Image placeholder" src="img/theme/team-2-800x800.jpg">
-              </a>
-              <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Alexander Smith">
-                <img alt="Image placeholder" src="img/theme/team-3-800x800.jpg">
-              </a>
-              <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Jessica Doe">
-                <img alt="Image placeholder" src="img/theme/team-4-800x800.jpg">
-              </a>
-            </div>
           </td>
 
           <td>
             <div class="d-flex align-items-center">
-              <span class="completion mr-2">{{row.completion}}%</span>
-              <div>
-                <base-progress :type="row.statusType"
-                               :show-percentage="false"
-                               class="pt-0"
-                               :value="row.completion"/>
-              </div>
+              <i v-if="row.like" class="ni ni-favourite-28" style="color: pink;"></i>
             </div>
           </td>
 
@@ -92,44 +69,39 @@
       return {
         tableData: [
           {
-            img: 'img/theme/bootstrap.jpg',
+            img: 'img/theme/team-4-800x800.jpg',
             date: '2019.11.23',
             name: '이지수',
-            status: 'pending',
-            statusType: 'warning',
-            completion: 60
+            content: '엄마 미안해',
+            like: false
           },
           {
             img: 'img/theme/angular.jpg',
-            date: 'Angular Now UI Kit PRO',
+            date: '2019.11.23',
             name: '이지수',
-            status: 'completed',
-            statusType: 'success',
-            completion: 100
+            content: '미안해 솔직하지못한 내가',
+            like: true
           },
           {
             img: 'img/theme/sketch.jpg',
-            date: 'Black Dashboard',
+            date: '2019.11.23',
             name: '김은아',
-            status: 'delayed',
-            statusType: 'danger',
-            completion: 72
+            content: '지금 이순간이 꿈이라면',
+            like: true
           },
           {
             img: 'img/theme/react.jpg',
-            date: 'React Material Dashboard',
+            date: '2019.11.23',
             name: '김남현',
-            status: 'on schedule',
-            statusType: 'info',
-            completion: 90
+            content: '살며시 너에게로 다가가',
+            like: false
           },
           {
             img: 'img/theme/vue.jpg',
-            date: 'Vue Paper UI Kit PRO',
+            date: '2019.11.23',
             name: '이근환',
-            status: 'completed',
-            statusType: 'success',
-            completion: 100
+            content: '모든걸 고백할텐데',
+            like: false
           }
         ]
       }
