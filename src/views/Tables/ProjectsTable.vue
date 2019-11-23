@@ -9,11 +9,11 @@
                   :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
                   tbody-classes="list"
                   :data="tableData">
-        <template slot="columns">
-          <th>일자</th>
-          <th>이름</th>
-          <th>내용</th>
-          <th></th>
+        <template slot="columns" style="font-size: 15px;">
+          <th :style="thStyle">일자</th>
+          <th :style="thStyle">이름</th>
+          <th :style="thStyle">내용</th>
+          <th :style="thStyle"></th>
         </template>
 
         <template slot-scope="{row}">
@@ -25,10 +25,10 @@
               </div>
             </div>
           </th>
-          <td class="name">
+          <td class="name" style="font-size: 20px;">
             {{row.name}}
             <a href="#" class="avatar avatar-sm rounded-circle">
-              <img alt="Image placeholder" :src="row.img">
+              <img alt="Image placeholder" :src="row.img" style="width:80%;">
             </a>
           </td>
           <td>
@@ -65,11 +65,18 @@
       },
       date: String
     },
+    computed: {
+      thStyle() {
+        return {
+          fontSize:'15px'
+        };
+      }
+    },
     data() {
       return {
         tableData: [
           {
-            img: 'img/theme/team-4-800x800.jpg',
+            img: 'img/theme/sooki.PNG',
             date: '2019.11.23',
             name: '이지수',
             content: '엄마 미안해',
@@ -97,7 +104,7 @@
             like: false
           },
           {
-            img: 'img/theme/vue.jpg',
+            img: 'img/theme/team-4-800x800.jpg',
             date: '2019.11.23',
             name: '이근환',
             content: '모든걸 고백할텐데',
