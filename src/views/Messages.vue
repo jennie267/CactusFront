@@ -2,34 +2,43 @@
     <div>
         <base-header type="gradient-success" class="pb-6 pb-8">
             <div class="card-header bg-transparent row align-items-center">
-                <h1 class=""><h1 class="ni ni-email-83"></h1>  이지수님의 수신함  </h1>
-                <div class="col text-right">
-                    <base-button type="success" size="md"> 편지쓰기</base-button>
-                </div>
+                <h1 class=""><h1 class="ni ni-email-83"></h1>  {{user.name}}님의 수신함  </h1>
+                <write-letter-modal></write-letter-modal>
             </div>
         </base-header>
 
             <div class="container-fluid mt--7">
-                <children-table title="Children Table"></children-table>
+                <children-table title="Children Table" ></children-table>
                 <br>
                 <div class="row">
                     <div class="col">
-                        <projects-table title="Light Table"></projects-table>
+                        <messages-table title="Message Table"></messages-table>
                     </div>
                 </div>
             </div>
-
     </div>
 </template>
 <script>
-  import ProjectsTable from './Tables/ProjectsTable'
+  import MessagesTable from './Tables/MessagesTable'
   import ChildrenTable from './Tables/ChildrenTable'
+  import WriteLetterModal from './Modals/WriteLetterModal'
   export default {
     name: 'tables',
     components: {
-      ProjectsTable
+        MessagesTable
         ,ChildrenTable
-    }
+        ,WriteLetterModal
+    },
+      data() {
+          return {
+              user: {
+                  name: '이지수'
+              }
+          }
+      },
+      methods: {
+
+      }
   };
 </script>
 <style></style>
