@@ -1,7 +1,7 @@
 <template>
 
-        <div class="row justify-content-end" style="min-height: 600px; background-image: url(../../public/img/backgroud/b1.jpg); background-size: cover; /* background-position: center top; */">
-            <div class="col-lg-5 col-md-7" style="margin-top: 7%;">
+        <div class="row justify-content-end" style="min-height: 600px;">
+            <div class="col-lg-3 col-md-5">
                 <div class="card bg-secondary shadow border-0" style="background-color: #e8ebeccc !important;">
                     <div class="card-body px-lg-5 py-lg-5">
                         <div class="collapse-brand" style="text-align: center;padding: 10px;">
