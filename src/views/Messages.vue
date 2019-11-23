@@ -1,6 +1,6 @@
 <template>
     <div>
-        <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
+        <base-header type="gradient-success" class="pb-6 pb-8">
             <div class="card-header bg-transparent row align-items-center">
                 <h1 class=""><h1 class="ni ni-email-83"></h1>  이지수님의 수신함  </h1>
                 <div class="col text-right">
