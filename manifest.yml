@@ -1,0 +1,10 @@
+---
+applications:
+- name: cactusfront
+  memory: 2G
+  instances: 1
+  host: cactus
+  path: ./dist
+  buildpack: staticfile_buildpack
+  env:
+    FORCE_HTTPS: true
