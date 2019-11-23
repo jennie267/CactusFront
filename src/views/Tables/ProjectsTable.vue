@@ -1,19 +1,7 @@
 <template>
   <div class="card shadow"
        :class="type === 'dark' ? 'bg-default': ''">
-    <div class="card-header border-0"
-         :class="type === 'dark' ? 'bg-transparent': ''">
-      <div class="row align-items-center">
-        <div class="col">
-          <h3 class="mb-0" :class="type === 'dark' ? 'text-white': ''">
-            {{title}}
-          </h3>
-        </div>
-        <div class="col text-right">
-          <base-button type="primary" size="sm">See all</base-button>
-        </div>
-      </div>
-    </div>
+
 
     <div class="table-responsive">
       <base-table class="table align-items-center table-flush"
@@ -22,11 +10,10 @@
                   tbody-classes="list"
                   :data="tableData">
         <template slot="columns">
-          <th>Project</th>
-          <th>Budget</th>
-          <th>Status</th>
+          <th>일자</th>
+          <th>이름</th>
+          <th>내용</th>
           <th>Users</th>
-          <th>Completion</th>
           <th></th>
         </template>
 
@@ -37,12 +24,12 @@
                 <img alt="Image placeholder" :src="row.img">
               </a>
               <div class="media-body">
-                <span class="name mb-0 text-sm">{{row.title}}</span>
+                <span class="name mb-0 text-sm">{{row.date}}</span>
               </div>
             </div>
           </th>
-          <td class="budget">
-            {{row.budget}}
+          <td class="name">
+            {{row.name}}
           </td>
           <td>
             <badge class="badge-dot mr-4" :type="row.statusType">
@@ -79,20 +66,6 @@
             </div>
           </td>
 
-          <td class="text-right">
-            <base-dropdown class="dropdown"
-                           position="right">
-              <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-v"></i>
-              </a>
-
-              <template>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </template>
-            </base-dropdown>
-          </td>
 
         </template>
 
@@ -113,47 +86,47 @@
       type: {
         type: String
       },
-      title: String
+      date: String
     },
     data() {
       return {
         tableData: [
           {
             img: 'img/theme/bootstrap.jpg',
-            title: 'Argon Design System',
-            budget: '$2500 USD',
+            date: '2019.11.23',
+            name: '이지수',
             status: 'pending',
             statusType: 'warning',
             completion: 60
           },
           {
             img: 'img/theme/angular.jpg',
-            title: 'Angular Now UI Kit PRO',
-            budget: '$1800 USD',
+            date: 'Angular Now UI Kit PRO',
+            name: '이지수',
             status: 'completed',
             statusType: 'success',
             completion: 100
           },
           {
             img: 'img/theme/sketch.jpg',
-            title: 'Black Dashboard',
-            budget: '$3150 USD',
+            date: 'Black Dashboard',
+            name: '김은아',
             status: 'delayed',
             statusType: 'danger',
             completion: 72
           },
           {
             img: 'img/theme/react.jpg',
-            title: 'React Material Dashboard',
-            budget: '$4400 USD',
+            date: 'React Material Dashboard',
+            name: '김남현',
             status: 'on schedule',
             statusType: 'info',
             completion: 90
           },
           {
             img: 'img/theme/vue.jpg',
-            title: 'Vue Paper UI Kit PRO',
-            budget: '$2200 USD',
+            date: 'Vue Paper UI Kit PRO',
+            name: '이근환',
             status: 'completed',
             statusType: 'success',
             completion: 100
