@@ -9,9 +9,7 @@
           {{nameOfChild}} 일정
           </h3>
         </div>
-        <div class="col text-right">
-          <base-button type="primary" size="sm" @click="registration">등록</base-button>
-        </div>
+        <write-schedule-modal></write-schedule-modal>
       </div>
     </div>
 
@@ -65,17 +63,18 @@
 
       </base-table>
     </div>
-
+    
     <div class="card-footer d-flex justify-content-end"
          :class="type === 'dark' ? 'bg-transparent': ''">
       <!-- <base-pagination total="30"></base-pagination> -->
     </div>
-
   </div>
 </template>
 <script>
+import WriteScheduleModal from '../Modals/WriteScheduleModal'
+
   export default {
-    name: 'dailySchedule-table',
+    name: 'daily-schedule-table',
     props: {
       type: {
         type: String
@@ -83,10 +82,13 @@
       title: String
       ,nameOfChild: String
     },
+    components:{
+      WriteScheduleModal
+    },
     methods: {
-      registration() {
+     /*  registration() {
         alert("시작");
-      }
+      } */
     },
     data() {
       return {

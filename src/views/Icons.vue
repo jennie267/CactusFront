@@ -1,9 +1,7 @@
 <template>
     <div>
-       <!--  <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
-        </base-header> -->
-        <div class="pb-6 pb-8 pt-5 pt-md-8">
-        </div>
+        <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-1">
+        </base-header>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
@@ -17,7 +15,13 @@
                                     <FullCalendar 
                                         defaultView="dayGridMonth"
                                         :plugins="calendarPlugins"
+                                        locale="ko"
                                         :weekends="true"
+                                        :header="{
+                                            left: '',
+                                            center: 'title,prev,next',
+                                            right: ''
+                                        }"
                                         :events="[
                                             { title: 'event 1', date: '2019-11-22' },
                                             { title: 'event 2', date: '2019-11-23' }
