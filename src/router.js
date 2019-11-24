@@ -61,6 +61,11 @@ export default new Router({
           path: '/register',
           name: 'register',
           component: () => import(/* webpackChunkName: "demo" */ './views/Register.vue')
+        },
+        {
+          path: '/registerSelModal',
+          name: 'registerSelModal',
+          component: () => import(/* webpackChunkName: "demo" */ './views/RegisterSelModal.vue')
         }
       ]
     }

@@ -1,25 +1,10 @@
 <template>
     <div>
-        <base-header class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-                     style="min-height: 600px; background-image: url(img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
-            <!-- Mask -->
-            <span class="mask bg-gradient-success opacity-8"></span>
-            <!-- Header container -->
-            <div class="container-fluid d-flex align-items-center">
-                <div class="row">
-                    <div class="col-lg-7 col-md-10">
-                        <h1 class="display-2 text-white">Hello Jesse</h1>
-                        <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
-                        <a href="#!" class="btn btn-info">Edit profile</a>
-                    </div>
-                </div>
-            </div>
+        <base-header style="min-height: 250px;">
         </base-header>
-
         <div class="container-fluid mt--7">
             <div class="row">
-                <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
-
+                <div class="col-xl-8 order-xl-1">
                     <div class="card card-profile shadow">
                         <div class="row justify-content-center">
                             <div class="col-lg-3 order-lg-2">
@@ -32,8 +17,6 @@
                         </div>
                         <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                             <div class="d-flex justify-content-between">
-                                <base-button size="sm" type="info" class="mr-4">Connect</base-button>
-                                <base-button size="sm" type="default" class="float-right">Message</base-button>
                             </div>
                         </div>
                         <div class="card-body pt-0 pt-md-4">
@@ -41,145 +24,155 @@
                                 <div class="col">
                                     <div class="card-profile-stats d-flex justify-content-center mt-md-5">
                                         <div>
-                                            <span class="heading">22</span>
-                                            <span class="description">Friends</span>
-                                        </div>
-                                        <div>
-                                            <span class="heading">10</span>
-                                            <span class="description">Photos</span>
+                                            <span class="heading">7</span>
+                                            <span class="description"><div class="ni ni-bell-55"></div></span>
                                         </div>
                                         <div>
                                             <span class="heading">89</span>
-                                            <span class="description">Comments</span>
+                                            <span class="description"><div class="ni ni-email-83"></div></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <h3>
-                                    Jessica Jones<span class="font-weight-light">, 27</span>
-                                </h3>
-                                <div class="h5 font-weight-300">
-                                    <i class="ni location_pin mr-2"></i>Bucharest, Romania
-                                </div>
-                                <div class="h5 mt-4">
-                                    <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-                                </div>
-                                <div>
-                                    <i class="ni education_hat mr-2"></i>University of Computer Science
-                                </div>
-                                <hr class="my-4" />
-                                <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music.</p>
-                                <a href="#">Show more</a>
+                                <h2>이근환</h2>
+                                 <a href="#!" class="btn btn-sm btn-primary, ni ni-image"> 프로필 사진 수정  </a>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-xl-8 order-xl-1">
                     <card shadow type="secondary">
                         <div slot="header" class="bg-white border-0">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <h3 class="mb-0">My account</h3>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+                                    <h3 class="mb-0">내 정보</h3>
                                 </div>
                             </div>
                         </div>
                         <template>
                             <form @submit.prevent>
-                                <h6 class="heading-small text-muted mb-4">User information</h6>
                                 <div class="pl-lg-4">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <base-input alternative=""
-                                                        label="Username"
+                                                        label="아이디"
+                                                        placeholder="Id"
+                                                        input-classes="form-control-alternative"
+                                                        v-model="user.id"
+                                            />
+                                             <v-btn  class="btn btn-success">중복확인</v-btn>
+                                        </div>
+                                    </div>                                    
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <base-input alternative=""
+                                                        label="비밀번호"
+                                                        placeholder="Password"
+                                                        input-classes="form-control-alternative"
+                                                        v-model="user.password"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <base-input alternative=""
+                                                        label="비밀번호 확인"
+                                                        placeholder="Password"
+                                                        input-classes="form-control-alternative"
+                                                        v-model="user.passwordchk"
+                                            />
+                                        </div>
+                                    </div>
+                                    <hr class="my-4"/>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <base-input alternative=""
+                                                        label="이름"
                                                         placeholder="Username"
                                                         input-classes="form-control-alternative"
-                                                        v-model="model.username"
+                                                        v-model="user.name"
                                             />
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <base-input label="성별">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" id="jb-checkbox" class="custom-control-input">
+                                                <label class="custom-control-label" for="jb-checkbox">여성</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" id="jb-checkbox" class="custom-control-input">
+                                                <label class="custom-control-label" for="jb-checkbox">남성</label>
+                                            </div>
+                                            </base-input>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
                                         <div class="col-lg-6">
                                             <base-input alternative=""
-                                                        label="Email address"
-                                                        placeholder="jesse@example.com"
+                                                        label="이메일"
+                                                        placeholder="mail@example.com"
                                                         input-classes="form-control-alternative"
-                                                        v-model="model.email"
+                                                        v-model="user.email"
                                             />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <base-input alternative=""
-                                                        label="First name"
-                                                        placeholder="First name"
+                                                        label="전화번호"
+                                                        placeholder="Phone number"
                                                         input-classes="form-control-alternative"
-                                                        v-model="model.firstName"
+                                                        v-model="user.phoneNumber"
                                             />
                                         </div>
+                                    </div>                                    
+                                    <div class="row">
                                         <div class="col-lg-6">
                                             <base-input alternative=""
-                                                        label="Last name"
-                                                        placeholder="Last name"
+                                                        label="생일"
+                                                        placeholder="Birthday"
                                                         input-classes="form-control-alternative"
-                                                        v-model="model.lastName"
+                                                        type="date"
+                                                        v-model="user.birthday"
                                             />
                                         </div>
-                                    </div>
+                                    </div>                                    
                                 </div>
-                                <hr class="my-4" />
-                                <!-- Address -->
-                                <h6 class="heading-small text-muted mb-4">Contact information</h6>
                                 <div class="pl-lg-4">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-lg-4">
                                             <base-input alternative=""
-                                                        label="Address"
-                                                        placeholder="Home Address"
+                                                        label="주소"
+                                                        placeholder="Address"
                                                         input-classes="form-control-alternative"
                                                         v-model="model.address"
                                             />
                                         </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-lg-4">
                                             <base-input alternative=""
-                                                        label="City"
-                                                        placeholder="City"
-                                                        input-classes="form-control-alternative"
-                                                        v-model="model.city"
-                                            />
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <base-input alternative=""
-                                                        label="Country"
-                                                        placeholder="Country"
-                                                        input-classes="form-control-alternative"
-                                                        v-model="model.country"
-                                            />
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <base-input alternative=""
-                                                        label="Postal code"
-                                                        placeholder="Postal code"
+                                                        label="우편번호"
+                                                        placeholder="zipCode"
                                                         input-classes="form-control-alternative"
                                                         v-model="model.zipCode"
                                             />
                                         </div>
                                     </div>
-                                </div>
-                                <hr class="my-4" />
-                                <!-- Description -->
-                                <h6 class="heading-small text-muted mb-4">About me</h6>
-                                <div class="pl-lg-4">
-                                    <div class="form-group">
-                                        <base-input alternative=""
-                                                    label="About Me">
-                                            <textarea rows="4" class="form-control form-control-alternative" placeholder="A few words about you ...">A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea>
-                                        </base-input>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <base-input alternative=""
+                                                        label="상세 주소"
+                                                        placeholder="Address"
+                                                        input-classes="form-control-alternative"
+                                                        v-model="model.addressDetail"
+                                            />
+                                        </div>
                                     </div>
+                                </div>
+                                <hr class="my-4"/>
+                                <div class="col-4 text-right" style="float:right;">
+                                    <a href="#!" class="btn btn btn-primary">저장</a>
                                 </div>
                             </form>
                         </template>
@@ -190,23 +183,43 @@
     </div>
 </template>
 <script>
-  export default {
+import Vue from 'vue'
+import Datetime from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
+export default {
     name: 'user-profile',
     data() {
       return {
-        model: {
-          username: '',
+        user: {
+          id: '',
+          password: '',
+          name: '',
           email: '',
-          firstName: '',
-          lastName: '',
           address: '',
-          city: '',
-          country: '',
+          addressDetail: '',
           zipCode: '',
-          about: '',
+          birthday: '',
+          phoneNumber: '',
         }
       }
     },
-  };
+};
+
+Vue.use(Datetime)
 </script>
-<style></style>
+<style>
+h1, h2 {
+  font-weight: normal;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+</style>
