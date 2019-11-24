@@ -59,7 +59,7 @@
       <div class="col text-right">
 
         <modal :show.sync="modals.modal1">
-            <span class="ni ni-favourite-28 text-right" v-bind:class="[isActive ? 'grey' : 'pink']" @click="toggleClass()"></span>
+            <span class="ni ni-favourite-28 text-right cursor:pointer" v-bind:class="[isActive ? 'grey' : 'pink']" @click="toggleClass()"></span>
             <div class="text-left">
           <h2 slot="header" class="modal-title" id="modal-title-default">일자 : 2019-11-24</h2>
 
