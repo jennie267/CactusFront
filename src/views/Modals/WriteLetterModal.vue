@@ -8,7 +8,25 @@
             <modal :show.sync="modals.modal1">
                 <h2 class="modal-title text-left" id="modal-title-default">받는사람</h2>
                 <br>
-                <div class="text-left">
+                <div class="row" >
+                <div class="col custom-control custom-checkbox mb-3 text-left">
+                    <input class="custom-control-input" type="checkbox" id="이지수" value="이지수" v-model="checkedNames">
+                    <label class="custom-control-label" for="이지수">이지수</label>
+                </div>
+                    <div class="col custom-control custom-checkbox mb-3 text-left">
+                        <input class="custom-control-input" type="checkbox" id="김은아" value="김은아" v-model="checkedNames">
+                        <label class="custom-control-label" for="김은아">김은아</label>
+                    </div>
+                    <div class="col custom-control custom-checkbox mb-3 text-left">
+                        <input class="custom-control-input" type="checkbox" id="김남현" value="김남현" v-model="checkedNames">
+                        <label class="custom-control-label" for="김남현">김남현</label>
+                    </div>
+                    <div class="col custom-control custom-checkbox mb-3 text-left">
+                        <input class="custom-control-input" type="checkbox" id="김정우" value="김정우" v-model="checkedNames">
+                        <label class="custom-control-label" for="김정우">김정우</label>
+                    </div>
+                </div>
+<!--               <div class="text-left custom-control custom-checkbox mb-3 ">
                     <input type="checkbox" id="이지수" value="이지수" v-model="checkedNames">
                     <label for="이지수">이지수</label>
                     <input type="checkbox" id="김은아" value="김은아" v-model="checkedNames">
@@ -18,11 +36,12 @@
                     <input type="checkbox" id="김정우" value="김정우" v-model="checkedNames">
                     <label for="김정우">김정우</label>
                     <br>
-                </div>
+                </div>-->
                 <br>
-                <div class="text-left">
-                    <textarea style="width: 100%;height: 100px;" v-model="message" placeholder="내용을 입력하세요."></textarea>
-                </div>
+                <form>
+                    <textarea class="form-control" style="width: 100%;height: 100px;" v-model="message" placeholder="내용을 입력하세요."></textarea>
+                </form>
+                <br>
                 <div class="text-right">
                     <base-button type="primary" >전송</base-button>
                     <base-button type="neutral" class="ml-auto" @click="modals.modal1 = false" >취소
