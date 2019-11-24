@@ -14,7 +14,9 @@
                   <img alt="Image placeholder" src="img/theme/team-4-800x800.jpg">
                 </span>
                 <div class="media-body ml-2 d-none d-lg-block">
-                    <span class="mb-0 text-sm  font-weight-bold">이 구난 [자녀]</span>
+                    <span class="mb-0 text-sm  font-weight-bold">이 구난
+                    <span class="badge badge-primary">{{user.type}}</span>
+                    </span>
                 </div>
             </div>
             <slot name="mobile-right">
@@ -127,6 +129,13 @@
       if (this.$sidebar.showSidebar) {
         this.$sidebar.showSidebar = false;
       }
-    }
+    },
+      data() {
+        return {
+              user : {
+                  type: '자녀'
+              }
+          }
+      }
   };
 </script>

@@ -17,32 +17,32 @@
         </template>
 
         <template slot-scope="{row}">
-          <th scope="row">
-            <div class="media align-items-center">
+<!--          <th scope="row">
+            <div class="media align-items-center cursor:pointer">
 
               <div class="media-body">
-                <span class="name mb-0 text-sm">{{row.date}}</span>
+                <span class="name mb-0 text-sm cursor:pointer" @click="modals.modal1 = true">{{row.date}}</span>
               </div>
             </div>
-          </th>
-          <td class="name" style="font-size: 20px;">
+          </th>-->
+          <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
+            {{row.date}}
+          </td>
+          <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
             {{row.name}}
             <a href="#" class="avatar avatar-sm rounded-circle">
               <img alt="Image placeholder" :src="row.img" style="width:80%;">
             </a>
           </td>
-          <td>
-            <badge class="badge-dot mr-4" >
-              <span class="status">{{row.content}}</span>
-            </badge>
+          <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
+              {{row.content}}
           </td>
 
           <td>
             <div class="d-flex align-items-center">
-              <i v-if="row.like" class="ni ni-favourite-28" style="color: pink;"></i>
+              <i v-if="row.like" class="ni ni-favourite-28 " style="color: pink;"></i>
             </div>
           </td>
-
 
         </template>
 
@@ -54,11 +54,39 @@
       <base-pagination total="30"></base-pagination>
     </div>
 
+    <template>
+      <!-- Modals -->
+      <div class="col text-right">
+
+        <modal :show.sync="modals.modal1">
+          <h2 slot="header" class="modal-title" id="modal-title-default">일자 : 2019-11-24</h2>
+          <h2 slot="header" class="modal-title" id="modal-title-default1">이름 : 이지수</h2>
+          <div class="ni ni-favourite-28"></div>
+          <div class="text-left">
+            엄마 미안해
+          </div>
+          <div class="text-right">
+            <base-button type="primary" >답장</base-button>
+            <base-button type="warning" >삭제</base-button>
+            <base-button type="link" class="ml-auto" @click="modals.modal1 = false">취소
+            </base-button>
+          </div>
+        </modal>
+
+      </div>
+    </template>
+
   </div>
+
+
 </template>
 <script>
+  import Modal from "@/components/Modal.vue";
   export default {
     name: 'projects-table',
+    components: {
+      Modal
+    },
     props: {
       type: {
         type: String
@@ -74,6 +102,10 @@
     },
     data() {
       return {
+        message: [],
+        modals: {
+          modal1: false
+        },
         tableData: [
           {
             img: 'img/theme/sooki.PNG',
