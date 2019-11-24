@@ -26,7 +26,6 @@
       </template>
     </side-bar>
     <div class="main-content" :data="sidebarBackground">
-      <dashboard-navbar></dashboard-navbar>
 
       <div @click="toggleSidebar">
         <fade-transition :duration="200" origin="center top" mode="out-in">
@@ -39,13 +38,11 @@
   </div>
 </template>
 <script>
-  import DashboardNavbar from './DashboardNavbar.vue';
   import ContentFooter from './ContentFooter.vue';
   import { FadeTransition } from 'vue2-transitions';
 
   export default {
     components: {
-      DashboardNavbar,
       ContentFooter,
       FadeTransition
     },

@@ -7,7 +7,6 @@
          tabindex="-1"
          role="dialog"
          :aria-hidden="!show">
-
       <div class="modal-dialog modal-dialog-centered"
            :class="[{'modal-notice': type === 'notice'}, modalClasses]">
         <div class="modal-content" :class="[gradient ? `bg-gradient-${gradient}` : '',modalContentClasses]">
