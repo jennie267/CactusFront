@@ -18,10 +18,13 @@
             </div>
     </div>
 </template>
+
 <script>
   import MessagesTable from './Tables/MessagesTable'
   import ChildrenTable from './Tables/ChildrenTable'
   import WriteLetterModal from './Modals/WriteLetterModal'
+  import axios from 'axios';
+
   export default {
     name: 'tables',
     components: {
@@ -40,5 +43,13 @@
 
       }
   };
+
+  axios.get('http://localhost:8080/user/{parentsId}?parentsId=2') .then(res => {
+      // 불러온 값을 Console에 뿌려줍니다.
+
+        console.log(res.data)
+   });
+
 </script>
+
 <style></style>
