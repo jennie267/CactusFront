@@ -51,19 +51,7 @@
           password: ''
         }
       }
-    },
-      methods: {
-          doLogin: function(){
-              this.$http.post('/api/user', {
-                  id: 1234
-                  ,e_mail: this.email
-                  ,name: this.pw
-              })
-                  .then((result) => {
-                      console.log(result.data)
-                  })
-          }
-      }
+    }
   }
 </script>
 <style>
