@@ -31,22 +31,10 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="col">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Regular
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <base-checkbox>경로</base-checkbox>
-                        <base-checkbox>알람범위</base-checkbox>
-                    </div>
+                    <base-dropdown :title=selectedParent.name position="left" tag="li">
+                        <li class="dropdown-item" @click="selectedParent=defaultParent">{{defaultParent.name}}</li>
+                        <li class="dropdown-item" @click="selectedParent=parent" v-for="parent in parents" :key="parent.id">{{parent.name}}</li>
+                    </base-dropdown>
                 </div>
             </div>
         </base-header>
@@ -100,7 +88,25 @@
               userId: 1,
               dates: {
                   simple: "2018-07-17"
-              }
+              },
+              selectedParent: {
+                  id: 0,
+                  name: '통합'
+              },
+              defaultParent: {
+                  id: 0,
+                  name: '통합'
+              },
+              parents: [
+                  {
+                      id: 1,
+                      name: '이지수'
+                  },
+                  {
+                      id: 2,
+                      name: '김은아'
+                  }
+              ]
           }
       },
       methods: {
