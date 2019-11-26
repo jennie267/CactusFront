@@ -3,38 +3,30 @@
 
         <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
             <div class="row">
-                <div class="col">
-                    <div class="input-daterange datepicker row align-items-center">
-                        <div class="col">
-                            <div class="form-group">
-                                <div class="input-group input-group-alternative">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-                                    </div>
-                                    <input class="form-control" placeholder="Start date" type="text" value="06/18/2019">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <div class="input-group input-group-alternative">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-                                    </div>
-                                    <input class="form-control" placeholder="End date" type="text" value="06/22/2019">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <base-button @click="getLocation">get</base-button>
-                        </div>
+                <div class="col-md-4">
+                    {{date}} 경로
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <base-input class="col-sm-10" addon-left-icon="ni ni-calendar-grid-58">
+                            <flat-pickr slot-scope="{focus, blur}"
+                                        @on-open="focus"
+                                        @on-close="blur"
+                                        :config="{allowInput: true}"
+                                        class="form-control datepicker"
+                                        v-model="date">
+                            </flat-pickr>
+                        </base-input>
                     </div>
                 </div>
-                <div class="col">
-                    <base-dropdown :title=selectedParent.name position="left" tag="li">
-                        <li class="dropdown-item" @click="selectedParent=defaultParent">{{defaultParent.name}}</li>
-                        <li class="dropdown-item" @click="selectedParent=parent" v-for="parent in parents" :key="parent.id">{{parent.name}}</li>
-                    </base-dropdown>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <base-dropdown :title=selectedParent.name position="left" tag="li">
+                            <li class="dropdown-item" @click="selectedParent=defaultParent">{{defaultParent.name}}</li>
+                            <li class="dropdown-item" @click="selectedParent=parent" v-for="parent in parents" :key="parent.id">{{parent.name}}</li>
+                        </base-dropdown>
+                        <base-button @click="getLocation">검색</base-button>
+                    </div>
                 </div>
             </div>
         </base-header>
@@ -70,9 +62,15 @@
     </div>
 </template>
 <script>
+import flatPickr from 'vue-flatpickr-component';
+
   export default {
+      components: {
+          flatPickr
+      },
       data() {
           return {
+              date: new Date(),
               center: {
                   lat: 37.48877560436582,
                   lng: 127.00939031639054

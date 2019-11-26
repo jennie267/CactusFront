@@ -2,7 +2,7 @@
     <component :is="tag"
                :type="tag === 'button' ? nativeType: ''"
                @click="handleClick"
-               class="btn"
+               class="btn btn-default"
                :class="classes">
     <span class="btn-inner--icon" v-if="$slots.icon || icon && $slots.default">
       <slot name="icon">
