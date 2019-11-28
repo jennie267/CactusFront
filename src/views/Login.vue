@@ -12,14 +12,14 @@
                             <base-input class="input-group-alternative mb-3"
                                         placeholder="아이디"
                                         addon-left-icon="ni ni-email-83"
-                                        v-model="model.email">
+                                        v-model="user.id">
                             </base-input>
 
                             <base-input class="input-group-alternative"
                                         placeholder="비밀번호"
                                         type="password"
                                         addon-left-icon="ni ni-lock-circle-open"
-                                        v-model="model.password">
+                                        v-model="user.password">
                             </base-input>
 
                             <base-checkbox class="custom-control-alternative">
@@ -46,12 +46,21 @@
     name: 'login',
     data() {
       return {
-        model: {
-          email: '',
-          password: ''
+        user: {
+            id: '',
+            password: ''
         }
       }
-    }
+    },
+      methods: {
+        doLogin(){
+            this.$http.get('/api/user/login/'+this.user.id+'/'+this.user.password)
+                .then((result) => {
+                    this.$store.state.user = result.data
+                    this.$router.push("/")
+                })
+        }
+      }
   }
 </script>
 <style>

@@ -25,7 +25,7 @@ module.exports = {
     port: 80,
     proxy: {
       '/api': {
-        target: 'http://gateway.paas-ta.org/',
+        target: 'http://zuul.paas-ta.org/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

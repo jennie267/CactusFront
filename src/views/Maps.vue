@@ -3,9 +3,6 @@
 
         <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
             <div class="row">
-                <div class="col-md-4">
-                    {{date}} 경로
-                </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <base-input class="col-sm-10" addon-left-icon="ni ni-calendar-grid-58">
@@ -70,6 +67,7 @@ import flatPickr from 'vue-flatpickr-component';
       },
       data() {
           return {
+              user: this.$store.state.user,
               date: new Date(),
               center: {
                   lat: 37.48877560436582,
@@ -83,7 +81,6 @@ import flatPickr from 'vue-flatpickr-component';
               mapType: 'roadmap',
               markers: [],
               plPath: [],
-              userId: 1,
               dates: {
                   simple: "2018-07-17"
               },
@@ -161,12 +158,11 @@ import flatPickr from 'vue-flatpickr-component';
               this.plVisible = true;
               this.center = this.plPath[this.plPath.length-1];
               this.reportedCenter = this.center;
-              // this.$http.get('/api/location/footprints/user/'+this.userId)
-              //     .then((result) => {
-              //         // eslint-disable-next-line no-console
-              //         console.log(result);
-              //         this.center = this.plPath[0];
-              //     })
+              console.log(this.user.token)
+              this.$http.get('/api/location/footprints/user/'+this.user.userId)
+                  .then((result) => {
+                      console.log(result.data)
+                  })
           }
       }
   }
