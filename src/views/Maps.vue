@@ -81,9 +81,6 @@ import flatPickr from 'vue-flatpickr-component';
               mapType: 'roadmap',
               markers: [],
               plPath: [],
-              dates: {
-                  simple: "2018-07-17"
-              },
               selectedParent: {
                   id: 0,
                   name: '통합'
@@ -118,50 +115,27 @@ import flatPickr from 'vue-flatpickr-component';
               }
           },
           getLocation: function(){
-              this.markers = [{
-                  position: {
-                      lat: 37.466725726101714,
-                      lng: 126.90137792479436
-                  },
-                  ifw: true,
-                  ifw2text: '2019-11-24 08:00'
-              }, {
-                  position: {
-                      lat: 37.464,
-                      lng: 126.906
-                  },
-                  ifw: true,
-                  ifw2text: '2019-11-24 08:01'
-              }, {
-                  position: {
-                      lat: 37.473,
-                      lng: 126.912
-                  },
-                  ifw: true,
-                  ifw2text: '2019-11-24 08:02'
-              }, {
-                  position: {
-                      lat: 37.46775014875321,
-                      lng: 126.91340615602303
-                  },
-                  ifw: true,
-                  ifw2text: '2019-11-24 08:03'
-              }, {
-                  position: {
-                      lat: 37.46866983205213,
-                      lng: 126.90474608754218
-                  },
-                  ifw: true,
-                  ifw2text: '2019-11-24 08:04'
-              }];
-              this.plPath = this.markers.map(value => value.position);
-              this.plVisible = true;
-              this.center = this.plPath[this.plPath.length-1];
-              this.reportedCenter = this.center;
-              console.log(this.user.token)
-              this.$http.get('/api/location/footprints/user/'+this.user.userId)
+              this.$http.get('/api/location/footprints/user/'+this.user.userId, { headers: { Authorization: `Bearer ${this.user.token}` } })
                   .then((result) => {
-                      console.log(result.data)
+                      this.markers = [];
+                      let footPrints = result.data.footPrints;
+                      let marker;
+                      footPrints.forEach((footPrint) => {
+                          marker = {
+                              position: {
+                                  lat: footPrint.latitude,
+                                  lng: footPrint.longitude
+                              },
+                              ifw: true,
+                              ifw2text: footPrint.insertTime
+                          };
+                          this.markers.push(marker);
+                      });
+                      this.plPath = this.markers.map(value => value.position);
+                      if(this.plPath.length>0){
+                        this.center = this.plPath[this.plPath.length-1];
+                      }
+                      this.reportedCenter = this.center;
                   })
           }
       }
