@@ -23,9 +23,13 @@ import './registerServiceWorker'
 import ArgonDashboard from './plugins/argon-dashboard'
 import axios from 'axios';
 import * as VueGoogleMaps from 'vue2-google-maps'
+import moment from "moment"
+import VueMomentJS from "vue-momentjs"
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
+
+Vue.use(VueMomentJS, moment)
 
 Vue.use(VueGoogleMaps, {
   load: {
