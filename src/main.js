@@ -26,6 +26,14 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
+axios.interceptors.response.use(function (response) {
+  // Do something with response data
+  return response;
+}, function (error) {
+  // Do something with response error
+  router.push("/");
+  return Promise.reject(error);
+})
 
 Vue.use(VueGoogleMaps, {
   load: {

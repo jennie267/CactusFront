@@ -8,7 +8,7 @@ export default new Router({
   linkExactActiveClass: 'active',
   routes: [
     {
-      path: '/',
+      path: '/main',
       redirect: 'dashboard',
       component: DashboardLayout,
       children: [

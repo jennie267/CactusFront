@@ -26,6 +26,7 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'http://zuul.paas-ta.org/',
+        ws: true,
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

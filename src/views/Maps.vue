@@ -11,7 +11,7 @@
                                 <h3 class="mb-0">{{title}}</h3>
                             </div>
                             <div class="row mt-5">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <base-input class="col-sm-10" addon-left-icon="ni ni-calendar-grid-58">
                                             <flat-pickr slot-scope="{focus, blur}"
@@ -71,6 +71,7 @@
 </template>
 <script>
 import flatPickr from 'vue-flatpickr-component';
+import dateUtil from '../common/dateUtil';
 
   export default {
       components: {
@@ -80,7 +81,7 @@ import flatPickr from 'vue-flatpickr-component';
           return {
               title: '',
               user: this.$store.state.user,
-              date: new Date().getFullYear().toString()+'-'+(new Date().getMonth()+1).toString()+'-'+new Date().getDate().toString(),
+              date: dateUtil.getToday(),
               center: {
                   lat: 37.48877560436582,
                   lng: 127.00939031639054
@@ -193,10 +194,11 @@ import flatPickr from 'vue-flatpickr-component';
           },
           getLocation: function(){
               if(this.selectedParent.userId>0){
-                  this.$http.get('/api/location/footprints/user/'+this.selectedParent.userId, { headers: { Authorization: `Bearer ${this.user.token}` } })
+                  console.log(this.date)
+                  this.$http.get('/api/location/footprints/user/date/'+this.selectedParent.userId+'/'+this.date.replace(/-/gi,''), { headers: { Authorization: `Bearer ${this.user.token}` } })
                       .then((result) => {
                           this.markers = [];
-                          let footPrints = result.data.footPrints;
+                          let footPrints = result.data;
                           let marker;
                           footPrints.forEach((footPrint) => {
                               marker = {

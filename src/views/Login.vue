@@ -57,7 +57,7 @@
             this.$http.get('/api/user/login/'+this.user.id+'/'+this.user.password)
                 .then((result) => {
                     this.$store.state.user = result.data
-                    this.$router.push("/")
+                    this.$router.push("/main")
                 })
         }
       }
