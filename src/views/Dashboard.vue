@@ -32,7 +32,8 @@
                                 <vue-good-table
                                         style="width:100%;"
                                         :columns="columns"
-                                        :rows="rows"/>
+                                        :rows="rows"
+                                        @on-row-click="onRowClick"/>
                             </div>
                         </div>
                     </div>
@@ -75,9 +76,9 @@ import { VueGoodTable } from 'vue-good-table/src';
                   hidden: true,
               },
               {
-                  label: '사진',
+                  label: '프로필',
                   field: 'profile',
-                  width: '5%',
+                  width: '8%',
                   tdClass: 'text-center',
                   html: true,
               },
@@ -114,7 +115,7 @@ import { VueGoodTable } from 'vue-good-table/src';
           this.$http.get(`/api/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
                   this.rows = res.data.users;
-                  this.rows.forEach(user => user.info = '<a class="ni ni-circle-08" style="cursor: pointer;"></a>');
+                  this.rows.forEach(user => user.info = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;"></a>');
                   this.rows.forEach(user => user.profile = '<a href="#" class="avatar avatar-sm rounded-circle">\n' +
                       '              <img alt="Image placeholder" src="'+user.profileUrl+'" style="width:90%;">\n' +
                       '            </a>');
