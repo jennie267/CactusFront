@@ -17,14 +17,6 @@
         </template>
 
         <template slot-scope="{row}">
-<!--          <th scope="row">
-            <div class="media align-items-center cursor:pointer">
-
-              <div class="media-body">
-                <span class="name mb-0 text-sm cursor:pointer" @click="modals.modal1 = true">{{row.date}}</span>
-              </div>
-            </div>
-          </th>-->
           <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
             {{row.date}}
           </td>
@@ -178,6 +170,7 @@
   },
     data() {
       return {
+          user: this.$store.state.user,
           isActive: true,
         message: [],
         modals: {
@@ -221,7 +214,15 @@
           }
         ]
       }
-    }
+    }, mounted() {
+          this.$http.get(`/api/message/receive/user/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+              .then(res => {
+                  console.log('우왕');
+                  console.log(res.data);
+                  // res.data.children.forEach(child => children.push(child));
+              });
+
+      }
   }
 </script>
 <style>

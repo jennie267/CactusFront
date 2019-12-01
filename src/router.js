@@ -21,9 +21,9 @@ export default new Router({
           component: () => import(/* webpackChunkName: "demo" */ './views/Dashboard.vue')
         },
         {
-          path: '/icons',
-          name: 'icons',
-          component: () => import(/* webpackChunkName: "demo" */ './views/Icons.vue')
+          path: '/schedule',
+          name: 'schedule',
+          component: () => import(/* webpackChunkName: "demo" */ './views/Schedule.vue')
         },        {
           path: '/products',
           name: 'products',
@@ -65,11 +65,6 @@ export default new Router({
           path: '/register',
           name: 'register',
           component: () => import(/* webpackChunkName: "demo" */ './views/Register.vue')
-        },
-        {
-          path: '/registerSelModal',
-          name: 'registerSelModal',
-          component: () => import(/* webpackChunkName: "demo" */ './views/RegisterSelModal.vue')
         }
       ]
     }

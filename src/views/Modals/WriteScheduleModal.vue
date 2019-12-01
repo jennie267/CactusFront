@@ -1,8 +1,8 @@
 <template>
     <!-- Modals -->
     <div class="row">
-        <div class="col-md-4">
             <base-button class="btn-primary" @click="modals.modal1=true">등록</base-button>
+        <div class="col-md-4">
             <modal :show.sync="modals.modal1">
                 <h2 slot="header" class="modal-title" id="modal-title-default">일정 등록</h2>
                 <form>
@@ -20,13 +20,22 @@
                     </div>
                     <div class="form-group row">
                         <label for="scheduleContents" class="col-sm-2 col-form-label">날짜</label>
-                        <base-input class="col-sm-10" addon-left-icon="ni ni-calendar-grid-58">
+                        <base-input class="col-sm-5" addon-left-icon="ni ni-calendar-grid-58">
                             <flat-pickr slot-scope="{focus, blur}"
                                          @on-open="focus"
                                          @on-close="blur" 
                                         :config="{allowInput: true}"
                                         class="form-control datepicker"
                                         v-model="date">
+                            </flat-pickr>
+                        </base-input>
+                        <base-input class="col-sm-5">
+                            <flat-pickr slot-scope="{focus, blur}"
+                                         @on-open="focus"
+                                         @on-close="blur" 
+                                        :config=timeConfig
+                                        class="form-control datepicker"
+                                        v-model="time">
                             </flat-pickr>
                         </base-input>
                     </div>
@@ -86,6 +95,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="scheduleName" class="col-sm-2 col-form-label">시설</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" value="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="scheduleName" class="col-sm-2 col-form-label">복지사</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" value="">
+                        </div>
+                    </div>
                 </form>
                 <template slot="footer">
                     <base-button type="primary" class="active btn-primary">등록</base-button>
@@ -116,6 +137,13 @@ export default {
         },
         isAlarm: false,
         isCycleStatus: false,
+        timeConfig:{
+            allowInput: true,
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            defaultDate: "13:45"
+        },
         date: new Date(),
         config: {
             wrap: true, // set wrap to true only when using 'input-group'

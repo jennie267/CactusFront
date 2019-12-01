@@ -46,17 +46,7 @@
 
 
           <td class="text-right">
-            <base-dropdown class="dropdown"
-                           position="right">
-              <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-v"></i>
-              </a>
-
-              <template>
-                <a class="dropdown-item" href="#">삭제</a>
-                <a class="dropdown-item" href="#">수정</a>
-              </template>
-            </base-dropdown>
+             <button class="btn-primary btn-sm btn-danger">삭제</button>
           </td>
 
         </template>

@@ -2,10 +2,10 @@
   <div id="app">
 
     <div id="product">
-      asdasdassdads
+<!--      asdasdassdads
       <div v-for="(item, index) in items"  :key="item.id + index">
         <span>{{item.id + index}}</span>
-      </div>
+      </div>-->
     </div>
     <div id="cart">
       <div id="head">

@@ -14,14 +14,11 @@
           }"
         />
 
-        <sidebar-item :link="{name: '일정관리', icon: 'ni ni-calendar-grid-58 text-blue', path: '/icons'}"/>
+        <sidebar-item :link="{name: '일정관리', icon: 'ni ni-calendar-grid-58 text-blue', path: '/schedule'}"/>
         <sidebar-item :link="{name: '위치', icon: 'ni ni-pin-3 text-orange', path: '/maps'}"/>
-        <sidebar-item :link="{name: '시설관리', icon: 'ni ni-building text-black', path: '/tables'}"/>
         <sidebar-item :link="{name: '쪽지', icon: 'ni ni-email-83 text-purple', path: '/messages'}"/>
-        <sidebar-item :link="{name: '쇼핑', icon: 'ni ni-favourite-28 text-red', path: '/products'}"/>
         <sidebar-item :link="{name: '개인정보', icon: 'ni ni-single-02 text-yellow', path: '/profile'}"/>
         <sidebar-item :link="{name: '로그아웃', icon: 'ni ni-key-25 text-info', path: '/login'}"/>
-        <sidebar-item :link="{name: '회원가입', icon: 'ni ni-circle-08 text-pink', path: '/register'}"/>
 
       </template>
     </side-bar>

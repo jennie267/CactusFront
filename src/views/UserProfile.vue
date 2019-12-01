@@ -1,6 +1,9 @@
 <template>
-    <div>
-        <base-header style="min-height: 250px;">
+    <div id="app">
+        <base-header type="gradient-success" class="pb-6 pb-8">
+            <div class="card-header bg-transparent row align-items-center">
+                <h1 class=""><h1 class="ni ni-badge"></h1>  {{user.name}}님의 개인정보  </h1>
+            </div>
         </base-header>
         <div class="container-fluid mt--7">
             <div class="row">
@@ -52,39 +55,42 @@
                             <form @submit.prevent>
                                 <div class="pl-lg-4">
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-8">
                                             <base-input alternative=""
                                                         label="아이디"
                                                         placeholder="Id"
                                                         input-classes="form-control-alternative"
                                                         v-model="user.id"
+                                                        readonly="true"
                                             />
-                                             <v-btn  class="btn btn-success">중복확인</v-btn>
+                                         <input style="float: right;" type="button" class="btn btn-sm btn-primary" value="중복 확인">
                                         </div>
                                     </div>                                    
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-8">
                                             <base-input alternative=""
                                                         label="비밀번호"
                                                         placeholder="Password"
                                                         input-classes="form-control-alternative"
                                                         v-model="user.password"
                                             />
+                                            <small>{{ pwValidation }}</small>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-8">
                                             <base-input alternative=""
                                                         label="비밀번호 확인"
                                                         placeholder="Password"
                                                         input-classes="form-control-alternative"
                                                         v-model="user.passwordchk"
                                             />
+                                        <small>{{ pwCheck }}</small>
                                         </div>
                                     </div>
                                     <hr class="my-4"/>
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-8">
                                             <base-input alternative=""
                                                         label="이름"
                                                         placeholder="Username"
@@ -94,22 +100,22 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-8">
                                             <base-input label="성별">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" id="jb-checkbox" class="custom-control-input">
-                                                <label class="custom-control-label" for="jb-checkbox">여성</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" id="jb-checkbox" class="custom-control-input">
-                                                <label class="custom-control-label" for="jb-checkbox">남성</label>
-                                            </div>
+                                                <div class="custom-control custom-radio mb-3">
+                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio1" type="radio" v-model="user.gender" value="여성">
+                                                    <label class="custom-control-label" for="customRadio1"><span>여성</span></label>
+                                                </div>
+                                                <div class="custom-control custom-radio mb-3">
+                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio2" type="radio" v-model="user.gender" value="남성">
+                                                    <label class="custom-control-label" for="customRadio2"><span>남성</span></label>
+                                                </div>            
                                             </base-input>
                                         </div>
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-8">
                                             <base-input alternative=""
                                                         label="이메일"
                                                         placeholder="mail@example.com"
@@ -119,7 +125,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-8">
                                             <base-input alternative=""
                                                         label="전화번호"
                                                         placeholder="Phone number"
@@ -127,27 +133,45 @@
                                                         v-model="user.phoneNumber"
                                             />
                                         </div>
-                                    </div>                                    
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <base-input alternative=""
-                                                        label="생일"
-                                                        placeholder="Birthday"
-                                                        input-classes="form-control-alternative"
-                                                        type="date"
-                                                        v-model="user.birthday"
-                                            />
-                                        </div>
-                                    </div>                                    
-                                </div>
-                                <div class="pl-lg-4">
+                                    </div>   
+                                  <div class="row">
+                                    <div class="col-lg-8">
+                                    <base-input label="생일">
+                                      <div addon-left-icon="ni ni-calendar-grid-58">
+                                                            </div>
+                                        <flat-pickr slot-scope="{focus, blur}"
+                                              @on-open="focus"
+                                              @on-close="blur" 
+                                              :config="{allowInput: true}"
+                                              class="form-control datepicker"
+                                              placeholder="birthday"
+                                              v-model="user.birthday">
+                                        </flat-pickr>
+                                    </base-input>
+                                    </div>
+                                  </div>   
+                                  <div class="pl-lg-4">
+                                    <div
+                                        ref="searchWindow"
+                                        :style="searchWindow"
+                                        style="border:1px solid;width:500px;margin:5px 0;position:relative"
+                                        >
+                                        <img
+                                            src="//t1.daumcdn.net/postcode/resource/images/close.png"
+                                            id="btnFoldWrap"
+                                            style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1"
+                                            @click="searchWindow.display = 'none'"
+                                            alt="close"
+                                        >
+                                    </div>
+                                  </div>
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <base-input alternative=""
-                                                        label="주소"
+                                                        label="주소"    
                                                         placeholder="Address"
                                                         input-classes="form-control-alternative"
-                                                        v-model="model.address"
+                                                        v-model="user.addrMain"
                                             />
                                         </div>
                                         <div class="col-lg-4">
@@ -155,9 +179,10 @@
                                                         label="우편번호"
                                                         placeholder="zipCode"
                                                         input-classes="form-control-alternative"
-                                                        v-model="model.zipCode"
+                                                        v-model="user.zipCode"
                                             />
                                         </div>
+                                        <input type="button" class="btn btn-sm btn-primary" value="우편번호 찾기" @click="execDaumPostcode">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -165,44 +190,245 @@
                                                         label="상세 주소"
                                                         placeholder="Address"
                                                         input-classes="form-control-alternative"
-                                                        v-model="model.addressDetail"
+                                                        v-model="user.addrSub"
+                                                        ref="addressDetail"
                                             />
                                         </div>
                                     </div>
                                 </div>
                                 <hr class="my-4"/>
                                 <div class="col-4 text-right" style="float:right;">
-                                    <a href="#!" class="btn btn btn-primary">저장</a>
+                                <input  @click="doUserUpdate" style="float: right;" type="button" class="btn btn btn-primary" value="저장">
                                 </div>
                             </form>
                         </template>
+
+                        <br>
+                        <br>
+                         <div v-if="user.type=='CHILD'">
+                          <!--유저에게 부모가 존재하면 이 화면을 뿌려줌 --> 
+                          <template>
+                            <h2 class="ni ni-button-play">나의 부모</h2>
+                              <div class="form-group">
+                              <base-table class="table align-items-center table-flush" 
+                                :class="type === 'dark' ? 'table-dark': ''" 
+                                :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
+                                  tbody-classes="list" 
+                                  :data="tableData">
+                                <template slot="columns" style="font-size: 15px;">
+                                <th :style="thStyle"></th>
+                                <th :style="thStyle">이름</th>
+                                <th :style="thStyle">최근 온 메시지</th>
+                              </template>
+                              <template slot-scope="{row}">
+                                <td>
+                                  <a href="#" class="avatar avatar-sm rounded-circle">
+                                  <img alt="Image placeholder" :src="row.img" style="width:80%;">
+                                  </a>
+                                </td>
+                                <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
+                                {{row.name}}
+                                </td>
+                                <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
+                                {{row.message}}
+                                </td>
+                                <td>
+                                <div class="d-flex align-items-center">
+                                <i v-if="row.like" class="ni ni-favourite-28 " style="color: pink;"></i>
+                                </div>
+                                </td>
+                              </template>
+                            </base-table>
+                            </div>
+                          </template>
+                        </div>
+                      <br>
+                      <br>
+                      <!-- 유저에게 자녀가 존재하면 이 화면을 뿌려줌 -->
+                      <div v-if="user.type=='PARENTS'">
+                        <template>
+                        <h2 class="ni ni-button-play"> 나의 자녀들</h2>
+                          <base-table class="table align-items-center table-flush" 
+                          :class="type === 'dark' ? 'table-dark': ''" 
+                          :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
+                            tbody-classes="list" 
+                            :data="tableData">
+                          <template slot="columns" style="font-size: 15px;">
+                          <th :style="thStyle"></th>
+                          <th :style="thStyle">이름</th>
+                          <th :style="thStyle">최근 온 메시지</th>
+                          </template>
+                          <template slot-scope="{row}">
+                          <td>
+                            <a href="#" class="avatar avatar-sm rounded-circle">
+                            <img alt="Image placeholder" :src="row.img" style="width:80%;">
+                            </a>
+                          </td>
+                          <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
+                          {{row.name}}
+                          </td>
+                          <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
+                          {{row.message}}
+                          </td>
+                          <td>
+                            <div class="d-flex align-items-center">
+                            <i v-if="row.like" class="ni ni-favourite-28 " style="color: pink;"></i>
+                            </div>
+                          </td>
+                          </template>
+                          </base-table>
+                        </template>
+                      </div>
                     </card>
                 </div>
             </div>
         </div>
     </div>
 </template>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script>
 import Vue from 'vue'
 import Datetime from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
 export default {
     name: 'user-profile',
+        props: {
+      type: {
+        type: String
+      },
+      date: String
+    },
     data() {
       return {
+        myParents: false
+        ,
+        checked:[]
+        ,
         user: {
-          id: '',
-          password: '',
+          id:'ghlee',
           name: '',
+          password:'',
+          passwordchk:'',
           email: '',
-          address: '',
-          addressDetail: '',
+          addrMain: '',
+          addrSub: '',
           zipCode: '',
-          birthday: '',
-          phoneNumber: '',
+          birthday:'',
+          phoneNumber:'',
+          gender:[],
+          type:'CHILD'
+        },
+        searchWindow: {
+        display: 'none',
+        height: '300px',
+        },
+        tableData: [
+          {
+            img: 'img/theme/sooki.PNG',
+            name: '김정우',
+            message: '어머니 잘 지내시나요?',
+          },
+          {
+            img: 'img/theme/angular.jpg',
+            name: '이지수',
+            message: '아빠, 잘 지내? 날씨가 춥다.',
+          },
+          {
+            img: 'img/theme/sketch.jpg',
+            name: '김은아',
+            message: '아빠 오늘 일찍 주무세요.',
+          },
+          {
+            img: 'img/theme/react.jpg',
+            name: '김남현',
+            message: '어머니, 안녕하세요.',
+          },
+          {
+            img: 'img/theme/react.jpg',
+            name: '이근환',
+            message: '아버지, 안녕하세요.',
+          },          
+        ]
+      }
+	}, 
+	components: {
+      flatPickr
+    },
+    methods: {
+    execDaumPostcode() {
+      const currentScroll = Math.max(
+        document.body.scrollTop,
+        document.documentElement.scrollTop,
+      );
+      new daum.Postcode({
+        onComplete: (data) => {
+          if (data.userSelectedType === 'R') {
+            this.user.addrMain = data.roadAddress;
+          } else {
+            this.user.addrMain = data.jibunAddress;
+          }
+
+          if (data.userSelectedType === 'R') {
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+              this.user.addrSub += data.bname;
+            }
+
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+              this.user.addrSub +=
+                this.user.addrSub !== ''
+                  ? `, ${data.buildingName}`
+                  : data.buildingName;
+            }
+
+            if (this.user.addrSub !== '') {
+              this.user.addrSub = ` (${this.user.addrSub})`;
+            }
+          } else {
+            this.user.addrSub = '';
+          }
+
+          this.user.zipCode = data.zonecode;
+
+          this.$refs.extraAddress.focus();
+
+          this.searchWindow.display = 'none';
+          document.body.scrollTop = currentScroll;
+        },
+        onResize: (size) => {
+          this.searchWindow.height = `${size.height}px`;
+        },
+        width: '100%',
+        height: '100%',
+      }).embed(this.$refs.searchWindow);
+
+      this.searchWindow.display = 'block';
+    },
+    doUserUpdate: function () {
+      const baseURI = 'http://usercactus.paas-ta.org/';
+      this.$http.get(`${baseURI}/update`)
+      .then((result) => {
+        console.log(result)
+        this.user = result.data
+      })
+    }
+  },
+  computed: {
+  pwValidation: function() {
+      if(!this.user.password.length==0) {
+       return this.user.password.length > 8 ? `` : `[주의] 비밀번호는 8자 이상으로 작성해주세요.`;
+      } 
+  },
+  pwCheck : function() {
+      if(!this.user.passwordchk.length==0) {
+        if(this.user.password != this.user.passwordchk) {
+         return `[주의] 비밀번호가 동일하지 않습니다.`; 
         }
       }
-    },
+    } 
+  }
 };
 
 Vue.use(Datetime)
