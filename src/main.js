@@ -25,6 +25,8 @@ import axios from 'axios';
 import * as VueGoogleMaps from 'vue2-google-maps'
 import moment from "moment"
 import VueMomentJS from "vue-momentjs"
+import VueSweetalert2 from 'vue-sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
@@ -38,6 +40,7 @@ axios.interceptors.response.use(function (response) {
 })
 
 Vue.use(VueMomentJS, moment)
+Vue.use(VueSweetalert2)
 
 Vue.use(VueGoogleMaps, {
   load: {

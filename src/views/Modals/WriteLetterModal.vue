@@ -28,7 +28,7 @@
                 </form>
                 <br>
                 <div class="text-right">
-                    <base-button type="primary" @click.prevent="sendMessage()">전송</base-button>
+                    <base-button type="primary" @click.prevent="showAlert()">전송</base-button>
                     <base-button type="neutral" class="ml-auto" @click="modals.modal1 = false" >취소
                     </base-button>
                 </div>
@@ -56,7 +56,18 @@ export default {
     };
   },
     methods: {
+        showAlert() {
+            // Use sweetalert2
+            this.$swal({
+                type: 'success',
+                title: '안녕!!!'
+            });
+
+
+        },
         sendMessage: function(){
+
+
             console.log('들어옴', this.message);
             console.log('들어옴', this.user.userId);
             console.log('들어옴', this.checkedNames);
