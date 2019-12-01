@@ -184,7 +184,7 @@
           modal1: false
         }
       }
-    }, created () {
+    }, mounted () {
           this.$http.get(`/api/message/receive/user/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
                   messages = [];
