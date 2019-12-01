@@ -87,12 +87,8 @@ let children = [];
                  console.log('힝 : ', ms);
           });
 
-          this.$http.get(`/api/message/receive/user/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-              .then(res => {
-                  console.log('우왕');
-                  console.log(res.data);
-                  // res.data.children.forEach(child => children.push(child));
-              });
+
+
       }
   }
 
