@@ -153,9 +153,11 @@ export default {
         },    
         value: null,
         options: [
-            { name: '년'},
-            { name: '월'},
-            { name: '일'},
+            { name: '년', value:'Y'},
+            { name: '월', value:'M'},
+            { name: '일', value:'D'},
+            { name: '시간', value:'HH'},
+            { name: '분', value:'MM'},
         ]
     };
   },

@@ -30,7 +30,7 @@
           <th scope="row">
             <div class="media align-items-center">
               <div class="media-body">
-                <span class="name mb-0 text-sm">{{row.title}}</span>
+                <a @click="modals.modal1=true"><span class="name mb-0 text-sm">{{row.title}}</span></a>
               </div>
             </div>
           </th>
@@ -43,8 +43,6 @@
               <span class="status">{{row.status}}</span>
             </badge>
           </td>
-
-
           <td class="text-right">
              <button class="btn-primary btn-sm btn-danger">삭제</button>
           </td>
@@ -63,7 +61,7 @@
 <script>
 import WriteScheduleModal from '../Modals/WriteScheduleModal'
 
-  export default {
+export default {
     name: 'daily-schedule-table',
     props: {
       type: {
@@ -71,6 +69,7 @@ import WriteScheduleModal from '../Modals/WriteScheduleModal'
       },
       title: String
       ,nameOfChild: String
+      ,today: String
     },
     components:{
       WriteScheduleModal
@@ -79,10 +78,16 @@ import WriteScheduleModal from '../Modals/WriteScheduleModal'
      /*  registration() {
         alert("시작");
       } */
+      openWriteScheduleModal() {
+        //WriteScheduleModal.modals.modal1=true;
+        alert("여기 들어오냐??");
+      }
     },
     data() {
       return {
-        tableData: [
+        
+        user: this.$store.state.user,
+         tableData: [
           {
             title: 'Argon Design System',
             budget: '$2500 USD',
@@ -108,8 +113,18 @@ import WriteScheduleModal from '../Modals/WriteScheduleModal'
             budget: '$2200 USD',
             status: 'completed',
           }
-        ]
+        ] 
+        //tableData:[],
       }
+    }, 
+    mounted() {
+      console.log(this.today);
+      this.$http.get(`/api/period/schedule/3/${this.tableData.today}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+        .then(res => {
+          console.log('우왕');
+          console.log(res.data);
+          // res.data.children.forEach(child => children.push(child));
+      });
     }
   }
 </script>

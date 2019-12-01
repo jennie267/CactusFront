@@ -34,7 +34,7 @@
                                 <div class="col-md-5">
                                     <div class="row mt-5" v-if="isStatus">
                                         <div class="col">
-                                            <dailySchedule-table :nameOfChild="name" title="Light Table"></dailySchedule-table>
+                                            <dailySchedule-table :today="today" :nameOfChild="name" title="Light Table"></dailySchedule-table>
                                         </div>
                                     </div>
                                 </div>
@@ -63,13 +63,15 @@ export default {
                        , interactionPlugin
       ],
       isStatus: false,
-      name:''
+      name:'',
+      today:''
     }
   },
   methods: {
     dateClick(info) {
         this.isStatus = true;
         this.name = info.dateStr
+        this.today = info.dateStr
     },
     eventClick () {
         alert("이거야:::"+ arguments)
