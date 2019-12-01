@@ -24,6 +24,10 @@ export default new Router({
           path: '/icons',
           name: 'icons',
           component: () => import(/* webpackChunkName: "demo" */ './views/Icons.vue')
+        },        {
+          path: '/products',
+          name: 'products',
+          component: () => import(/* webpackChunkName: "demo" */ './views/Products.vue')
         },
         {
           path: '/profile',
@@ -61,11 +65,6 @@ export default new Router({
           path: '/register',
           name: 'register',
           component: () => import(/* webpackChunkName: "demo" */ './views/Register.vue')
-        },
-        {
-          path: '/registerSelModal',
-          name: 'registerSelModal',
-          component: () => import(/* webpackChunkName: "demo" */ './views/RegisterSelModal.vue')
         }
       ]
     }
