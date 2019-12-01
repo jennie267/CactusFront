@@ -293,8 +293,6 @@ import Datetime from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-import axios from 'axios'
-import App from './App'
 export default {
     name: 'user-profile',
         props: {
