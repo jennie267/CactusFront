@@ -14,7 +14,7 @@
                   <img alt="Image placeholder" src="img/theme/team-4-800x800.jpg">
                 </span>
                 <div class="media-body ml-2 d-none d-lg-block">
-                    <span class="mb-0 text-sm  font-weight-bold">이 구난
+                    <span class="mb-0 text-sm  font-weight-bold">{{user.name}}
                     <span class="badge badge-primary">{{user.type}}</span>
                     </span>
                 </div>
@@ -132,9 +132,7 @@
     },
       data() {
         return {
-              user : {
-                  type: '자녀'
-              }
+              user : this.$store.state.user
           }
       }
   };

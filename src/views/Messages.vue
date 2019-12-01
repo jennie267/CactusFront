@@ -18,10 +18,13 @@
             </div>
     </div>
 </template>
+
 <script>
   import MessagesTable from './Tables/MessagesTable'
   import ChildrenTable from './Tables/ChildrenTable'
   import WriteLetterModal from './Modals/WriteLetterModal'
+
+
   export default {
     name: 'tables',
     components: {
@@ -31,14 +34,16 @@
     },
       data() {
           return {
-              user: {
-                  name: '이지수'
-              }
+              user: this.$store.state.user
           }
       },
       methods: {
 
       }
   };
+
+
+
 </script>
+
 <style></style>

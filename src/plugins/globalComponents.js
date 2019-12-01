@@ -18,6 +18,7 @@ import Modal from "../components/Modal";
 import TabPane from "../components/Tabs/TabPane";
 import Tabs from "../components/Tabs/Tabs";
 import ChildrenCard from "../components/ChildrenCard";
+import ProductsCard from "../components/ProductsCard";
 
 export default {
   install(Vue) {
@@ -41,5 +42,6 @@ export default {
     Vue.component(TabPane.name, TabPane);
     Vue.component(Tabs.name, Tabs);
     Vue.component(ChildrenCard.name, ChildrenCard);
+    Vue.component(ProductsCard.name, ProductsCard);
   }
 };
