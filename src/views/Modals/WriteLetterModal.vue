@@ -58,11 +58,6 @@ export default {
     methods: {
         sendMessage: function(){
 
-
-            console.log('들어옴', this.message);
-            console.log('들어옴', this.user.userId);
-            console.log('들어옴', this.checkedNames);
-
             this.checkedNames.forEach(checkedId => {
                 msg.contents = this.message;
                 msg.receivedUserId = checkedId;
@@ -76,12 +71,7 @@ export default {
                         headers: {
                             Authorization: `Bearer ${this.user.token}`
                             ,'Content-Type':'application/json'
-                        },
-/*                        data: {
-                            "contents": "안녕"
-                            , "receivedUserId": 3
-                            , "sendUserId": 12
-                        }*/
+                        }
                 })
                     .then(res => {
                         if (res != null){

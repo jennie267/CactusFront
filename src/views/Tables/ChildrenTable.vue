@@ -72,6 +72,7 @@ let children = [];
           }
       },
       beforeMount() {
+        if (this.user.type =='PARENT'){
           this.$http.get(`/api/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
                   children = [];
@@ -79,6 +80,15 @@ let children = [];
               res.data.users.forEach(child => children.push(child));
 
           });
+        } else if (this.user.type =='CHILD') {
+            this.$http.get(`/api/user/parents/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+                .then(res => {
+                    children = [];
+                    console.log(res.data);
+                    res.data.users.forEach(child => children.push(child));
+
+                });
+        }
       }
   }
 
