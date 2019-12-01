@@ -18,9 +18,9 @@
                                         locale="ko"
                                         :weekends="true"
                                         :header="{
-                                            left: '',
-                                            center: 'title,prev,next',
-                                            right: ''
+                                            left: 'prev',
+                                            center: 'title',
+                                            right: 'next'
                                         }"
                                         :events="[
                                             { title: 'event 1', date: '2019-11-22' },
