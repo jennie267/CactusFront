@@ -28,7 +28,7 @@
                 </form>
                 <br>
                 <div class="text-right">
-                    <base-button type="primary" @click.prevent="showAlert()">전송</base-button>
+                    <base-button type="primary" @click.prevent="sendMessage()">전송</base-button>
                     <base-button type="neutral" class="ml-auto" @click="modals.modal1 = false" >취소
                     </base-button>
                 </div>
@@ -56,15 +56,6 @@ export default {
     };
   },
     methods: {
-        showAlert() {
-            // Use sweetalert2
-            this.$swal({
-                type: 'success',
-                title: '안녕!!!'
-            });
-
-
-        },
         sendMessage: function(){
 
 
@@ -93,7 +84,20 @@ export default {
                         }*/
                 })
                     .then(res => {
-                        console.log('전송');
+                        if (res != null){
+                            this.modals.modal1 = false;
+                            // Use sweetalert2
+                            this.$swal({
+                                type: 'success',
+                                title: '전송 성공했습니다.'
+                            });
+
+                        }else {
+                            this.$swal({
+                                type: 'warning',
+                                title: '전송 실패했습니다.'
+                            });
+                        }
                         console.log(res);
                         console.log(res.data);
                     });
@@ -101,7 +105,7 @@ export default {
 
         }
     },
-    mounted() {
+    created () {
         this.$http.get(`/api/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
             .then(res => {
                 children = [];

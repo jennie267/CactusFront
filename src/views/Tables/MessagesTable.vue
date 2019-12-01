@@ -170,13 +170,11 @@
               this.isActive = true;
           }
 
+      },
+      showModal: function(msgId){
+          console.log('들어옴', msgId);
       }
   },
-      methods: {
-          showModal: function(msgId){
-              console.log('들어옴', msgId);
-          }
-      },
     data() {
       return {
           user: this.$store.state.user,
@@ -186,7 +184,7 @@
           modal1: false
         }
       }
-    }, mounted() {
+    }, created () {
           this.$http.get(`/api/message/receive/user/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
                   messages = [];
