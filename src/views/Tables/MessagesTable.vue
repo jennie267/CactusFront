@@ -23,7 +23,7 @@
           <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="modals.modal1 = true">
             {{row.sendUserName}}
             <a href="#" class="avatar avatar-sm rounded-circle">
-              <img alt="Image placeholder" :src="row.sendUserProfileUrl" style="width:90%;">
+              <img alt="" :src="row.sendUserProfileUrl" style="width:90%;">
             </a>
           </td>
           <td class="name" style="font-size: 15px; cursor:pointer" @click.prevent="modals.modal1 = true">

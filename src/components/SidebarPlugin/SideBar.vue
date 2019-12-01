@@ -11,7 +11,7 @@
             </router-link>
             <div class="media align-items-center" slot="title">
                 <span class="avatar avatar-sm rounded-circle">
-                  <img alt="Image placeholder" src="img/theme/team-4-800x800.jpg">
+                  <img v-if="user.profileUrl != null" alt="" :src="user.profileUrl">
                 </span>
                 <div class="media-body ml-2 d-none d-lg-block">
                     <span class="mb-0 text-sm  font-weight-bold">{{user.name}}
