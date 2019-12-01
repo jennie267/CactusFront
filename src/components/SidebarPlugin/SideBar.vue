@@ -15,7 +15,8 @@
                 </span>
                 <div class="media-body ml-2 d-none d-lg-block">
                     <span class="mb-0 text-sm  font-weight-bold">{{user.name}}
-                    <span class="badge badge-primary">{{user.type}}</span>
+                    <span v-if="user.type == 'PARENT'" class="badge badge-primary">부모회원</span>
+                    <span v-if="user.type == 'CHILD'" class="badge badge-primary">자녀회원</span>
                     </span>
                 </div>
             </div>
