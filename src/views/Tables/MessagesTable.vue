@@ -17,22 +17,22 @@
         </template>
 
         <template slot-scope="{row}">
-          <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
-            {{row.date}}
+          <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="modals.modal1 = true">
+            {{row.insertTime}}
           </td>
-          <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
-            {{row.name}}
+          <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="modals.modal1 = true">
+            {{row.sendUserName}}
             <a href="#" class="avatar avatar-sm rounded-circle">
-              <img alt="Image placeholder" :src="row.img" style="width:80%;">
+              <img alt="Image placeholder" :src="row.sendUserProfileUrl" style="width:90%;">
             </a>
           </td>
-          <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
-              {{row.content}}
+          <td class="name" style="font-size: 15px; cursor:pointer" @click.prevent="modals.modal1 = true">
+              {{row.contents}}
           </td>
 
           <td>
             <div class="d-flex align-items-center">
-              <i v-if="row.like" class="ni ni-favourite-28 " style="color: pink;"></i>
+              <i v-if="row.isLike =='Y'" class="ni ni-favourite-28 " style="color: pink;"></i>
             </div>
           </td>
 
@@ -41,10 +41,10 @@
       </base-table>
     </div>
 
-    <div class="card-footer d-flex justify-content-end"
+<!--    <div class="card-footer d-flex justify-content-end"
          :class="type === 'dark' ? 'bg-transparent': ''">
       <base-pagination total="30"></base-pagination>
-    </div>
+    </div>-->
 
     <template>
       <!-- Modals -->
@@ -138,6 +138,10 @@
 </style>
 <script>
   import Modal from "@/components/Modal.vue";
+  var moment = require('moment');
+  moment().format();
+
+  let messages = [];
   export default {
     name: 'projects-table',
     components: {
@@ -168,58 +172,37 @@
 
       }
   },
+      methods: {
+          showModal: function(msgId){
+              console.log('들어옴', msgId);
+          }
+      },
     data() {
       return {
           user: this.$store.state.user,
           isActive: true,
-        message: [],
+          tableData:messages,
         modals: {
           modal1: false
-        },
-        tableData: [
-          {
-            img: 'img/theme/sooki.PNG',
-            date: '2019.11.23',
-            name: '이지수',
-            content: '엄마 미안해',
-            like: false
-          },
-          {
-            img: 'img/theme/angular.jpg',
-            date: '2019.11.23',
-            name: '이지수',
-            content: '미안해 솔직하지못한 내가',
-            like: true
-          },
-          {
-            img: 'img/theme/sketch.jpg',
-            date: '2019.11.23',
-            name: '김은아',
-            content: '지금 이순간이 꿈이라면',
-            like: true
-          },
-          {
-            img: 'img/theme/react.jpg',
-            date: '2019.11.23',
-            name: '김남현',
-            content: '살며시 너에게로 다가가',
-            like: false
-          },
-          {
-            img: 'img/theme/team-4-800x800.jpg',
-            date: '2019.11.23',
-            name: '이근환',
-            content: '모든걸 고백할텐데',
-            like: false
-          }
-        ]
+        }
       }
     }, mounted() {
           this.$http.get(`/api/message/receive/user/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
-                  console.log('우왕');
-                  console.log(res.data);
-                  // res.data.children.forEach(child => children.push(child));
+                  messages = [];
+                  res.data.messages.forEach(message =>{
+                      message.insertTime = moment(message.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD HH:mm');
+                      messages.push(message);
+                      console.log(message);
+                  });
+
+
+                  console.log('읭 : ' ,this.$moment(new Date()).format('YYYYMMDD'));
+
+                  var time2 = "2017-02-04T12:20:00Z"
+
+                  var ms = moment(time2,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY MM DD');
+                  console.log('힝 : ', ms);
               });
 
       }

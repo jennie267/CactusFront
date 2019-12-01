@@ -9,41 +9,26 @@
                 <h2 class="modal-title text-left" id="modal-title-default">받는사람</h2>
                 <br>
                 <div class="row" >
-                <div class="col custom-control custom-checkbox mb-3 text-left">
-                    <input class="custom-control-input" type="checkbox" id="이지수" value="이지수" v-model="checkedNames">
-                    <label class="custom-control-label" for="이지수">이지수</label>
+               <!--<div v-for="child in children" :key="child.id"  class="col custom-control custom-checkbox text-left" >-->
+                <div v-for="child in children" :key="child.userId"  class="custom-control custom-checkbox text-left" style="margin-right: 6%;" >
+                    <input class="custom-control-input" type="checkbox" :id="child.userId" :value="child.userId" v-model="checkedNames">
+                    <label class="custom-control-label" :for="child.userId">{{child.name}}</label>
                 </div>
-                    <div class="col custom-control custom-checkbox mb-3 text-left">
-                        <input class="custom-control-input" type="checkbox" id="김은아" value="김은아" v-model="checkedNames">
-                        <label class="custom-control-label" for="김은아">김은아</label>
+
+                    <!--        <div class="custom-control custom-checkbox text-left" style="margin-right: 6%;" >
+                    <input class="custom-control-input" type="checkbox" id="김은아1" value="김은아" v-model="checkedNames">
+                    <label class="custom-control-label" for="김은아1">김은아</label>
                     </div>
-                    <div class="col custom-control custom-checkbox mb-3 text-left">
-                        <input class="custom-control-input" type="checkbox" id="김남현" value="김남현" v-model="checkedNames">
-                        <label class="custom-control-label" for="김남현">김남현</label>
-                    </div>
-                    <div class="col custom-control custom-checkbox mb-3 text-left">
-                        <input class="custom-control-input" type="checkbox" id="김정우" value="김정우" v-model="checkedNames">
-                        <label class="custom-control-label" for="김정우">김정우</label>
-                    </div>
+                    -->
                 </div>
-<!--               <div class="text-left custom-control custom-checkbox mb-3 ">
-                    <input type="checkbox" id="이지수" value="이지수" v-model="checkedNames">
-                    <label for="이지수">이지수</label>
-                    <input type="checkbox" id="김은아" value="김은아" v-model="checkedNames">
-                    <label for="김은아">김은아</label>
-                    <input type="checkbox" id="김남현" value="김남현" v-model="checkedNames">
-                    <label for="김남현">김남현</label>
-                    <input type="checkbox" id="김정우" value="김정우" v-model="checkedNames">
-                    <label for="김정우">김정우</label>
-                    <br>
-                </div>-->
+
                 <br>
                 <form>
                     <textarea class="form-control" style="width: 100%;height: 100px;" v-model="message" placeholder="내용을 입력하세요."></textarea>
                 </form>
                 <br>
                 <div class="text-right">
-                    <base-button type="primary" >전송</base-button>
+                    <base-button type="primary" @click.prevent="sendMessage()">전송</base-button>
                     <base-button type="neutral" class="ml-auto" @click="modals.modal1 = false" >취소
                     </base-button>
                 </div>
@@ -52,19 +37,68 @@
 </template>
 <script>
 import Modal from "@/components/Modal.vue";
+
+let children = [];
+let msg = {contents:"", receivedUserId:0, sendUserId:0,isLike:"N"};
 export default {
   components: {
     Modal
   },
   data() {
     return {
-        message: [],
+        message: '',
         checkedNames: [],
+        children:children,
+        user: this.$store.state.user,
       modals: {
           modal1: false
       }
     };
-  }
+  },
+    methods: {
+        sendMessage: function(){
+            console.log('들어옴', this.message);
+            console.log('들어옴', this.user.userId);
+            console.log('들어옴', this.checkedNames);
+
+            this.checkedNames.forEach(checkedId => {
+                msg.contents = this.message;
+                msg.receivedUserId = checkedId;
+                msg.sendUserId = this.user.userId;
+
+                console.log('메시지 : ' ,msg);
+
+
+                this.$http.post(`/api/message/`, msg,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.user.token}`
+                            ,'Content-Type':'application/json'
+                        },
+/*                        data: {
+                            "contents": "안녕"
+                            , "receivedUserId": 3
+                            , "sendUserId": 12
+                        }*/
+                })
+                    .then(res => {
+                        console.log('전송');
+                        console.log(res);
+                        console.log(res.data);
+                    });
+            });
+
+        }
+    },
+    mounted() {
+        this.$http.get(`/api/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+            .then(res => {
+                children = [];
+                console.log(res.data);
+                res.data.users.forEach(child => children.push(child));
+
+            });
+    }
 };
 
 </script>

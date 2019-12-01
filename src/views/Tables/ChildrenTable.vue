@@ -16,7 +16,7 @@
                   <button   class="btn btn-neutral btn-icon " style="vertical-align: middle;" >
                      <!-- <button v-bind:class="[isActive ? 'white' : 'navy']" @click="toggleClass()"   class="btn btn-neutral btn-icon " style="vertical-align: middle;" >-->
                       <span href="#" class="avatar avatar-sm rounded-circle" style="vertical-align: middle;">
-                          <img alt="Image placeholder" src="img/theme/sooki.PNG" style="width:90%;">
+                          <img v-if="child.profileUrl != null" alt="" :src="child.profileUrl" style="width:90%;">
                       </span>
                       <span class="btn-inner&#45;&#45;text" style="font-size: 18px; color: #525f7f; font-weight: 500;vertical-align: middle;">
                       {{child.name}}
@@ -44,8 +44,7 @@
     }
 </style>
 <script>
-    var moment = require('moment');
-    moment().format();
+
 
 let children = [];
   export default {
@@ -72,23 +71,14 @@ let children = [];
 
           }
       },
-      mounted() {
-
+      beforeMount() {
           this.$http.get(`/api/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
                   children = [];
               console.log(res.data);
               res.data.users.forEach(child => children.push(child));
-              console.log('읭 : ' ,this.$moment(new Date()).format('YYYYMMDD'));
 
-                  var time2 = "2017-02-04T12:20:00Z"
-
-                  var ms = moment(time2,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY MM DD');
-                 console.log('힝 : ', ms);
           });
-
-
-
       }
   }
 
