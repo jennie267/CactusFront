@@ -35,6 +35,7 @@ axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
   // Do something with response error
+  console.log(error);
   router.push("/");
   return Promise.reject(error);
 })

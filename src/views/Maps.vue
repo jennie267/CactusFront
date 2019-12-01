@@ -194,7 +194,6 @@ import dateUtil from '../common/dateUtil';
           },
           getLocation: function(){
               if(this.selectedParent.userId>0){
-                  console.log(this.date)
                   this.$http.get('/api/location/footprints/user/date/'+this.selectedParent.userId+'/'+this.date.replace(/-/gi,''), { headers: { Authorization: `Bearer ${this.user.token}` } })
                       .then((result) => {
                           this.markers = [];
