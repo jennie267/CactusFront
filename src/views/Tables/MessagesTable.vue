@@ -192,7 +192,7 @@
           this.tableData = [];
           this.sendUserId = null;
 
-          this.$http.get(`/api/message/send/user/${this.user.userId}/`+userId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+          this.$http.get(`/message/send/user/${this.user.userId}/`+userId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
                  res.data.messages.forEach(message =>{
                       message.insertTime = moment(message.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD HH:mm');
@@ -203,7 +203,7 @@
 
               });
 
-/*          this.$http.get(`/api/message/`+userId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+/*          this.$http.get(`/message/`+userId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
 
                   console.log('한명만 보여줘라 ',res.data);
@@ -225,7 +225,7 @@
         if (this.sendUserId == null){
             console.log('왜 널이야?');
             this.tableData = [];
-          this.$http.get(`/api/message/receive/user/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+          this.$http.get(`/message/receive/user/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
                   res.data.messages.forEach(message =>{
                       message.insertTime = moment(message.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD HH:mm');

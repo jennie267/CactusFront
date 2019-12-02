@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        user: {}
+        user: {},
+        gateway: 'http://zuul.paas-ta.org/',
     },
 });
