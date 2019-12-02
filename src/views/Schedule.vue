@@ -34,7 +34,7 @@
                                 <div class="col-md-5">
                                     <div class="row mt-5" v-if="isStatus">
                                         <div class="col">
-                                            <dailySchedule-table :today="today" :nameOfChild="name" title="Light Table"></dailySchedule-table>
+                                            <dailySchedule-table v-if="schedule !== null" :schedule="schedule" :nameOfChild="name" title="Light Table"></dailySchedule-table>
                                         </div>
                                     </div>
                                 </div>
@@ -59,12 +59,14 @@ export default {
   },
   data() {
     return {
-      calendarPlugins: [ dayGridPlugin
+        user: this.$store.state.user,
+        calendarPlugins: [ dayGridPlugin
                        , interactionPlugin
-      ],
-      isStatus: false,
-      name:'',
-      today:''
+        ],
+        isStatus: false,
+        name:'',
+        today:'',
+        schedule:''
     }
   },
   methods: {
@@ -72,6 +74,14 @@ export default {
         this.isStatus = true;
         this.name = info.dateStr
         this.today = info.dateStr
+
+        this.$http.get(`/api/schedule/user/${this.today}/3`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+        .then(res => {
+          this.schedule = JSON.stringify(res.data.period);
+            console.log("====================");
+          console.log(this.schedule);
+          //console.log(res.data.period);
+      });
     },
     eventClick () {
         alert("이거야:::"+ arguments)
