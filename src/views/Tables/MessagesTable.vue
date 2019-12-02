@@ -17,16 +17,16 @@
         </template>
 
         <template slot-scope="{row}">
-          <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="modals.modal1 = true">
+          <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="showModal(row.messageId)">
             {{row.insertTime}}
           </td>
-          <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="modals.modal1 = true">
+          <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="showModal(row.messageId)">
             {{row.sendUserName}}
             <a href="#" class="avatar avatar-sm rounded-circle">
               <img alt="" :src="row.sendUserProfileUrl" style="width:90%;">
             </a>
           </td>
-          <td class="name" style="font-size: 15px; cursor:pointer" @click.prevent="modals.modal1 = true">
+          <td class="name" style="font-size: 15px; cursor:pointer" @click.prevent="showModal(row.messageId)">
               {{row.contents}}
           </td>
 
@@ -151,7 +151,8 @@
       type: {
         type: String
       },
-      date: String
+      date: String,
+        sendUserId: Number
     },
     computed: {
       thStyle() {
@@ -162,7 +163,6 @@
     },
   methods: {
       toggleClass: function(){
-
           // Check value
           if(this.isActive){
               this.isActive = false;
@@ -173,6 +173,43 @@
       },
       showModal: function(msgId){
           console.log('들어옴', msgId);
+
+        /*  this.$http.get(`/api/message/receive/user/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+              .then(res => {
+                  messages = [];
+                  res.data.messages.forEach(message =>{
+                      message.insertTime = moment(message.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD HH:mm');
+                      messages.push(message);
+                      console.log(message);
+                  });
+
+              });*/
+
+          this.modals.modal1 = true;
+      },receiveMsg: function(userId){
+          console.log('receiveMsg 좀들어와라...', userId);
+          console.log(userId);
+          this.tableData = [];
+          this.sendUserId = null;
+
+          this.$http.get(`/api/message/send/user/${this.user.userId}/`+userId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+              .then(res => {
+                 res.data.messages.forEach(message =>{
+                      message.insertTime = moment(message.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD HH:mm');
+                      // messages.push(message);
+                      this.tableData.push(message);
+                      console.log(message);
+                  });
+
+              });
+
+/*          this.$http.get(`/api/message/`+userId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+              .then(res => {
+
+                  console.log('한명만 보여줘라 ',res.data);
+
+              });*/
+
       }
   },
     data() {
@@ -185,23 +222,20 @@
         }
       }
     }, mounted () {
+        if (this.sendUserId == null){
+            console.log('왜 널이야?');
+            this.tableData = [];
           this.$http.get(`/api/message/receive/user/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
-                  messages = [];
                   res.data.messages.forEach(message =>{
                       message.insertTime = moment(message.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD HH:mm');
-                      messages.push(message);
+                      // messages.push(message);
+                      this.tableData.push(message);
                       console.log(message);
                   });
 
-
-                  console.log('읭 : ' ,this.$moment(new Date()).format('YYYYMMDD'));
-
-                  var time2 = "2017-02-04T12:20:00Z"
-
-                  var ms = moment(time2,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY MM DD');
-                  console.log('힝 : ', ms);
               });
+        }
 
       }
   }

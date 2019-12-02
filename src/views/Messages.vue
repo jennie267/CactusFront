@@ -12,7 +12,7 @@
                 <br>
                 <div class="row">
                     <div class="col">
-                        <messages-table title="Message Table"></messages-table>
+                        <messages-table ref="msgTable" :sendUserId="sendUserId" title="Message Table"></messages-table>
                     </div>
                 </div>
             </div>
@@ -34,11 +34,16 @@
     },
       data() {
           return {
-              user: this.$store.state.user
+              user: this.$store.state.user,
+              sendUserId: null
           }
       },
       methods: {
-
+            testParent: function (userId) {
+                this.sendUserId = userId;
+                this.$refs.msgTable.$forceUpdate();
+                this.$refs.msgTable.receiveMsg(userId);
+            }
       }
   };
 

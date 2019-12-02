@@ -13,7 +13,7 @@
               </h3>
             </div>
               <div class=" text-left " v-for="child in children" :key="child.id" style="margin-right: 1%;" >
-                  <button   class="btn btn-neutral btn-icon " style="vertical-align: middle;" >
+                  <button   class="btn btn-neutral btn-icon " style="vertical-align: middle;" @click="checkedBtn(child.userId)" >
                      <!-- <button v-bind:class="[isActive ? 'white' : 'navy']" @click="toggleClass()"   class="btn btn-neutral btn-icon " style="vertical-align: middle;" >-->
                       <span href="#" class="avatar avatar-sm rounded-circle" style="vertical-align: middle;">
                           <img v-if="child.profileUrl != null" alt="" :src="child.profileUrl" style="width:90%;">
@@ -57,8 +57,8 @@ let children = [];
       }
     },
       methods: {
-            checkedBtn: function(){
-                console.log('들어옴', this);
+            checkedBtn: function(userId){
+                this.$parent.testParent(userId);
           },
           toggleClass: function(){
             console.log('들어는오니?');
