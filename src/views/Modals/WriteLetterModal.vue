@@ -66,7 +66,7 @@ export default {
                 console.log('메시지 : ' ,msg);
 
 
-                this.$http.post(`/api/message/`, msg,
+                this.$http.post(`/message/`, msg,
                     {
                         headers: {
                             Authorization: `Bearer ${this.user.token}`
@@ -96,7 +96,7 @@ export default {
         }
     },
     mounted () {
-        this.$http.get(`/api/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+        this.$http.get(`/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
             .then(res => {
                 children = [];
                 console.log(res.data);

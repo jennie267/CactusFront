@@ -38,7 +38,11 @@ axios.interceptors.response.use(function (response) {
   console.log(error);
   router.push("/");
   return Promise.reject(error);
-})
+});
+axios.interceptors.request.use(function (request) {
+  request.baseURL = store.state.gateway;
+  return request;
+});
 
 Vue.use(VueMomentJS, moment)
 Vue.use(VueSweetalert2)

@@ -119,7 +119,7 @@ export default {
     }, 
     mounted() {
       console.log(this.today);
-      this.$http.get(`/api/period/schedule/3/${this.tableData.today}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+      this.$http.get(`/period/schedule/3/${this.tableData.today}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
         .then(res => {
           console.log('우왕');
           console.log(res.data);

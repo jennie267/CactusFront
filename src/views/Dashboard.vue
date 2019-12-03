@@ -145,8 +145,8 @@ import DashboardProfile from './Dashboard/DashboardProfile'
     methods: {
         dateClick(info) {
             this.date = info.dateStr;
-            console.log(`/api/schedule/day/user/${this.user.userId}/${this.date.replace(/-/gi,'')}`)
-            this.$http.get(`/api/schedule/day/user/${this.user.userId}/${this.date.replace(/-/gi,'')}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+            console.log(`/schedule/day/user/${this.user.userId}/${this.date.replace(/-/gi,'')}`)
+            this.$http.get(`/schedule/day/user/${this.user.userId}/${this.date.replace(/-/gi,'')}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                 .then(res => {
                     console.log(res.data)
                     this.periodData = res.data;
@@ -157,13 +157,13 @@ import DashboardProfile from './Dashboard/DashboardProfile'
         }
     },
       mounted() {
-          this.$http.get(`/api/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-              .then(res => {
-                  this.childData = res.data.users;
-                  this.childData.forEach(user => user.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
-                      '<img alt="Image placeholder" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
-                      '</a>');
-              });
+          // this.$http.get(`/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+          //     .then(res => {
+          //         this.childData = res.data.users;
+          //         this.childData.forEach(user => user.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
+          //             '<img alt="Image placeholder" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
+          //             '</a>');
+          //     });
       }
   };
 </script>
