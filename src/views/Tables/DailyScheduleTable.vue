@@ -69,10 +69,7 @@ export default {
         type: String
       },
       nameOfChild: String
-      , schedule: {
-        type: Object,
-        required: true
-      } 
+      , schedule: Object
     },
     components:{
       WriteScheduleModal
@@ -81,10 +78,6 @@ export default {
      /*  registration() {
         alert("시작");
       } */
-      test() {
-        console.log('먼저.. ' ,this.schedule);
-        console.log('먼저.222. ' ,JSON.parse(this.schedule));
-      }
     },
     data() {
       return {
