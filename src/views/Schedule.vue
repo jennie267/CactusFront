@@ -52,6 +52,9 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import DailyScheduleTable from './Tables/DailyScheduleTable'
 
+var moment = require('moment');
+moment().format();
+
 export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
@@ -73,15 +76,12 @@ export default {
     dateClick(info) {
         this.isStatus = true;
         this.name = info.dateStr
-        this.today = info.dateStr
+        this.today = moment(info.dateStr, "YYYY-MM-DD").format('YYYYMMDD');   
 
-        this.$http.get(`/api/schedule/user/${this.today}/3`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+        this.$http.get(`/period/schedule/day/user/${this.today}/3`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
         .then(res => {
-          this.schedule = JSON.stringify(res.data.period);
-            console.log("====================");
-          console.log(this.schedule);
-          //console.log(res.data.period);
-      });
+          this.schedule = res.data.schedules;
+        });
     },
     eventClick () {
         alert("이거야:::"+ arguments)

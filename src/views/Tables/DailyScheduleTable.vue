@@ -70,7 +70,7 @@ export default {
       },
       nameOfChild: String
       , schedule: {
-        type: String,
+        type: Object,
         required: true
       } 
     },

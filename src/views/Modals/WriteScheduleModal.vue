@@ -7,8 +7,8 @@
                 <h2 slot="header" class="modal-title" id="modal-title-default">일정 등록</h2>
                 <form>
                     <div class="form-group row">
-                        <label for="scheduleName" class="col-sm-2 col-form-label">일정타입</label>
-                        <div class="col-sm-10">
+                        <label for="scheduleName" class="col-sm-3 col-form-label">일정타입</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" v-model="period.periodType">
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                                          @on-close="blur" 
                                         :config="{allowInput: true}"
                                         class="form-control datepicker"
-                                        v-model="startDate">
+                                        v-model="period.startDate">
                             </flat-pickr>
                         </base-input>
                         <base-input class="col-sm-5">
@@ -41,7 +41,7 @@
                                          @on-close="blur" 
                                         :config=timeConfig
                                         class="form-control datepicker"
-                                        v-model="startTime">
+                                        v-model="period.startTime">
                             </flat-pickr>
                         </base-input>
                     </div>
@@ -181,8 +181,8 @@ export default {
   },
     methods:{
         confirm() {
-            console.log("여기 들어오냐::::::");
-        this.$http.post(`/api/period`, this.period, { headers: { Authorization: `Bearer ${this.user.token}` } })
+
+        this.$http.post(`/period`, this.period, { headers: { Authorization: `Bearer ${this.user.token}` } })
             .then(res => {
                 console.log(res);
             });
