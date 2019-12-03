@@ -51,9 +51,10 @@
                             <div class="row">
                                 <vue-good-table
                                         style="width:100%;"
-                                        :columns="columns"
-                                        :rows="rows"/>
+                                        :columns="periodHeader"
+                                        :rows="periodData"/>
                             </div>
+                            {{periodData}}
                         </div>
                     </div>
                 </div>
@@ -115,27 +116,20 @@ import DashboardProfile from './Dashboard/DashboardProfile'
           selectedUser: {},
           periodHeader: [
               {
-                  field: 'userId',
+                  field: 'schdId',
                   hidden: true,
               },
               {
-                  label: '프로필',
-                  field: 'profile',
-                  width: '8%',
-                  tdClass: 'text-center',
-                  html: true,
-              },
-              {
-                  label: '이름',
-                  field: 'name',
+                  label: '담당자',
+                  field: 'manager',
                   width: '25%',
               },
               {
-                  label: '생일',
-                  field: 'birthday',
+                  label: '일자',
+                  field: 'schdTime',
                   type: 'date',
-                  dateInputFormat: 'yyyyMMdd',
-                  dateOutputFormat: 'yyyy-MM-dd',
+                  dateInputFormat: `yyyy-MM-dd'T'HH:mm:ss`,
+                  dateOutputFormat: 'yyyy-MM-dd HH:mm:ss',
                   width: '25%',
               },
           ],
@@ -145,11 +139,9 @@ import DashboardProfile from './Dashboard/DashboardProfile'
     methods: {
         dateClick(info) {
             this.date = info.dateStr;
-            console.log(`/schedule/day/user/${this.user.userId}/${this.date.replace(/-/gi,'')}`)
-            this.$http.get(`/schedule/day/user/${this.user.userId}/${this.date.replace(/-/gi,'')}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+            this.$http.get(`/period/schedule/day/user/${this.date.replace(/-/gi,'')}/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                 .then(res => {
-                    console.log(res.data)
-                    this.periodData = res.data;
+                    this.periodData = res.data.schedules;
                 });
         },
         onRowClick(select) {
@@ -157,14 +149,17 @@ import DashboardProfile from './Dashboard/DashboardProfile'
         }
     },
       mounted() {
-          // this.$http.get(`/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-          //     .then(res => {
-          //         this.childData = res.data.users;
-          //         this.childData.forEach(user => user.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
-          //             '<img alt="Image placeholder" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
-          //             '</a>');
-          //     });
+          this.$http.get(`/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+              .then(res => {
+                  this.childData = res.data.users;
+                  this.childData.forEach(user => user.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
+                      '<img alt="Image placeholder" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
+                      '</a>');
+              });
       }
   };
 </script>
-<style></style>
+<style>
+    @import '~@fullcalendar/core/main.css';
+    @import '~@fullcalendar/daygrid/main.css';
+</style>

@@ -27,15 +27,13 @@ import moment from "moment"
 import VueMomentJS from "vue-momentjs"
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
+import '@babel/polyfill'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
 axios.interceptors.response.use(function (response) {
-  // Do something with response data
   return response;
 }, function (error) {
-  // Do something with response error
-  console.log(error);
   router.push("/");
   return Promise.reject(error);
 });

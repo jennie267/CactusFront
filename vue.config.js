@@ -8,7 +8,8 @@ module.exports = {
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 6
       })
-    ]
+    ],
+    entry: ["babel-polyfill", "./src/main.js"],
   },
   pwa: {
     name: 'Vue Argon Dashboard',
