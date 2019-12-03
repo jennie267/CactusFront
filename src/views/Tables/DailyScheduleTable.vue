@@ -20,21 +20,21 @@
         <th></th>
       </template>
       <template slot-scope="{row}">
-          <th scope="row">
+          <th>
             <div class="media align-items-center">
               <div class="media-body">
-                <a @click="modals.modal1=true"><span class="name mb-0 text-sm">{{rows.name}}</span></a>
+                <a @click="modals.modal1=true"><span class="name mb-0 text-sm">{{rows.periodName}}</span></a>
               </div>
             </div>
           </th>
           <td class="budget">
-            {{row.remark}}
+            {{row.periodRemark}}
           </td>
           <td>
-            <badge class="badge-dot mr-4" :type="row.statusType">
+            <!-- <badge class="badge-dot mr-4" :type="row.statusType">
               <i :class="`bg-${row.statusType}`"></i>
               <span class="status">{{row.status}}</span>
-            </badge>
+            </badge> -->
           </td>
           <td class="text-right">
              <button class="btn-primary btn-sm btn-danger">삭제</button>
@@ -68,13 +68,12 @@ export default {
     },
     methods: {
       showScheduleList: function(date) {
-          console.log('showScheduleList 메소드 들어옴!!!', date);
         this.tableData = [];
-
         this.$http.get(`/period/schedule/day/user/`+ date + `/3`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
         .then(res => {
-            res.data.schedules.forEach(schedule => {
+          res.data.schedules.forEach(schedule => {
               this.tableData.push(schedule);
+              console.log(this.tableData);
             })
         });
       }
