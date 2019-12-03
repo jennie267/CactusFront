@@ -7,6 +7,6 @@ applications:
   path: ./dist
   buildpack: staticfile_buildpack
   env:
-    FORCE_HTTPS: true
+    http_proxy: HTTP-URL
 
 
