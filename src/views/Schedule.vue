@@ -34,7 +34,7 @@
                                 <div class="col-md-5">
                                     <div class="row mt-5" v-if="isStatus">
                                         <div class="col">
-                                            <dailySchedule-table v-if="schedule !== null" :schedule="schedule" :nameOfChild="name" title="Light Table"></dailySchedule-table>
+                                            <dailySchedule-table ref="dailyTable" :nameOfChild="name" title="Light Table"></dailySchedule-table>
                                         </div>
                                     </div>
                                 </div>
@@ -77,11 +77,7 @@ export default {
         this.isStatus = true;
         this.name = info.dateStr
         this.today = moment(info.dateStr, "YYYY-MM-DD").format('YYYYMMDD');   
-
-        this.$http.get(`/period/schedule/day/user/${this.today}/3`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-        .then(res => {
-          this.schedule = res.data.schedules;
-        });
+        this.$refs.dailyTable.showScheduleList(this.today);
     },
     eventClick () {
         alert("이거야:::"+ arguments)

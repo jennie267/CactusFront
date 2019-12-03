@@ -1,42 +1,34 @@
 <template>
-  <div class="card shadow"
-       :class="type === 'dark' ? 'bg-default': ''">
-    <div class="card-header border-0"
-         :class="type === 'dark' ? 'bg-transparent': ''">
-      <div class="row align-items-center">
-        <div class="col">
-          <h3 id="clickSchedule" class="mb-0" :class="type === 'dark' ? 'text-white': ''" >
+  <div class="card shadow">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 id="clickSchedule" class="mb-0">
           {{nameOfChild}} 일정
-          </h3>
-        </div>
-        <write-schedule-modal></write-schedule-modal>
+        </h3>
       </div>
+      <write-schedule-modal></write-schedule-modal>
     </div>
-
     <div class="table-responsive">
       <base-table class="table align-items-center table-flush"
-                  :class="type === 'dark' ? 'table-dark': ''"
-                  :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
+                 :thead-classes="type='thead-light'"
                   tbody-classes="list"
-                  >
-        <template slot="columns">
-          <th @click="test">Project</th>
-          <th>Budget</th>
-          <th>Users</th>
-          <th></th>
-        </template>
-
-        <template slot-scope="{row}">
-          <div v-for="daily in schedule" :key="daily.periodId">
+                  :data="tableData">
+      <template slot="columns">
+        <th>제목</th>
+        <th>내용</th>
+        <th>작성자</th>
+        <th></th>
+      </template>
+      <template slot-scope="{row}">
           <th scope="row">
             <div class="media align-items-center">
               <div class="media-body">
-                <a @click="modals.modal1=true"><span class="name mb-0 text-sm">{{daily.name}}</span></a>
+                <a @click="modals.modal1=true"><span class="name mb-0 text-sm">{{rows.name}}</span></a>
               </div>
             </div>
           </th>
           <td class="budget">
-            {{daily.periodId}}
+            {{row.remark}}
           </td>
           <td>
             <badge class="badge-dot mr-4" :type="row.statusType">
@@ -47,7 +39,6 @@
           <td class="text-right">
              <button class="btn-primary btn-sm btn-danger">삭제</button>
           </td>
-          </div>
         </template>
 
       </base-table>
@@ -62,6 +53,7 @@
 <script>
 import WriteScheduleModal from '../Modals/WriteScheduleModal'
 
+let schedules = [];
 export default {
     name: 'daily-schedule-table',
     props: {
@@ -69,12 +61,22 @@ export default {
         type: String
       },
       nameOfChild: String
-      , schedule: Object
-    },
+      //, schedule: Object
+    }, 
     components:{
       WriteScheduleModal
     },
     methods: {
+      showScheduleList: function(date) {
+        this.tableData = [];
+
+        this.$http.get(`/period/schedule/day/user/`+ date + `/3`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+        .then(res => {
+            res.data.schedules.forEach(schedule => {
+              this.tableData.push(schedule);
+            }) 
+        });
+      }
      /*  registration() {
         alert("시작");
       } */
@@ -82,6 +84,7 @@ export default {
     data() {
       return {
         user: this.$store.state.user,
+        tableData:schedules
       }
     }, 
   }
