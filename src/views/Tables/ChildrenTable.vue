@@ -14,8 +14,7 @@
                         </div>
                         <div class=" text-left " style="margin-right: 1%;" >
                             <button   class="btn btn-neutral btn-icon " style="vertical-align: middle; background-color: #172b4d;" @click="checkedBtn('all')" >
-                                <!-- <button v-bind:class="[isActive ? 'white' : 'navy']" @click="toggleClass()"   class="btn btn-neutral btn-icon " style="vertical-align: middle;" >-->
-                                <span class="btn-inner&#45;&#45;text" style="font-size: 18px; color: white; font-weight: 500;vertical-align: middle;">
+                               <span class="btn-inner&#45;&#45;text" style="font-size: 18px; color: white; font-weight: 500;vertical-align: middle;">
                       전체
                       </span>
 
@@ -23,8 +22,7 @@
                         </div>
                         <div class=" text-left " v-for="child in children" :key="child.id" style="margin-right: 1%;" >
                             <button   class="btn btn-neutral btn-icon " style="vertical-align: middle;" @click="checkedBtn(child.userId)" >
-                                <!-- <button v-bind:class="[isActive ? 'white' : 'navy']" @click="toggleClass()"   class="btn btn-neutral btn-icon " style="vertical-align: middle;" >-->
-                                <span href="#" class="avatar avatar-sm rounded-circle" style="vertical-align: middle;">
+                               <span href="#" class="avatar avatar-sm rounded-circle" style="vertical-align: middle;">
                           <img v-if="child.profileUrl != null" alt="" :src="child.profileUrl" style="width:90%;">
                       </span>
                                 <span class="btn-inner&#45;&#45;text" style="font-size: 18px; color: #525f7f; font-weight: 500;vertical-align: middle;">
@@ -33,9 +31,7 @@
 
                             </button>
                         </div>
-                        <!--            <div class="col text-right">
-                                      <base-button type="primary" size="md" > 검색</base-button>
-                                    </div>-->
+
                     </div>
                 </div>
             </div>
@@ -53,17 +49,13 @@
     }
 </style>
 <script>
-    import {eventBus} from "../event-bus";
 
-    // let children = [];
     export default {
         name: 'children-table',
         data() {
             return {
                 isActive: true,
                 children:[]
-                /*,
-                user: this.$store.state.user*/
             }
         },
         props: {
@@ -71,10 +63,9 @@
         },
         methods: {
             checkedBtn: function(userId){
-                this.$parent.testParent(userId);
+                this.$parent.sendUserId(userId);
             },
             toggleClass: function(){
-                console.log('들어는오니?');
                 // Check value
                 if(this.isActive){
                     this.isActive = false;
@@ -86,47 +77,7 @@
             beforeSetting: function(revchildren){
                 console.log('ChildrenTable  beforeSetting [Method] ',revchildren);
                 this.children = revchildren;
-            },
-            receiveChildren: function (user) {
-                console.log('안들어오면 어케받아', user.type);
-                this.children = [];
-                if (user.type =='PARENT'){
-                    this.$http.get(`/user/children/`+user.userId,  { headers: { Authorization: `Bearer `+user.token } })
-                        .then(res => {
-                            res.data.users.forEach(child => this.children.push(child));
-
-                        });
-                } else if (user.type =='CHILD') {
-                    this.$http.get(`/user/parents/`+user.userId,  { headers: { Authorization: `Bearer `+user.token } })
-                        .then(res => {
-                            console.log('자식임',res.data);
-                            res.data.users.forEach(child => this.children.push(child));
-
-                        });
-                }
-                console.log('안보내니..?',this.children);
-                eventBus.$emit("bus-children",this.children);
-
             }
-        },
-        beforeMount() {
-            /*        if (this.user.type =='PARENT'){
-                      this.$http.get(`/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-                          .then(res => {
-                              children = [];
-                          console.log(res.data);
-                          res.data.users.forEach(child => children.push(child));
-
-                      });
-                    } else if (this.user.type =='CHILD') {
-                        this.$http.get(`/user/parents/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-                            .then(res => {
-                                children = [];
-                                console.log(res.data);
-                                res.data.users.forEach(child => children.push(child));
-
-                            });
-                    }*/
         }
     }
 

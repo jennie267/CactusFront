@@ -51,7 +51,7 @@
             <div class="col text-right">
 
                 <modal :show.sync="modals.modal1">
-                    <span class="ni ni-favourite-28 text-right cursor:pointer" v-bind:class="[isActive ? 'grey' : 'pink']" @click="toggleClass()"></span>
+                    <span class="ni ni-favourite-28 text-right cursor:pointer" v-bind:class="[modalData.isLike ? 'pink' : 'grey']" @click="toggleClass()"></span>
                     <div class="text-left">
                         <h2 slot="header" class="modal-title" id="modal-title-default">일자 : {{modalData.date}}</h2>
 
@@ -119,10 +119,10 @@
         methods: {
             toggleClass: function(){
                 // Check value
-                if(this.isActive){
-                    this.isActive = false;
+                if(this.modalData.isLike){
+                    this.modalData.isLike = false;
                 }else{
-                    this.isActive = true;
+                    this.modalData.isLike = true;
                 }
 
             },

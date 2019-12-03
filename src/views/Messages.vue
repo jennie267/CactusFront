@@ -39,12 +39,12 @@
             }
         },
         methods: {
-            testParent: function (sendUserId) {
-                this.$refs.msgTable.$forceUpdate();
+            sendUserId: function (sendUserId) {
+                // this.$refs.msgTable.$forceUpdate();
                 this.$refs.msgTable.receiveMsg(sendUserId, this.user);
             },
             receiveChildren: function (user) {
-                console.log('message vue  receiveChildren Method ', user.type);
+                console.log('message  receiveChildren Method ', user.type);
                 this.children = [];
                 if (user.type =='PARENT'){
                     this.$http.get(`/user/children/`+user.userId,  { headers: { Authorization: `Bearer `+user.token } })
@@ -55,25 +55,22 @@
                 } else if (user.type =='CHILD') {
                     this.$http.get(`/user/parents/`+user.userId,  { headers: { Authorization: `Bearer `+user.token } })
                         .then(res => {
-                            console.log('자식임',res.data);
                             res.data.users.forEach(child => this.children.push(child));
 
                         });
                 }
-                console.log('안보내니..?',this.children);
-                // eventBus.$emit("bus-children",this.children);
 
             }
         },
         created () {
             this.receiveChildren(this.user);
-            console.log('데이터 셋팅됨? ',this.children);
 
 
         }, mounted () {
             this.$refs.msgTable.receiveMsg('all', this.user);
             // this.$refs.childTable.receiveChildren(this.user);
             this.$refs.childTable.beforeSetting(this.children);
+            this.$refs.letterModal.beforeSetting(this.children);
 
         }
     };

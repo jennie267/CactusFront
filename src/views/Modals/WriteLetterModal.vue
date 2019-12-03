@@ -10,7 +10,7 @@
             <br>
             <div class="row"  >
                 <!--<div v-for="child in children" :key="child.id"  class="col custom-control custom-checkbox text-left" >-->
-                <div v-for="child in childData" :key="child.userId"  class="custom-control custom-checkbox text-left" style="margin-right: 6%;" >
+                <div v-for="child in children" :key="child.userId"  class="custom-control custom-checkbox text-left" style="margin-right: 6%;" >
                     <input class="custom-control-input" type="checkbox" :id="child.userId" :value="child.userId" v-model="checkedNames">
                     <label class="custom-control-label" :for="child.userId">{{child.name}}</label>
                 </div>
@@ -59,10 +59,14 @@
                 modals: {
                     modal1: false
                 },
-                childData: []
+                children: []
             };
         },
         methods: {
+            beforeSetting: function(revchildren){
+                console.log('ChildrenTable  beforeSetting [Method] ',revchildren);
+                this.children = revchildren;
+            },
             sendMessage: function(){
 
                 this.checkedNames.forEach(checkedId => {
@@ -96,27 +100,10 @@
                         });
                 });
 
-            }/*, receiveChildren: function (userId) {
-            this.$http.get(`/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-                .then(res => {
-                    children = [];
-                    console.log(res.data);
-                    res.data.users.forEach(child => children.push(child));
-
-                });
-        }*/
+            }
             ,showModal:function () {
-                console.log('자식', this.childData);
                 this.modals.modal1 = true;
             }
-        },
-        created () {
-            this.childData = [];
-            console.log('받아와라?');
-            eventBus.$on("bus-children", children => {
-                console.log('bus-children' ,children);
-                this.childData = children
-            });
         }
     };
 
