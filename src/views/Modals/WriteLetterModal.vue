@@ -38,9 +38,6 @@
 <script>
     import Modal from "@/components/Modal.vue";
 
-    import {eventBus} from "../event-bus";
-
-    /*let children = [];*/
     let msg = {contents:"", receivedUserId:0, sendUserId:0,isLike:"N"};
 
     export default {

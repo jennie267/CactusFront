@@ -69,7 +69,7 @@
                     <br>
                     <div class="text-right">
                         <base-button type="primary" >답장</base-button>
-                        <base-button type="warning" >삭제</base-button>
+<!--                        <base-button type="warning" >삭제</base-button>-->
                         <base-button type="neutral" class="ml-auto" @click="modals.modal1 = false">취소
                         </base-button>
                     </div>
@@ -118,8 +118,10 @@
         },
         methods: {
             toggleClass: function(){
+                console.log('모달 데이터', this.modalData);
                 // Check value
                 if(this.modalData.isLike){
+
                     this.modalData.isLike = false;
                 }else{
                     this.modalData.isLike = true;
@@ -127,6 +129,7 @@
 
             },
             showModal: function(msgId){
+                console.log('이름도 가져오나..?',this.sendUserName);
                 if (msgId != null){
                     this.$http.get(`/message/`+msgId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                         .then(res => {

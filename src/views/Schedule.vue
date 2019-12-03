@@ -12,7 +12,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-7">
-                                    <FullCalendar 
+                                    <FullCalendar
                                         defaultView="dayGridMonth"
                                         :plugins="calendarPlugins"
                                         locale="ko"
@@ -32,7 +32,8 @@
                                     />
                                 </div>
                                 <div class="col-md-5">
-                                    <div class="row mt-5" v-if="isStatus">
+                                    <div class="row mt-5">
+                                        <!--<div class="row mt-5" v-if="isStatus">-->
                                         <div class="col">
                                             <dailySchedule-table ref="dailyTable" :nameOfChild="name" title="Light Table"></dailySchedule-table>
                                         </div>
@@ -66,7 +67,7 @@ export default {
         calendarPlugins: [ dayGridPlugin
                        , interactionPlugin
         ],
-        isStatus: false,
+        // isStatus: false,
         name:'',
         today:'',
         schedule:''
@@ -74,15 +75,22 @@ export default {
   },
   methods: {
     dateClick(info) {
-        this.isStatus = true;
+        // this.isStatus = true;
         this.name = info.dateStr
-        this.today = moment(info.dateStr, "YYYY-MM-DD").format('YYYYMMDD');   
+        this.today = moment(info.dateStr, "YYYY-MM-DD").format('YYYYMMDD');
         this.$refs.dailyTable.showScheduleList(this.today);
     },
     eventClick () {
         alert("이거야:::"+ arguments)
     },
-  }
+  }, mounted() {
+      console.log('isStatus 쓰면 오류나니까 처음 들어올 때 오늘날짜로 셋팅');
+        let info = {
+            dateStr: this.$moment(new Date()).format('YYYY-MM-DD')
+        };
+        this.dateClick(info);
+
+    }
 }
 </script>
 <style lang='scss'>

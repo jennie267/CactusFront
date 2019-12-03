@@ -43,7 +43,7 @@
 
       </base-table>
     </div>
-    
+
     <div class="card-footer d-flex justify-content-end"
          :class="type === 'dark' ? 'bg-transparent': ''">
       <!-- <base-pagination total="30"></base-pagination> -->
@@ -57,24 +57,25 @@ let schedules = [];
 export default {
     name: 'daily-schedule-table',
     props: {
-      type: {
-        type: String
-      },
+/*      type: {
+            type: String
+        },*/
       nameOfChild: String
       //, schedule: Object
-    }, 
+    },
     components:{
       WriteScheduleModal
     },
     methods: {
       showScheduleList: function(date) {
+          console.log('showScheduleList 메소드 들어옴!!!', date);
         this.tableData = [];
 
         this.$http.get(`/period/schedule/day/user/`+ date + `/3`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
         .then(res => {
             res.data.schedules.forEach(schedule => {
               this.tableData.push(schedule);
-            }) 
+            })
         });
       }
      /*  registration() {
@@ -86,7 +87,7 @@ export default {
         user: this.$store.state.user,
         tableData:schedules
       }
-    }, 
+    },
   }
 </script>
 <style>
