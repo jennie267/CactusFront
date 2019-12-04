@@ -27,11 +27,11 @@
                         </a>
                     </td>
                     <td class="name overText" style="font-size: 15px; cursor:pointer" @click.prevent="showModal(row.messageId, row.sendUserName)">
-                       <p class="name overText"> {{row.contents}}</p>
+                       <div class="name overText"> {{row.contents}}</div>
                     </td>
 
                     <td>
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center" id="">
                             <i v-if="row.isLike =='Y'" class="ni ni-favourite-28 " style="color: pink;"></i>
                         </div>
                     </td>
