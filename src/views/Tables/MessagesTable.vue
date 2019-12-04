@@ -17,17 +17,17 @@
                 </template>
 
                 <template slot-scope="{row}">
-                    <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="showModal(row.messageId)">
+                    <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="showModal(row.messageId, row.sendUserName)">
                         {{row.insertTime}}
                     </td>
-                    <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="showModal(row.messageId)">
+                    <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="showModal(row.messageId, row.sendUserName)">
                         {{row.sendUserName}}
                         <a href="#" class="avatar avatar-sm rounded-circle">
                             <img alt="" :src="row.sendUserProfileUrl" style="width:90%;">
                         </a>
                     </td>
-                    <td class="name" style="font-size: 15px; cursor:pointer" @click.prevent="showModal(row.messageId)">
-                        {{row.contents}}
+                    <td class="name overText" style="font-size: 15px; cursor:pointer" @click.prevent="showModal(row.messageId, row.sendUserName)">
+                       <p class="name overText"> {{row.contents}}</p>
                     </td>
 
                     <td>
@@ -68,8 +68,8 @@
                     <br>
                     <br>
                     <div class="text-right">
-                        <base-button type="primary" >답장</base-button>
-<!--                        <base-button type="warning" >삭제</base-button>-->
+                        <base-button type="primary" @click="replyMessage(modalData.sendUserId)" >답장</base-button>
+                        <!--                        <base-button type="warning" >삭제</base-button>-->
                         <base-button type="neutral" class="ml-auto" @click="modals.modal1 = false">취소
                         </base-button>
                     </div>
@@ -97,6 +97,7 @@
     moment().format();
 
     let messages = [];
+    let message = {messageId:0,isLike:"N"};
     export default {
         name: 'projects-table',
         components: {
@@ -118,23 +119,41 @@
         },
         methods: {
             toggleClass: function(){
-                console.log('모달 데이터', this.modalData);
                 // Check value
                 if(this.modalData.isLike){
-
                     this.modalData.isLike = false;
                 }else{
                     this.modalData.isLike = true;
                 }
+                if (this.modalData.isLike) message.isLike="Y";
+                else message.isLike="N";
+                message.messageId = this.modalData.messageId;
+                this.$http.post(`/message/like/`, message,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.user.token}`
+                            ,'Content-Type':'application/json'
+                        }
+                    })
+                    .then(res => {
+                        console.log('message table  isLike update',res.data);
+/*                        if (res.date){
+                            if (this.modalData.isLike) this.modalData.isLike = false;
+                            else this.modalData.isLike = true;
+                        }*/
+
+                    });
 
             },
-            showModal: function(msgId){
-                console.log('이름도 가져오나..?',this.sendUserName);
+            showModal: function(msgId, sendUserName){
                 if (msgId != null){
                     this.$http.get(`/message/`+msgId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                         .then(res => {
-                            this.modalData.name = '이름';
+                            console.log('Messages Table  showModal : ',res.data);
+                            this.modalData.messageId = msgId;
+                            this.modalData.name = sendUserName;
                             this.modalData.contents = res.data.contents;
+                            this.modalData.receivedUserId = res.data.receivedUserId;
                             if (res.data.isLike == 'Y') this.modalData.isLike = true;
                             else this.modalData.isLike = false;
 
@@ -167,11 +186,14 @@
 
                         });
                 }
+            }, replyMessage: function (sendUserID) {
+                console.log('[CHILD] Message Table  replyMessage Method : ', sendUserID);
+                this.modals.modal1 = false;
+                this.$parent.replyMessage(sendUserID);
             }
         },
         data() {
             return {
-                /*user: this.$store.state.user,*/
                 isActive: true,
                 tableData:messages,
                 modals: {
@@ -182,7 +204,10 @@
                     name: null,
                     contents: null,
                     isLike: null,
-                    sendUserId: null
+                    sendUserId: null,
+                    messageId: null,
+                    receivedUserId: null
+
                 }
             }
         }, mounted () {
@@ -192,4 +217,17 @@
     }
 </script>
 <style>
+
+    .overText {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 50%;
+        font-size: 20px;
+    }
+
+
+    body span {
+        display: block;
+    }
 </style>

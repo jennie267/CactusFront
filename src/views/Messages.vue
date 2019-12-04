@@ -60,6 +60,9 @@
                         });
                 }
 
+            }, replyMessage: function (revUserId) {
+                console.log('[PARENT] Messages   ===>  ', revUserId);
+                this.$refs.letterModal.showModal(revUserId);
             }
         },
         created () {

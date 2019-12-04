@@ -1,7 +1,7 @@
 <template>
     <!-- Modals -->
     <div class="col text-right">
-        <base-button type="default" class="btn btn-primary btn-md" @click="showModal()">
+        <base-button type="default" class="btn btn-primary btn-md" @click="showModal(null)">
             편지쓰기
         </base-button>
 
@@ -65,41 +65,50 @@
                 this.children = revchildren;
             },
             sendMessage: function(){
+                if (this.checkedNames.length == 0){
+                    this.$swal({
+                        type: 'warning',
+                        title: '받는 사람을 선택해주세요.'
+                    });
+                } else {
+                    this.checkedNames.forEach(checkedId => {
+                        msg.contents = this.message;
+                        msg.receivedUserId = checkedId;
+                        msg.sendUserId = this.user.userId;
 
-                this.checkedNames.forEach(checkedId => {
-                    msg.contents = this.message;
-                    msg.receivedUserId = checkedId;
-                    msg.sendUserId = this.user.userId;
 
+                        this.$http.post(`/message/`, msg,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${this.user.token}`
+                                    ,'Content-Type':'application/json'
+                                }
+                            })
+                            .then(res => {
+                                if (res != null){
+                                    this.modals.modal1 = false;
+                                    // Use sweetalert2
+                                    this.$swal({
+                                        type: 'success',
+                                        title: '전송 성공했습니다.'
+                                    });
 
-                    this.$http.post(`/message/`, msg,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${this.user.token}`
-                                ,'Content-Type':'application/json'
-                            }
-                        })
-                        .then(res => {
-                            if (res != null){
-                                this.modals.modal1 = false;
-                                // Use sweetalert2
-                                this.$swal({
-                                    type: 'success',
-                                    title: '전송 성공했습니다.'
-                                });
+                                }else {
+                                    this.$swal({
+                                        type: 'warning',
+                                        title: '전송 실패했습니다.'
+                                    });
+                                }
+                            });
+                    });
 
-                            }else {
-                                this.$swal({
-                                    type: 'warning',
-                                    title: '전송 실패했습니다.'
-                                });
-                            }
-                        });
-                });
+                }
 
             }
-            ,showModal:function () {
+            ,showModal:function (revUserId) {
+                this.checkedNames = [];
                 this.modals.modal1 = true;
+                this.checkedNames.push(revUserId);
             }
         }
     };
