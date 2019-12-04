@@ -8,7 +8,7 @@
                     <div class="card shadow">
                         <div class="card-header bg-transparent">
                             <div class="row">
-                                <h3 class="mb-0">{{title}}</h3>
+                                <h3 class="mb-0" style="margin-left:1%;">{{title}}</h3>
                             </div>
                             <div class="row mt-5">
                                 <div class="col-md-3">
@@ -79,7 +79,7 @@ import dateUtil from '../common/dateUtil';
       },
       data() {
           return {
-              title: '',
+              title: '부모님 경로 검색',
               user: this.$store.state.user,
               date: dateUtil.getToday(),
               center: {
@@ -96,11 +96,11 @@ import dateUtil from '../common/dateUtil';
               plPath: [],
               selectedParent: {
                   "userId": 0,
-                  name: '통합'
+                  name: '선택'
               },
               defaultParent: {
                   "userId": 0,
-                  name: '통합'
+                  name: '선택'
               },
               parents: [
                   {
@@ -215,10 +215,16 @@ import dateUtil from '../common/dateUtil';
                             this.center = this.plPath[this.plPath.length-1];
                           }
                           this.reportedCenter = this.center;
-                          this.title = this.date + ' ' + this.selectedParent.name + '의 경로';
+                          this.title = this.date + ' ' + this.selectedParent.name + '님의 경로';
                       })
               }
           }
+      },
+      mounted() {
+          this.$http.get(`/user/parents/`+this.user.userId,  { headers: { Authorization: `Bearer `+this.user.token } })
+              .then(res => {
+                  this.parents = res.data.users;
+              });
       }
   }
 </script>

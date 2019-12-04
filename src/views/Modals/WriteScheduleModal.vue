@@ -7,15 +7,21 @@
                 <h2 slot="header" class="modal-title" id="modal-title-default">일정 등록</h2>
                 <form>
                     <div class="form-group row">
+                        <label for="scheduleName" class="col-sm-3 col-form-label">일정타입</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="period.periodType">
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="scheduleName" class="col-sm-2 col-form-label">일정명</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="name" value="">
+                            <input type="text" class="form-control" v-model="period.name">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="scheduleContents" class="col-sm-2 col-form-label">내용</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control" id="contents">
+                        <input type="text" class="form-control" v-model="period.remark">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -26,7 +32,7 @@
                                          @on-close="blur" 
                                         :config="{allowInput: true}"
                                         class="form-control datepicker"
-                                        v-model="date">
+                                        v-model="period.startDate">
                             </flat-pickr>
                         </base-input>
                         <base-input class="col-sm-5">
@@ -35,7 +41,7 @@
                                          @on-close="blur" 
                                         :config=timeConfig
                                         class="form-control datepicker"
-                                        v-model="time">
+                                        v-model="period.startTime">
                             </flat-pickr>
                         </base-input>
                     </div>
@@ -43,7 +49,7 @@
                         <label for="scheduleContents" class="col-sm-3 col-form-label">알람여부</label>
                         <div class="col-sm-9">
                             <div class="custom-control custom-checkbox mb-3">
-                                <input class="custom-control-input" id="isAlarm" type="checkbox" v-model="isAlarm">
+                                <input class="custom-control-input" id="isAlarm" type="checkbox" v-model="period.isAlarm">
                                 <label class="custom-control-label" for="isAlarm">
                                 </label>
                             </div>
@@ -69,7 +75,7 @@
                                             locale="ko"
                                             :config="{allowInput: true}"
                                             class="form-control datepicker"
-                                            v-model="date">
+                                            v-model="alarmDate">
                                 </flat-pickr>
                             </base-input>
                             <div class="col-sm-1"><h1>~</h1></div>
@@ -79,17 +85,17 @@
                                             @on-close="blur" 
                                             :config="{allowInput: true}"
                                             class="form-control datepicker"
-                                            v-model="date">
+                                            v-model="alarmTime">
                                 </flat-pickr>
                             </base-input>
                         </div>
                         <div class="form-group row">
                             <label for="scheduleContents" class="col-sm-2 col-form-label">주기</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="cycle">
+                                <input type="text" class="form-control" v-model="period.freq">
                             </div>
                             <div class="col-sm-6">
-                                <multiselect v-model="value" track-by="name" label="name" placeholder="선택" :options="options" :searchable="false" :allow-empty="true">
+                                <multiselect v-model="cycle" track-by="name" label="name" placeholder="선택" :options="options" :searchable="false" :allow-empty="true">
                                     <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.name }}</strong></template>
                                 </multiselect>
                             </div>
@@ -98,18 +104,18 @@
                     <div class="form-group row">
                         <label for="scheduleName" class="col-sm-2 col-form-label">시설</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="name" value="">
+                            <input type="text" class="form-control" v-model="period.place">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="scheduleName" class="col-sm-2 col-form-label">복지사</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="name" value="">
+                            <input type="text" class="form-control" v-model="period.manager">
                         </div>
                     </div>
                 </form>
                 <template slot="footer">
-                    <base-button type="primary" class="active btn-primary">등록</base-button>
+                    <base-button type="primary" class="active btn-primary" @click="confirm">등록</base-button>
                     <base-button type="secondary" class="active ml-3" @click="modals.modal1 = false">취소
                     </base-button>
                 </template>
@@ -135,14 +141,14 @@ export default {
         modals: {
             modal1: false,
         },
-        isAlarm: false,
+        user: this.$store.state.user,
         isCycleStatus: false,
         timeConfig:{
             allowInput: true,
             enableTime: true,
             noCalendar: true,
             dateFormat: "H:i",
-            defaultDate: "13:45"
+            defaultDate: "00:00"
         },
         date: new Date(),
         config: {
@@ -156,13 +162,32 @@ export default {
             { name: '년', value:'Y'},
             { name: '월', value:'M'},
             { name: '일', value:'D'},
-            { name: '시간', value:'HH'},
+            { name: '시간', value:'H'},
             { name: '분', value:'MM'},
-        ]
+        ],
+        period: {
+            name:"",
+            remark: "",
+            periodType: "",
+            isAlarm: false,
+            startDate: "",
+            startTime: "",
+            freq: "",
+            cycle: "",
+            place: "",
+            manager: "",    
+        }
     };
   },
-  methods:{
-  }
+    methods:{
+        confirm() {
+
+        this.$http.post(`/period`, this.period, { headers: { Authorization: `Bearer ${this.user.token}` } })
+            .then(res => {
+                console.log(res);
+            });
+        }
+    }
 };
 
 </script>

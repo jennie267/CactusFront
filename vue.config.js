@@ -18,7 +18,8 @@ module.exports = {
           },
         ],
       }),
-    ]
+    ],
+    entry: ["babel-polyfill", "./src/main.js"],
   },
   pwa: {
     name: 'Vue Argon Dashboard',
@@ -31,16 +32,4 @@ module.exports = {
     // Enable CSS source maps.
     sourceMap: process.env.NODE_ENV !== 'production'
   },
-  devServer: {
-    port: 80,
-    proxy: {
-      '/api': {
-        target: 'http://zuul.paas-ta.org/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
-    }
-  }
 };
