@@ -9,7 +9,7 @@
           <span>×</span>
           </button>
             <br>
-            <h2 slot="header" class="modal-title" id="modal-title-default" align="center">회원가입 </h2><br>
+            <h2 slot="header" class="modal-title" id="modal-title-default" align="center">부모 회원가입</h2><br>
             </div>
             <div class="col-lg-12" style="text-align:left">
               <base-input alternative=""
@@ -29,6 +29,7 @@
                               placeholder="Password"
                               input-classes="form-control-alternative"
                               v-model="user.password"
+                              type="password"
                               ref="password"
                   />
                   <small>{{ pwValidation }}</small>
@@ -52,7 +53,7 @@
                               label="이름"
                               placeholder="Username"
                               input-classes="form-control-alternative"
-                              v-model="user.username"
+                              v-model="user.name"
                   />
               </div>
           </div> 
@@ -155,7 +156,7 @@
             </div>          
           <div class="row">
           <div class="col-lg-12" style="text-align:center">
-          <input type="button" class="btn btn btn-primary" @click="modals.modal1=true" value="가입하기">
+          <input type="button" class="btn btn btn-primary" @click="doOidSignup" value="가입하기">
           </div>
         </div>
         </modal>
@@ -163,16 +164,21 @@
 </template>
 <script src="/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script>
+import Vue from 'vue';
 import Modal from "@/components/Modal.vue";
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import axios from 'axios'
+Vue.use(VueSweetalert2);
+Vue.prototype.$http=axios
 export default {
   methods: {
     pwCheck() {
     }
     ,close() {
       this.$emit('close');
-      alert("close!!!!!");
     }
     ,execDaumPostcode() {
       const currentScroll = Math.max(
@@ -222,6 +228,38 @@ export default {
 
       this.searchWindow.display = 'block';
      },
+    doOidSignup() {
+      this.$http.post(`/api/user/signup/`, this.user,
+      {
+        headers: {
+            Authorization: `Bearer ${this.user.token}`
+            ,'Content-Type':'application/json'
+        },
+      })
+      .then(res => {
+        console.log(this.user);
+          console.log('전송');
+          console.log(res);
+          console.log(res.data);
+          Vue.swal('가입을 환영합니다!');
+      });
+    },
+    idCheck() {
+       this.$http.get(`/api/user/idcheck/`+this.user.id,
+        {
+          headers: {
+              Authorization: `Bearer ${this.user.token}`
+              ,'Content-Type':'application/json'
+          },
+        })
+       .then(res => {
+          if(res==1) {
+            Vue.swal('동일한 아이디가 존재합니다.');
+          } else if(res==0) {
+            Vue.swal('아이디를 사용하실 수 있습니다.');
+          }
+       });
+    }
   },
   computed: {
   pwValidation: function() {
@@ -245,6 +283,7 @@ export default {
     return {
       checked:[],
       user: {
+        userId:'',
         id:'',
         password:'',
         passwordchk:'',
@@ -256,7 +295,7 @@ export default {
         zipCode: '',
         brithday:'',
         tel:'',
-        type:'PARENTS'
+        role:'PARENTS'
       },
       searchWindow: {
       display: 'none',

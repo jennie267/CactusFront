@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <base-header type="gradient-success" class="pb-6 pb-8">
             <div class="card-header bg-transparent row align-items-center">
                 <h1 class=""><h1 class="ni ni-badge"></h1>  {{user.name}}님의 개인정보  </h1>
@@ -13,7 +13,7 @@
                             <div class="col-lg-3 order-lg-2">
                                 <div class="card-profile-image">
                                     <a href="#">
-                                        <img src="img/theme/team-4-800x800.jpg" class="rounded-circle">
+                                         <img v-if="user.profileUrl != null" alt="" :src="user.profileUrl" class="rounded-circle">
                                     </a>
                                 </div>
                             </div>
@@ -26,19 +26,11 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="card-profile-stats d-flex justify-content-center mt-md-5">
-                                        <div>
-                                            <span class="heading">7</span>
-                                            <span class="description"><div class="ni ni-bell-55"></div></span>
-                                        </div>
-                                        <div>
-                                            <span class="heading">89</span>
-                                            <span class="description"><div class="ni ni-email-83"></div></span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <h2>이근환</h2>
+                                <h2>{{user.name}}</h2>
                                  <a href="#!" class="btn btn-sm btn-primary, ni ni-image"> 프로필 사진 수정  </a>
                             </div>
                         </div>
@@ -60,10 +52,9 @@
                                                         label="아이디"
                                                         placeholder="Id"
                                                         input-classes="form-control-alternative"
-                                                        v-model="user.id"
+                                                        v-model="modUser.id"
                                                         readonly="true"
                                             />
-                                         <input style="float: right;" type="button" class="btn btn-sm btn-primary" value="중복 확인">
                                         </div>
                                     </div>                                    
                                     <div class="row">
@@ -72,7 +63,8 @@
                                                         label="비밀번호"
                                                         placeholder="Password"
                                                         input-classes="form-control-alternative"
-                                                        v-model="user.password"
+                                                        v-model="modUser.password"
+                                                        type="password"
                                             />
                                             <small>{{ pwValidation }}</small>
                                         </div>
@@ -83,7 +75,7 @@
                                                         label="비밀번호 확인"
                                                         placeholder="Password"
                                                         input-classes="form-control-alternative"
-                                                        v-model="user.passwordchk"
+                                                        v-model="modUser.passwordchk"
                                             />
                                         <small>{{ pwCheck }}</small>
                                         </div>
@@ -95,7 +87,7 @@
                                                         label="이름"
                                                         placeholder="Username"
                                                         input-classes="form-control-alternative"
-                                                        v-model="user.name"
+                                                        v-model="modUser.name"
                                             />
                                         </div>
                                     </div>
@@ -103,11 +95,11 @@
                                         <div class="col-lg-8">
                                             <base-input label="성별">
                                                 <div class="custom-control custom-radio mb-3">
-                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio1" type="radio" v-model="user.gender" value="여성">
+                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio1" type="radio" v-model="modUser.gender" value="여성">
                                                     <label class="custom-control-label" for="customRadio1"><span>여성</span></label>
                                                 </div>
                                                 <div class="custom-control custom-radio mb-3">
-                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio2" type="radio" v-model="user.gender" value="남성">
+                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio2" type="radio" v-model="modUser.gender" value="남성">
                                                     <label class="custom-control-label" for="customRadio2"><span>남성</span></label>
                                                 </div>            
                                             </base-input>
@@ -120,7 +112,7 @@
                                                         label="이메일"
                                                         placeholder="mail@example.com"
                                                         input-classes="form-control-alternative"
-                                                        v-model="user.email"
+                                                        v-model="modUser.email"
                                             />
                                         </div>
                                     </div>
@@ -130,7 +122,7 @@
                                                         label="전화번호"
                                                         placeholder="Phone number"
                                                         input-classes="form-control-alternative"
-                                                        v-model="user.phoneNumber"
+                                                        v-model="modUser.phoneNumber"
                                             />
                                         </div>
                                     </div>   
@@ -145,7 +137,7 @@
                                               :config="{allowInput: true}"
                                               class="form-control datepicker"
                                               placeholder="birthday"
-                                              v-model="user.birthday">
+                                              v-model="modUser.birthday">
                                         </flat-pickr>
                                     </base-input>
                                     </div>
@@ -171,7 +163,7 @@
                                                         label="주소"    
                                                         placeholder="Address"
                                                         input-classes="form-control-alternative"
-                                                        v-model="user.addrMain"
+                                                        v-model="modUser.addrMain"
                                             />
                                         </div>
                                         <div class="col-lg-4">
@@ -179,7 +171,7 @@
                                                         label="우편번호"
                                                         placeholder="zipCode"
                                                         input-classes="form-control-alternative"
-                                                        v-model="user.zipCode"
+                                                        v-model="modUser.zipCode"
                                             />
                                         </div>
                                         <input type="button" class="btn btn-sm btn-primary" value="우편번호 찾기" @click="execDaumPostcode">
@@ -190,7 +182,7 @@
                                                         label="상세 주소"
                                                         placeholder="Address"
                                                         input-classes="form-control-alternative"
-                                                        v-model="user.addrSub"
+                                                        v-model="modUser.addrSub"
                                                         ref="addressDetail"
                                             />
                                         </div>
@@ -198,7 +190,7 @@
                                 </div>
                                 <hr class="my-4"/>
                                 <div class="col-4 text-right" style="float:right;">
-                                <input  @click="doUserUpdate" style="float: right;" type="button" class="btn btn btn-primary" value="저장">
+                                <input @click="doUserUpdate" style="float: right;" type="button" class="btn btn btn-primary" value="저장">
                                 </div>
                             </form>
                         </template>
@@ -208,7 +200,9 @@
                          <div v-if="user.type=='CHILD'">
                           <!--유저에게 부모가 존재하면 이 화면을 뿌려줌 --> 
                           <template>
-                            <h2 class="ni ni-button-play">나의 부모</h2>
+                            <div slot="header">
+                                <p class="ni ni-single-02 red white--text"> 나의 부모</p>
+                            </div>
                               <div class="form-group">
                               <base-table class="table align-items-center table-flush" 
                                 :class="type === 'dark' ? 'table-dark': ''" 
@@ -239,6 +233,7 @@
                                 </td>
                               </template>
                             </base-table>
+                            <family-sel-modal></family-sel-modal>
                             </div>
                           </template>
                         </div>
@@ -247,7 +242,9 @@
                       <!-- 유저에게 자녀가 존재하면 이 화면을 뿌려줌 -->
                       <div v-if="user.type=='PARENTS'">
                         <template>
-                        <h2 class="ni ni-button-play"> 나의 자녀들</h2>
+                        <div slot="header">
+                                <p class="ni ni-single-02 red white--text"> 나의 자녀</p>
+                            </div>
                           <base-table class="table align-items-center table-flush" 
                           :class="type === 'dark' ? 'table-dark': ''" 
                           :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
@@ -277,6 +274,7 @@
                           </td>
                           </template>
                           </base-table>
+                          <family-sel-modal></family-sel-modal>
                         </template>
                       </div>
                     </card>
@@ -293,8 +291,15 @@ import Datetime from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import FamilySelModal from './Modals/FamilySelModal';
+import axios from 'axios'
+Vue.use(VueSweetalert2);
+Vue.prototype.$http=axios
+let modUser = {};
 export default {
-    name: 'user-profile',
+    name: 'profile',
         props: {
       type: {
         type: String
@@ -303,25 +308,10 @@ export default {
     },
     data() {
       return {
-        myParents: false
-        ,
-        checked:[]
-        ,
-        user: {
-          id:'ghlee',
-          name: '',
-          password:'',
-          passwordchk:'',
-          email: '',
-          addrMain: '',
-          addrSub: '',
-          zipCode: '',
-          birthday:'',
-          phoneNumber:'',
-          gender:[],
-          type:'CHILD'
-        },
-        searchWindow: {
+        user: this.$store.state.user
+        ,modUser: JSON.parse(JSON.stringify(this.$store.state.user))
+        ,checked:[]
+        ,searchWindow: {
         display: 'none',
         height: '300px',
         },
@@ -355,7 +345,8 @@ export default {
       }
 	}, 
 	components: {
-      flatPickr
+      flatPickr,
+      FamilySelModal
     },
     methods: {
     execDaumPostcode() {
@@ -370,7 +361,6 @@ export default {
           } else {
             this.user.addrMain = data.jibunAddress;
           }
-
           if (data.userSelectedType === 'R') {
             if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
               this.user.addrSub += data.bname;
@@ -406,32 +396,38 @@ export default {
 
       this.searchWindow.display = 'block';
     },
-    doUserUpdate: function () {
-      const baseURI = 'http://usercactus.paas-ta.org/';
-      this.$http.get(`${baseURI}/update`)
-      .then((result) => {
-        console.log(result)
-        this.user = result.data
+    doUserUpdate() {
+      this.$http.put(`/api/user/update/`, modUser,
+      {
+        headers: {
+            Authorization: `Bearer ${this.modUser.token}`
+            ,'Content-Type':'application/json'
+        },
       })
+      .then(res => {
+        console.log(this.modUser);
+          console.log('전송');
+          console.log(res);
+          console.log(res.data);
+          Vue.swal('회원정보가 수정되었습니다.');
+      });
     }
   },
   computed: {
   pwValidation: function() {
-      if(!this.user.password.length==0) {
-       return this.user.password.length > 8 ? `` : `[주의] 비밀번호는 8자 이상으로 작성해주세요.`;
-      } 
+      // if(!this.modUser.password.length==0) {
+      //  return this.modUser.password.length > 8 ? `` : `[주의] 비밀번호는 8자 이상으로 작성해주세요.`;
+      // } 
   },
-  pwCheck : function() {
-      if(!this.user.passwordchk.length==0) {
-        if(this.user.password != this.user.passwordchk) {
-         return `[주의] 비밀번호가 동일하지 않습니다.`; 
-        }
-      }
-    } 
+  //pwCheck : function() {
+      //  if(!this.modUser.passwordchk.length==0) {
+      //   if(this.modUser.password != this.modUser.passwordchk) {
+      //    return `[주의] 비밀번호가 동일하지 않습니다.`; 
+      //   }
+      // } 
+   // } 
   }
 };
-
-Vue.use(Datetime)
 </script>
 <style>
 h1, h2 {

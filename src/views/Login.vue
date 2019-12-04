@@ -21,29 +21,24 @@
                                         addon-left-icon="ni ni-lock-circle-open"
                                         v-model="user.password">
                             </base-input>
-
-                            <base-checkbox class="custom-control-alternative">
-                                <span class="text-muted">자동로그인</span>
-                            </base-checkbox>
                             <div class="text-center">
                                 <base-button type="primary" class="my-4" @click="doLogin">로그인</base-button>
                             </div>
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-6">
-                        <a href="#" class="text-light"><small>비밀번호를 잊어버리셨나요?</small></a>
-                    </div>
-                    <div class="col-6 text-right">
-                        <router-link to="/register" class="text-light"><small>회원가입</small></router-link>
-                    </div>
+                        <register-sel-modal></register-sel-modal>
                 </div>
             </div>
         </div>
 </template>
 <script>
+import RegisterSelModal from './Modals/RegisterSelModal'
   export default {
     name: 'login',
+    components: {
+        RegisterSelModal
+    },
     data() {
       return {
         user: {

@@ -1,5 +1,6 @@
 const webpack = require('webpack');
-const isProd = process.env.NODE_ENV === "production";
+//const isProd = process.env.NODE_ENV === "production";
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 
 module.exports = {
   configureWebpack: {
@@ -7,7 +8,16 @@ module.exports = {
     plugins: [
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 6
-      })
+      }),
+      new HtmlWebpackExternalsPlugin({
+        externals: [
+          {
+            module: 'daum-postcode-api',
+            entry: 'http://dmaps.daum.net/map_js_init/postcode.v2.js',
+            global: 'daum-postcode-api',
+          },
+        ],
+      }),
     ]
   },
   pwa: {
@@ -21,4 +31,16 @@ module.exports = {
     // Enable CSS source maps.
     sourceMap: process.env.NODE_ENV !== 'production'
   },
+  devServer: {
+    port: 80,
+    proxy: {
+      '/api': {
+        target: 'http://zuul.paas-ta.org/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
+  }
 };

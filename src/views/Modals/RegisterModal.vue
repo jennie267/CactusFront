@@ -1,12 +1,15 @@
 <template>
         <div class="col">
-        <input type="button" class="btn btn btn-primary" @click="modals.modal2=true" value="자녀 회원가입">
-        <modal :show.sync="modals.modal2">
-            <div class="row">
+        <input type="button" class="btn btn btn-primary" @click="modals.modal1=true" value="자녀  회원가입">
+        <modal :show.sync="modals.modal1">
+          <div class="row">
           <img src="img/brand/white.png" style="width:30%;">
             <div id="container" class="card-header bg-transparent row align-items-center">
+          <button type="button" data-dismiss="modal" aria-label="Close" class="close" style="float:right;" @click="close()">
+          <span>×</span>
+          </button>
             <br>
-            <h1 class=""><h1 align="center">자녀 회원가입</h1></h1>
+            <h2 slot="header" class="modal-title" id="modal-title-default" align="center">자녀 회원가입</h2><br>
             </div>
             <div class="col-lg-12" style="text-align:left">
               <base-input alternative=""
@@ -14,8 +17,9 @@
                           placeholder="Id"
                           input-classes="form-control-alternative"
                           v-model="user.id"
+                          ref="id"
               />
-            <input style="float:right;" type="button" class="btn btn-sm btn-primary" value="중복 확인">
+            <input style="float:right;" type="button" class="btn btn-sm btn-outline-primary" value="중복 확인" @click="idCheck()">
             </div>
           </div>  
           <div class="row">
@@ -25,8 +29,9 @@
                               placeholder="Password"
                               input-classes="form-control-alternative"
                               v-model="user.password"
+                              ref="password"
                   />
-                  <small>{{ pwValidation }}</small>                
+                  <small>{{ pwValidation }}</small>
               </div>
           </div>  
           <div class="row">
@@ -36,9 +41,10 @@
                               placeholder="Password"
                               input-classes="form-control-alternative"
                               v-model="user.passwordchk"
+                              ref="passwordchk"
                   />
                   <small>{{ pwCheck }}</small>
-              </div>
+                </div>
           </div>
           <div class="row">
               <div class="col-lg-12" style="text-align:left">
@@ -46,7 +52,7 @@
                               label="이름"
                               placeholder="Username"
                               input-classes="form-control-alternative"
-                              v-model="user.username"
+                              v-model="user.name"
                   />
               </div>
           </div> 
@@ -54,11 +60,11 @@
             <div class="col-lg-12" style="text-align:left">
                 <base-input label="성별">
                     <div class="custom-control custom-radio mb-3">
-                        <input name="custom-radio-1" class="custom-control-input" id="customRadio1" type="radio" v-model="user.gender" value="여성">
+                        <input name="custom-radio-1" class="custom-control-input" id="customRadio1" type="radio" v-model="user.gender" value="여">
                         <label class="custom-control-label" for="customRadio1"><span>여성</span></label>
                     </div>
                     <div class="custom-control custom-radio mb-3">
-                        <input name="custom-radio-1" class="custom-control-input" id="customRadio2" type="radio" v-model="user.gender" value="남성">
+                        <input name="custom-radio-1" class="custom-control-input" id="customRadio2" type="radio" v-model="user.gender" value="남">
                         <label class="custom-control-label" for="customRadio2"><span>남성</span></label>
                     </div>            
                 </base-input>
@@ -81,27 +87,27 @@
                             label="전화번호"
                             placeholder="Phone number"
                             input-classes="form-control-alternative"
-                            v-model="user.phoneNumber"
+                            v-model="user.tel"
                 />
             </div>
         </div>   
-        <div class="row">
-          <div class="col-lg-12" style="text-align:left">
-          <base-input label="생일">
-            <div addon-left-icon="ni ni-calendar-grid-58">
-                                  </div>
-              <flat-pickr slot-scope="{focus, blur}"
-                    @on-open="focus"
-                    @on-close="blur" 
-                    :config="{allowInput: true}"
-                    class="form-control datepicker"
-                    placeholder="birthday"
-                    v-model="user.birthday">
-              </flat-pickr>
-          </base-input>
+          <div class="row">
+            <div class="col-lg-12" style="text-align:left">
+            <base-input label="생일">
+              <div addon-left-icon="ni ni-calendar-grid-58">
+                                    </div>
+                <flat-pickr slot-scope="{focus, blur}"
+                      @on-open="focus"
+                      @on-close="blur" 
+                      :config="{allowInput: true}"
+                      class="form-control datepicker"
+                      placeholder="birthday"
+                      v-model="user.brithday">
+                </flat-pickr>
+            </base-input>
+            </div>
           </div>
-        </div>
-<div class="pl-lg-4">
+        <div class="pl-lg-4">
             <div
                 ref="searchWindow"
                 :style="searchWindow"
@@ -146,10 +152,10 @@
                                 ref="addressDetail"
                     />
                 </div>
-            </div>         
-        <div class="row">
+            </div>          
+          <div class="row">
           <div class="col-lg-12" style="text-align:center">
-          <input type="button" class="btn btn btn-primary" @click="modals.modal2=true" value="가입하기">
+          <input type="button" class="btn btn btn-primary" @click="doOidSignup" value="가입하기">
           </div>
         </div>
         </modal>
@@ -157,13 +163,24 @@
 </template>
 <script src="/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script>
+import Vue from 'vue';
 import Modal from "@/components/Modal.vue";
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+Vue.use(VueSweetalert2);
 export default {
-  methods : {
-    execDaumPostcode() {
+  methods: {
+    showAlert() {
+      Vue.swal('가입을 축하드립니다!');
+    },
+    pwCheck() {
+    }
+    ,close() {
+      this.$emit('close');
+    }
+    ,execDaumPostcode() {
       const currentScroll = Math.max(
         document.body.scrollTop,
         document.documentElement.scrollTop,
@@ -211,38 +228,22 @@ export default {
 
       this.searchWindow.display = 'block';
      },
-  },
-  components: {
-  Modal
-  ,flatPickr
-  },
-  data() {
-    return {
-      checked:
-          []
-      ,
-      user: {
-        id:'',
-        name: '',
-        password:'',
-        passwordchk:'',
-        email: '',
-        addrMain: '',
-        addrSub: '',
-        zipCode: '',
-        birthday:'',
-        phoneNumber:'',
-        gender:[],
-        type:'CHILD'
-      },
-      searchWindow: {
-      display: 'none',
-      height: '300px',
-      },
-      modals: {
-        modal2:false
-      }
-    };
+    doOidSignup() {
+      this.$http.post(`/api/user/signup/`, this.user,
+      {
+        headers: {
+            Authorization: `Bearer ${this.user.token}`
+            ,'Content-Type':'application/json'
+        },
+      })
+      .then(res => {
+          console.log(this.user);
+          console.log('전송');
+          console.log(res);
+          console.log(res.data);
+          Vue.swal('가입을 환영합니다!');
+      });
+    }
   },
   computed: {
   pwValidation: function() {
@@ -257,6 +258,38 @@ export default {
         }
       }
     } 
+  },
+  components: {
+    Modal
+    ,flatPickr
+  },
+  data() {
+    return {
+      checked:[],
+      user: {
+        userId:'',
+        id:'',
+        password:'',
+        passwordchk:'',
+        name: '',
+        gender:[],
+        email: '',
+        addrMain: '',
+        addrSub: '',
+        zipCode: '',
+        brithday:'',
+        tel:'',
+        //gender:'',
+        role:'PARENTS'
+      },
+      searchWindow: {
+      display: 'none',
+      height: '300px',
+      },
+      modals: {
+        modal1:false
+      }
+    }
   }
 };
 </script>
