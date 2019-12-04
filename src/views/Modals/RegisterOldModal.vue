@@ -5,9 +5,6 @@
           <div class="row">
           <img src="img/brand/white.png" style="width:30%;">
             <div id="container" class="card-header bg-transparent row align-items-center">
-          <button type="button" data-dismiss="modal" aria-label="Close" class="close" style="float:right;" @click="close()">
-          <span>×</span>
-          </button>
             <br>
             <h2 slot="header" class="modal-title" id="modal-title-default" align="center">부모 회원가입</h2><br>
             </div>
@@ -42,6 +39,7 @@
                               placeholder="Password"
                               input-classes="form-control-alternative"
                               v-model="user.passwordchk"
+                              type="password"
                               ref="passwordchk"
                   />
                   <small>{{ pwCheck }}</small>
@@ -157,6 +155,7 @@
           <div class="row">
           <div class="col-lg-12" style="text-align:center">
           <input type="button" class="btn btn btn-primary" @click="doOidSignup" value="가입하기">
+          <base-button type="button" class="btn btn btn-outline-primary" @click="modals.modal1=false">나가기</base-button>
           </div>
         </div>
         </modal>
@@ -175,9 +174,7 @@ Vue.use(VueSweetalert2);
 Vue.prototype.$http=axios
 export default {
   methods: {
-    pwCheck() {
-    }
-    ,close() {
+    close() {
       this.$emit('close');
     }
     ,execDaumPostcode() {
@@ -229,7 +226,7 @@ export default {
       this.searchWindow.display = 'block';
      },
     doOidSignup() {
-      this.$http.post(`/api/user/signup/`, this.user,
+      this.$http.post(`/user/signup/`, this.user,
       {
         headers: {
             Authorization: `Bearer ${this.user.token}`
@@ -245,20 +242,17 @@ export default {
       });
     },
     idCheck() {
-       this.$http.get(`/api/user/idcheck/`+this.user.id,
-        {
-          headers: {
-              Authorization: `Bearer ${this.user.token}`
-              ,'Content-Type':'application/json'
-          },
-        })
+      console.log("?");
+      console.log(this.user.id);
+       this.$http.get(`/user/idcheck/`+this.user.id)
        .then(res => {
-          if(res==1) {
-            Vue.swal('동일한 아이디가 존재합니다.');
-          } else if(res==0) {
-            Vue.swal('아이디를 사용하실 수 있습니다.');
-          }
-       });
+         console.log(res.data);
+        if(res.data==1) {
+          Vue.swal("경고", "동일한 아이디가 존재합니다.", "error");
+        } else if(res.data==0) {
+          Vue.swal("확인", "아이디를 사용하실 수 있습니다", "success");
+        }
+      });
     }
   },
   computed: {
@@ -295,7 +289,7 @@ export default {
         zipCode: '',
         brithday:'',
         tel:'',
-        role:'PARENTS'
+        type:'PARENT'
       },
       searchWindow: {
       display: 'none',

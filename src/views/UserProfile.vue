@@ -77,7 +77,9 @@
                                                         input-classes="form-control-alternative"
                                                         v-model="modUser.passwordchk"
                                             />
+                                            <!--
                                         <small>{{ pwCheck }}</small>
+                                        -->
                                         </div>
                                     </div>
                                     <hr class="my-4"/>
@@ -201,7 +203,8 @@
                           <!--유저에게 부모가 존재하면 이 화면을 뿌려줌 --> 
                           <template>
                             <div slot="header">
-                                <p class="ni ni-single-02 red white--text"> 나의 부모</p>
+                                <div style="font-weight:bold"><span class="glyphicon glyphicon-align-justify"></span>내 부모</div>
+                                <br>
                             </div>
                               <div class="form-group">
                               <base-table class="table align-items-center table-flush" 
@@ -210,9 +213,9 @@
                                   tbody-classes="list" 
                                   :data="tableData">
                                 <template slot="columns" style="font-size: 15px;">
-                                <th :style="thStyle"></th>
-                                <th :style="thStyle">이름</th>
-                                <th :style="thStyle">최근 온 메시지</th>
+                                <th></th>
+                                <th>이름</th>
+                                <th>최근 온 메시지</th>
                               </template>
                               <template slot-scope="{row}">
                                 <td>
@@ -220,10 +223,10 @@
                                   <img alt="Image placeholder" :src="row.img" style="width:80%;">
                                   </a>
                                 </td>
-                                <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
+                                <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
                                 {{row.name}}
                                 </td>
-                                <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
+                                <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
                                 {{row.message}}
                                 </td>
                                 <td>
@@ -240,11 +243,11 @@
                       <br>
                       <br>
                       <!-- 유저에게 자녀가 존재하면 이 화면을 뿌려줌 -->
-                      <div v-if="user.type=='PARENTS'">
+                      <div v-if="user.type=='PARENT'">
                         <template>
                         <div slot="header">
-                                <p class="ni ni-single-02 red white--text"> 나의 자녀</p>
-                            </div>
+                           <div style="font-weight:bold"><span class="glyphicon glyphicon-align-justify"></span>내 자녀</div>
+                          </div>
                           <base-table class="table align-items-center table-flush" 
                           :class="type === 'dark' ? 'table-dark': ''" 
                           :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
@@ -261,10 +264,10 @@
                             <img alt="Image placeholder" :src="row.img" style="width:80%;">
                             </a>
                           </td>
-                          <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
+                          <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
                           {{row.name}}
                           </td>
-                          <td class="name" style="font-size: 20px; cursor:pointer" @click="modals.modal1 = true">
+                          <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
                           {{row.message}}
                           </td>
                           <td>
@@ -274,7 +277,7 @@
                           </td>
                           </template>
                           </base-table>
-                          <family-sel-modal></family-sel-modal>
+                          <child-sel-modal></child-sel-modal>
                         </template>
                       </div>
                     </card>
@@ -294,6 +297,7 @@ import 'flatpickr/dist/flatpickr.css';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import FamilySelModal from './Modals/FamilySelModal';
+import ChildSelModal from './Modals/ChildSelModal';
 import axios from 'axios'
 Vue.use(VueSweetalert2);
 Vue.prototype.$http=axios
@@ -346,7 +350,8 @@ export default {
 	}, 
 	components: {
       flatPickr,
-      FamilySelModal
+      FamilySelModal,
+      ChildSelModal
     },
     methods: {
     execDaumPostcode() {
@@ -397,7 +402,7 @@ export default {
       this.searchWindow.display = 'block';
     },
     doUserUpdate() {
-      this.$http.put(`/api/user/update/`, modUser,
+      this.$http.put(`/user/update/`, modUser,
       {
         headers: {
             Authorization: `Bearer ${this.modUser.token}`

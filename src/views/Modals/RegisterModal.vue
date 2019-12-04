@@ -5,9 +5,6 @@
           <div class="row">
           <img src="img/brand/white.png" style="width:30%;">
             <div id="container" class="card-header bg-transparent row align-items-center">
-          <button type="button" data-dismiss="modal" aria-label="Close" class="close" style="float:right;" @click="close()">
-          <span>×</span>
-          </button>
             <br>
             <h2 slot="header" class="modal-title" id="modal-title-default" align="center">자녀 회원가입</h2><br>
             </div>
@@ -43,7 +40,9 @@
                               v-model="user.passwordchk"
                               ref="passwordchk"
                   />
+                  <!--
                   <small>{{ pwCheck }}</small>
+                  -->
                 </div>
           </div>
           <div class="row">
@@ -156,6 +155,7 @@
           <div class="row">
           <div class="col-lg-12" style="text-align:center">
           <input type="button" class="btn btn btn-primary" @click="doOidSignup" value="가입하기">
+          <base-button type="button" class="btn btn btn-outline-primary" @click="modals.modal1=false">나가기</base-button>
           </div>
         </div>
         </modal>
@@ -174,8 +174,6 @@ export default {
   methods: {
     showAlert() {
       Vue.swal('가입을 축하드립니다!');
-    },
-    pwCheck() {
     }
     ,close() {
       this.$emit('close');
@@ -229,7 +227,7 @@ export default {
       this.searchWindow.display = 'block';
      },
     doOidSignup() {
-      this.$http.post(`/api/user/signup/`, this.user,
+      this.$http.post(`/user/signup/`, this.user,
       {
         headers: {
             Authorization: `Bearer ${this.user.token}`
@@ -243,6 +241,22 @@ export default {
           console.log(res.data);
           Vue.swal('가입을 환영합니다!');
       });
+    },
+    idCheck() {
+       this.$http.get(`/user/idcheck/`+this.user.id,
+        {
+          headers: {
+              Authorization: `Bearer ${this.user.token}`
+              ,'Content-Type':'application/json'
+          },
+        })
+       .then(res => {
+          if(res==1) {
+            Vue.swal('동일한 아이디가 존재합니다.');
+          } else if(res==0) {
+            Vue.swal('아이디를 사용하실 수 있습니다.');
+          }
+       });
     }
   },
   computed: {
@@ -250,14 +264,14 @@ export default {
       if(!this.user.password.length==0) {
        return this.user.password.length > 8 ? `` : `[주의] 비밀번호는 8자 이상으로 작성해주세요.`;
       } 
-  },
-  pwCheck : function() {
-      if(!this.user.passwordchk.length==0) {
-        if(this.user.password != this.user.passwordchk) {
-         return `[주의] 비밀번호가 동일하지 않습니다.`; 
-        }
-      }
-    } 
+  }
+  // pwCheck : function() {
+  //     if(!this.user.passwordchk.length==0) {
+  //       if(this.user.password != this.user.passwordchk) {
+  //        return `[주의] 비밀번호가 동일하지 않습니다.`; 
+  //       }
+  //     }
+  //   } 
   },
   components: {
     Modal
@@ -280,7 +294,7 @@ export default {
         brithday:'',
         tel:'',
         //gender:'',
-        role:'PARENTS'
+        type:'CHILD'
       },
       searchWindow: {
       display: 'none',
