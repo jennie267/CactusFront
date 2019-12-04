@@ -4,63 +4,46 @@
         </base-header>
         <div class="row">
             <div class="col mx-5">
-                <div class="row my-3">
-                    <FullCalendar
-                            defaultView="dayGridMonth"
-                            ref="fullCalendar"
-                            :plugins="calendarPlugins"
-                            locale="ko"
-                            :weekends="true"
-                            :header="{
-                                    left: 'prev',
-                                    center: 'title',
-                                    right: 'next'
-                            }"
-                            :selectable="true"
-                            @dateClick="dateClick"
-                    />
-                </div>
-                <div class="row my-3">
-                    <div class="card shadow" style="width:100%;">
-                        <div class="card-header bg-transparent">
-                            <div class="row">
-                                <h3 class="mb-0">자식목록</h3>
-                            </div>
+                <FullCalendar
+                        defaultView="dayGridMonth"
+                        ref="fullCalendar"
+                        :plugins="calendarPlugins"
+                        locale="ko"
+                        :weekends="true"
+                        :header="{
+                                left: 'prev',
+                                center: 'title',
+                                right: 'next'
+                        }"
+                        :selectable="true"
+                        @dateClick="dateClick"
+                />
+            </div>
+            <div class="col mx-5">
+                <div class="card shadow" style="width:100%; height:100%;">
+                    <div class="card-header bg-transparent">
+                        <div class="row">
+                            <h3 class="mb-0">{{date}} 일정</h3>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <vue-good-table
-                                        style="width:100%;"
-                                        :columns="childHeader"
-                                        :rows="childData"
-                                        @on-row-click="onRowClick"/>
-                            </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <vue-good-table
+                                    style="width:100%;"
+                                    :columns="periodHeader"
+                                    :rows="periodData"/>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row" style="margin-top:100px;">
             <div class="col mx-5">
-                <div class="row my-3">
-                    <div class="card shadow" style="width:100%;">
-                        <div class="card-header bg-transparent">
-                            <div class="row">
-                                <h3 class="mb-0">{{date}} 일정</h3>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <vue-good-table
-                                        style="width:100%;"
-                                        :columns="periodHeader"
-                                        :rows="periodData"/>
-                            </div>
-                            {{periodData}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row my-3">
-                    <dashboard-profile :user="selectedUser" style="width:100%; margin-top:80px;"></dashboard-profile>
-                </div>
+                <parents-table v-if="user.type === 'CHILD'" @selectUser="selectUser" style="width:100%; height:100%;"></parents-table>
+                <children-table v-if="user.type === 'PARENT'" @selectUser="selectUser" style="width:100%; height:100%;"></children-table>
+            </div>
+            <div class="col mx-5">
+                <dashboard-profile :user="selectedUser" style="width:100%; height:100%;"></dashboard-profile>
             </div>
         </div>
     </div>
@@ -70,14 +53,19 @@ import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import 'vue-good-table/dist/vue-good-table.css'
-import { VueGoodTable } from 'vue-good-table/src';
+import { VueGoodTable } from 'vue-good-table/src'
 import DashboardProfile from './Dashboard/DashboardProfile'
+import ParentsTable from './Dashboard/ParentsTable'
+import ChildrenTable from './Dashboard/ChildrenTable'
+import dateUtil from '../common/dateUtil'
 
   export default {
     components: {
         FullCalendar,
         VueGoodTable,
         DashboardProfile,
+        ParentsTable,
+        ChildrenTable,
     },
     data() {
       return {
@@ -85,34 +73,7 @@ import DashboardProfile from './Dashboard/DashboardProfile'
           calendarPlugins: [ dayGridPlugin
               , interactionPlugin
           ],
-          date: new Date().getFullYear().toString()+'-'+(new Date().getMonth()+1).toString()+'-'+new Date().getDate().toString(),
-          childHeader: [
-              {
-                  field: 'userId',
-                  hidden: true,
-              },
-              {
-                  label: '프로필',
-                  field: 'profile',
-                  width: '8%',
-                  tdClass: 'text-center',
-                  html: true,
-              },
-              {
-                  label: '이름',
-                  field: 'name',
-                  width: '25%',
-              },
-              {
-                  label: '생일',
-                  field: 'birthday',
-                  type: 'date',
-                  dateInputFormat: 'yyyyMMdd',
-                  dateOutputFormat: 'yyyy-MM-dd',
-                  width: '25%',
-              },
-          ],
-          childData: [],
+          date: dateUtil.getToday(),
           selectedUser: {},
           periodHeader: [
               {
@@ -122,14 +83,24 @@ import DashboardProfile from './Dashboard/DashboardProfile'
               {
                   label: '담당자',
                   field: 'manager',
+                  width: '12%',
+              },
+              {
+                  label: '위치',
+                  field: 'place',
                   width: '25%',
               },
               {
-                  label: '일자',
+                  label: '시간',
                   field: 'schdTime',
                   type: 'date',
                   dateInputFormat: `yyyy-MM-dd'T'HH:mm:ss`,
-                  dateOutputFormat: 'yyyy-MM-dd HH:mm:ss',
+                  dateOutputFormat: 'HH:mm:ss',
+                  width: '10%',
+              },
+              {
+                  label: '내용',
+                  field: 'periodRemark',
                   width: '25%',
               },
           ],
@@ -144,17 +115,14 @@ import DashboardProfile from './Dashboard/DashboardProfile'
                     this.periodData = res.data.schedules;
                 });
         },
-        onRowClick(select) {
-            this.selectedUser = select.row
-        }
+        selectUser(user) {
+            this.selectedUser = user
+        },
     },
       mounted() {
-          this.$http.get(`/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+          this.$http.get(`/period/schedule/day/user/${this.date.replace(/-/gi,'')}/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
               .then(res => {
-                  this.childData = res.data.users;
-                  this.childData.forEach(user => user.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
-                      '<img alt="Image placeholder" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
-                      '</a>');
+                  this.periodData = res.data.schedules;
               });
       }
   };
