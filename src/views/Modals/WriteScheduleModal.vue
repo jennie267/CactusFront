@@ -1,7 +1,7 @@
 <template>
     <!-- Modals -->
     <div class="row">
-            <base-button class="btn-primary" @click="modals.modal1=true">등록</base-button>
+        <base-button class="btn-primary" @click="modals.modal1=true">등록</base-button>
         <div class="col-md-4">
             <modal :show.sync="modals.modal1">
                 <h2 slot="header" class="modal-title" id="modal-title-default">일정 등록</h2>
@@ -21,15 +21,15 @@
                     <div class="form-group row">
                         <label for="scheduleContents" class="col-sm-2 col-form-label">내용</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control" v-model="period.remark">
+                            <input type="text" class="form-control" v-model="period.remark">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="scheduleContents" class="col-sm-2 col-form-label">날짜</label>
                         <base-input class="col-sm-5" addon-left-icon="ni ni-calendar-grid-58">
                             <flat-pickr slot-scope="{focus, blur}"
-                                         @on-open="focus"
-                                         @on-close="blur" 
+                                        @on-open="focus"
+                                        @on-close="blur"
                                         :config="{allowInput: true}"
                                         class="form-control datepicker"
                                         v-model="period.startDate">
@@ -37,8 +37,8 @@
                         </base-input>
                         <base-input class="col-sm-5">
                             <flat-pickr slot-scope="{focus, blur}"
-                                         @on-open="focus"
-                                         @on-close="blur" 
+                                        @on-open="focus"
+                                        @on-close="blur"
                                         :config=timeConfig
                                         class="form-control datepicker"
                                         v-model="period.startTime">
@@ -71,7 +71,7 @@
                             <base-input class="col-sm-4" addon-left-icon="ni ni-calendar-grid-58">
                                 <flat-pickr slot-scope="{focus, blur}"
                                             @on-open="focus"
-                                            @on-close="blur" 
+                                            @on-close="blur"
                                             locale="ko"
                                             :config="{allowInput: true}"
                                             class="form-control datepicker"
@@ -82,7 +82,7 @@
                             <base-input class="col-sm-4" addon-left-icon="ni ni-calendar-grid-58">
                                 <flat-pickr slot-scope="{focus, blur}"
                                             @on-open="focus"
-                                            @on-close="blur" 
+                                            @on-close="blur"
                                             :config="{allowInput: true}"
                                             class="form-control datepicker"
                                             v-model="alarmTime">
@@ -124,71 +124,71 @@
     </div>
 </template>
 <script>
-import Modal from "@/components/Modal.vue";
-import flatPickr from 'vue-flatpickr-component';
-import Multiselect from 'vue-multiselect'
-import 'flatpickr/dist/flatpickr.css';
-import 'vue-multiselect/dist/vue-multiselect.min.css'
+    import Modal from "@/components/Modal.vue";
+    import flatPickr from 'vue-flatpickr-component';
+    import Multiselect from 'vue-multiselect'
+    import 'flatpickr/dist/flatpickr.css';
+    import 'vue-multiselect/dist/vue-multiselect.min.css'
 
-export default {
-  components: {
-    Modal
-    , flatPickr
-    , Multiselect
-  },
-  data() {
-    return {
-        modals: {
-            modal1: false,
+    export default {
+        components: {
+            Modal
+            , flatPickr
+            , Multiselect
         },
-        user: this.$store.state.user,
-        isCycleStatus: false,
-        timeConfig:{
-            allowInput: true,
-            enableTime: true,
-            noCalendar: true,
-            dateFormat: "H:i",
-            defaultDate: "00:00"
+        data() {
+            return {
+                modals: {
+                    modal1: false,
+                },
+                user: this.$store.state.user,
+                isCycleStatus: false,
+                timeConfig:{
+                    allowInput: true,
+                    enableTime: true,
+                    noCalendar: true,
+                    dateFormat: "H:i",
+                    defaultDate: "00:00"
+                },
+                date: new Date(),
+                config: {
+                    wrap: true,
+                    altFormat: 'M j, Y',
+                    altInput: true,
+                    dateFormat: 'Y-m-d',
+                },
+                value: null,
+                options: [
+                    { name: '년', value:'Y'},
+                    { name: '월', value:'M'},
+                    { name: '일', value:'D'},
+                    { name: '시간', value:'H'},
+                    { name: '분', value:'MM'},
+                ],
+                period: {
+                    name:"",
+                    remark: "",
+                    periodType: "",
+                    isAlarm: false,
+                    startDate: "",
+                    startTime: "",
+                    freq: "",
+                    cycle: "",
+                    place: "",
+                    manager: "",
+                }
+            };
         },
-        date: new Date(),
-        config: {
-            wrap: true, // set wrap to true only when using 'input-group'
-            altFormat: 'M j, Y',
-            altInput: true,
-            dateFormat: 'Y-m-d',
-        },    
-        value: null,
-        options: [
-            { name: '년', value:'Y'},
-            { name: '월', value:'M'},
-            { name: '일', value:'D'},
-            { name: '시간', value:'H'},
-            { name: '분', value:'MM'},
-        ],
-        period: {
-            name:"",
-            remark: "",
-            periodType: "",
-            isAlarm: false,
-            startDate: "",
-            startTime: "",
-            freq: "",
-            cycle: "",
-            place: "",
-            manager: "",    
+        methods:{
+            confirm() {
+
+                this.$http.post(`/period`, this.period, { headers: { Authorization: `Bearer ${this.user.token}` } })
+                    .then(res => {
+                        console.log(res);
+                    });
+            }
         }
     };
-  },
-    methods:{
-        confirm() {
-
-        this.$http.post(`/period`, this.period, { headers: { Authorization: `Bearer ${this.user.token}` } })
-            .then(res => {
-                console.log(res);
-            });
-        }
-    }
-};
 
 </script>
 <style>
