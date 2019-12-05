@@ -20,21 +20,7 @@
                 />
             </div>
             <div class="col mx-5">
-                <div class="card shadow" style="width:100%; height:100%;">
-                    <div class="card-header bg-transparent">
-                        <div class="row">
-                            <h3 class="mb-0">{{date}} 일정</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <vue-good-table
-                                    style="width:100%;"
-                                    :columns="periodHeader"
-                                    :rows="periodData"/>
-                        </div>
-                    </div>
-                </div>
+                <parents-schedule v-if="user.type === 'CHILD'" style="width:100%; height:100%;" :date="date"></parents-schedule>
             </div>
         </div>
         <div class="row" style="margin-top:100px;">
@@ -52,20 +38,19 @@
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import 'vue-good-table/dist/vue-good-table.css'
-import { VueGoodTable } from 'vue-good-table/src'
 import DashboardProfile from './Dashboard/DashboardProfile'
 import ParentsTable from './Dashboard/ParentsTable'
 import ChildrenTable from './Dashboard/ChildrenTable'
+import ParentsSchedule from './Dashboard/ParentsSchedule'
 import dateUtil from '../common/dateUtil'
 
   export default {
     components: {
         FullCalendar,
-        VueGoodTable,
         DashboardProfile,
         ParentsTable,
         ChildrenTable,
+        ParentsSchedule,
     },
     data() {
       return {

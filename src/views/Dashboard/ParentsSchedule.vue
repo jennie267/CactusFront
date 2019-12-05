@@ -27,10 +27,16 @@ import { VueGoodTable } from 'vue-good-table/src'
         data() {
             return {
                 user: this.$store.state.user,
+                parentData: [],
                 periodHeader: [
                     {
                         field: 'schdId',
                         hidden: true,
+                    },
+                    {
+                        label: '성함',
+                        field: 'userName',
+                        width: '12%',
                     },
                     {
                         label: '담당자',
@@ -57,17 +63,39 @@ import { VueGoodTable } from 'vue-good-table/src'
                     },
                 ],
                 periodData: [],
+                modalShow: false,
             }
         },
         props: {
             // periodData: Array,
             date: String,
         },
-        mounted() {
-            this.$http.get(`/period/schedule/day/user/${this.date.replace(/-/gi,'')}/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+        watch: {
+            date: function() { // watch it
+                this.findSchedule();
+            }
+        },
+        created() {
+            this.$http.get(`/user/parents/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                 .then(res => {
-                    this.periodData = res.data.schedules;
+                    this.parentData = res.data.users;
+                    this.findSchedule();
                 });
+        },
+        methods: {
+            findSchedule() {
+                this.periodData = [];
+                this.parentData.forEach(parent => {
+                    let saveDate = this.date;
+                    this.$http.get(`/period/schedule/day/user/${this.date.replace(/-/gi,'')}/${parent.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+                        .then(res => {
+                            if(this.date === saveDate) {
+                                res.data.schedules.every(schedule => {schedule.userName = parent.name});
+                                this.periodData.push(...res.data.schedules);
+                            }
+                        });
+                });
+            }
         }
     }
 </script>
