@@ -222,7 +222,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: 50%;
+        width: 700px;
         font-size: 20px;
     }
 

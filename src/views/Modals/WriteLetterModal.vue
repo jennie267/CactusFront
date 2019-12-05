@@ -71,12 +71,13 @@
                         title: '받는 사람을 선택해주세요.'
                     });
                 } else {
+                    let rtn = true;
                     this.checkedNames.forEach(checkedId => {
                         msg.contents = this.message;
                         msg.receivedUserId = checkedId;
                         msg.sendUserId = this.user.userId;
 
-
+                        console.log('[Message Send]  received : ' + msg.receivedUserId +' sendId : ' + msg.sendUserId + ' checked : '+ checkedId );
                         this.$http.post(`/message/`, msg,
                             {
                                 headers: {
@@ -85,22 +86,23 @@
                                 }
                             })
                             .then(res => {
-                                if (res != null){
-                                    this.modals.modal1 = false;
-                                    // Use sweetalert2
-                                    this.$swal({
-                                        type: 'success',
-                                        title: '전송 성공했습니다.'
-                                    });
-
-                                }else {
-                                    this.$swal({
-                                        type: 'warning',
-                                        title: '전송 실패했습니다.'
-                                    });
-                                }
+                                if (res == null) rtn = false;
                             });
                     });
+                    if (rtn) {
+
+                        this.modals.modal1 = false;
+                        // Use sweetalert2
+                        this.$swal({
+                            type: 'success',
+                            title: '전송 성공했습니다.'
+                        });
+                    } else {
+                        this.$swal({
+                            type: 'warning',
+                            title: '전송 실패했습니다.'
+                        });
+                    }
 
                 }
 
@@ -108,7 +110,7 @@
             ,showModal:function (revUserId) {
                 this.checkedNames = [];
                 this.modals.modal1 = true;
-                this.checkedNames.push(revUserId);
+                if (revUserId != null) this.checkedNames.push(revUserId);
             }
         }
     };
