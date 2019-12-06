@@ -90,7 +90,6 @@
                             .then(res => {
                                 if (res == null) rtn = false;
                             });
-                        msg.receivedUserId = '';
                     });
                     if (rtn) {
 

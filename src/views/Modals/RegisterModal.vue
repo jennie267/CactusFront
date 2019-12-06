@@ -3,7 +3,7 @@
         <input type="button" class="btn btn btn-primary" @click="modals.modal1=true" value="자녀  회원가입">
         <modal :show.sync="modals.modal1">
           <div class="row">
-          <img src="img/brand/white.png" style="width:30%;">
+              <img src="img/brand/white.png" style="width:30%;">
             <div id="container" class="card-header bg-transparent row align-items-center">
             <br>
             <h2 slot="header" class="modal-title" id="modal-title-default" align="center">자녀 회원가입</h2><br>
@@ -18,7 +18,7 @@
               />
             <input style="float:right;" type="button" class="btn btn-sm btn-outline-primary" value="중복 확인" @click="idCheck()">
             </div>
-          </div>  
+          </div>
           <div class="row">
               <div class="col-lg-12" style="text-align:left">
                   <base-input alternative=""
@@ -30,7 +30,7 @@
                   />
                   <small>{{ pwValidation }}</small>
               </div>
-          </div>  
+          </div>
           <div class="row">
               <div class="col-lg-12" style="text-align:left">
                   <base-input alternative=""
@@ -54,7 +54,7 @@
                               v-model="user.name"
                   />
               </div>
-          </div> 
+          </div>
           <div class="row">
             <div class="col-lg-12" style="text-align:left">
                 <base-input label="성별">
@@ -65,10 +65,10 @@
                     <div class="custom-control custom-radio mb-3">
                         <input name="custom-radio-1" class="custom-control-input" id="customRadio2" type="radio" v-model="user.gender" value="남">
                         <label class="custom-control-label" for="customRadio2"><span>남성</span></label>
-                    </div>            
+                    </div>
                 </base-input>
             </div>
-        </div> 
+        </div>
         <br>
         <div class="row">
             <div class="col-lg-12" style="text-align:left">
@@ -89,7 +89,7 @@
                             v-model="user.tel"
                 />
             </div>
-        </div>   
+        </div>
           <div class="row">
             <div class="col-lg-12" style="text-align:left">
             <base-input label="생일">
@@ -97,7 +97,7 @@
                                     </div>
                 <flat-pickr slot-scope="{focus, blur}"
                       @on-open="focus"
-                      @on-close="blur" 
+                      @on-close="blur"
                       :config="{allowInput: true}"
                       class="form-control datepicker"
                       placeholder="birthday"
@@ -124,7 +124,7 @@
             <div class="row">
                 <div class="col-lg-8" style="text-align:left">
                     <base-input alternative=""
-                                label="주소"    
+                                label="주소"
                                 placeholder="Address"
                                 input-classes="form-control-alternative"
                                 v-model="user.addrMain"
@@ -151,7 +151,7 @@
                                 ref="addressDetail"
                     />
                 </div>
-            </div>          
+            </div>
           <div class="row">
           <div class="col-lg-12" style="text-align:center">
           <input type="button" class="btn btn btn-primary" @click="doOidSignup" value="가입하기">
@@ -263,15 +263,15 @@ export default {
   pwValidation: function() {
       if(!this.user.password.length==0) {
        return this.user.password.length > 8 ? `` : `[주의] 비밀번호는 8자 이상으로 작성해주세요.`;
-      } 
+      }
   }
   // pwCheck : function() {
   //     if(!this.user.passwordchk.length==0) {
   //       if(this.user.password != this.user.passwordchk) {
-  //        return `[주의] 비밀번호가 동일하지 않습니다.`; 
+  //        return `[주의] 비밀번호가 동일하지 않습니다.`;
   //       }
   //     }
-  //   } 
+  //   }
   },
   components: {
     Modal
