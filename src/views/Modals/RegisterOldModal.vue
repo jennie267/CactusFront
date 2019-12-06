@@ -1,11 +1,11 @@
-<template>
+<template >
         <div>
-        <modal :show.sync="modals.modal1">
+        <modal :show.sync="modals.modal1" >
           <div class="row">
           <img src="img/brand/white.png" style="width:30%;">
             <div id="container" class="card-header bg-transparent row align-items-center">
             <br>
-            <h2 slot="header" class="modal-title" id="modal-title-default" align="center">부모 회원가입</h2><br>
+            <h2 slot="header" class="modal-title" id="modal-title-default" align="center"><i class="ni ni-badge"></i>   부모 회원가입</h2><br>
             </div>
             <div class="col-lg-12" style="text-align:left">
               <base-input alternative=""
@@ -316,4 +316,6 @@ export default {
   display: table-cell;
   vertical-align: middle;
 }
+
+
 </style>

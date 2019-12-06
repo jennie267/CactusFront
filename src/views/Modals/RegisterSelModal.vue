@@ -59,16 +59,10 @@ export default {
     }
 }
 </script>
-<style>
-.box_1 {
-    float:left; height:100px;
-    padding-left:10%;
-    }
-.box_2 {
-    display:inline-block; height:100px; margin-left:10px;
-    padding-right:10%;
-    }
 
+
+
+<style>
 
  .body {
      width: 100%;
@@ -92,11 +86,9 @@ div.right {
 
 .down {
     text-align: center;
+    height: 140px;
 }
 
-.modal-content{
-    height:330px;
-}
 
 .logo {
     text-align: right;
@@ -106,4 +98,5 @@ div.right {
     width: 100%;
     padding: 15px 0;
 }
+
 </style>
