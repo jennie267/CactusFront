@@ -72,10 +72,12 @@
                     });
                 } else {
                     let rtn = true;
+
+                    msg.contents = this.message;
+                    msg.sendUserId = this.user.userId;
+
                     this.checkedNames.forEach(checkedId => {
-                        msg.contents = this.message;
                         msg.receivedUserId = checkedId;
-                        msg.sendUserId = this.user.userId;
 
                         console.log('[Message Send]  received : ' + msg.receivedUserId +' sendId : ' + msg.sendUserId + ' checked : '+ checkedId );
                         this.$http.post(`/message/`, msg,
@@ -88,6 +90,7 @@
                             .then(res => {
                                 if (res == null) rtn = false;
                             });
+                        msg.receivedUserId = '';
                     });
                     if (rtn) {
 
