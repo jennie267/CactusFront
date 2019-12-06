@@ -1,6 +1,5 @@
 <template>
         <div>
-        <input type="button" class="btn btn btn-primary" @click="modals.modal1=true" value="부모 회원가입">
         <modal :show.sync="modals.modal1">
           <div class="row">
           <img src="img/brand/white.png" style="width:30%;">
@@ -174,6 +173,9 @@ Vue.use(VueSweetalert2);
 Vue.prototype.$http=axios
 export default {
   methods: {
+      openModal(){
+        this.modals.modal1 = true;
+      },
     close() {
       this.$emit('close');
     }

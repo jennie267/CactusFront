@@ -27,17 +27,27 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                        <register-sel-modal></register-sel-modal>
+                    <register-sel-modal ref="selectUserType"></register-sel-modal>
+                </div>
+                <div class="row mt-3">
+                    <register-old-modal ref="parentModal"></register-old-modal>
+                </div>
+                <div class="row mt-3">
+                    <register-modal ref="childModal"></register-modal>
                 </div>
             </div>
         </div>
 </template>
 <script>
 import RegisterSelModal from './Modals/RegisterSelModal'
+import RegisterOldModal from './Modals/RegisterOldModal'
+import RegisterModal from './Modals/RegisterModal'
   export default {
     name: 'login',
     components: {
-        RegisterSelModal
+        RegisterSelModal,
+        RegisterOldModal,
+        RegisterModal
     },
     data() {
       return {
@@ -54,7 +64,12 @@ import RegisterSelModal from './Modals/RegisterSelModal'
                     this.$store.state.user = result.data
                     this.$router.push("/main")
                 })
-        }
+        },
+          openSignUpModal(userType){
+            if (userType == 'PARENT') this.$refs.parentModal.openModal();
+            else if (userType == 'CHILD') this.$refs.childModal.openModal();
+
+          }
       }
   }
 </script>

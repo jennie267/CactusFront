@@ -9,27 +9,26 @@
         </div>
         <modal :show.sync="modals.modal1">
             <h2 slot="header" class="modal-title " id="modal-title-default" align="center"><i class="ni ni-badge"></i>    회원가입 </h2><br>
-<!--            <div style="margin-bottom: 10%;">-->
             <div class="body">
                 <div class="up">
                     <div class="left ">
                         <div class="card-profile-image row-grid ">
-                            <img src="img/theme/userType1.jpg" style="border:1.2px dashed gray" width="120" height="120">
+                            <img src="img/theme/userType1.jpg" style="border:1.2px dashed gray" width="120" height="120" @click="openSingUpModal('PARENT')">
                         </div>
                     </div>
                     <div class="right">
                         <div class="card-profile-image">
-                            <img src="img/theme/userType2.jpg"  style="border:1.2px dashed gray"  width="120" height="120">
+                            <img src="img/theme/userType2.jpg"  style="border:1.2px dashed gray"  width="120" height="120" @click="openSingUpModal('CHILD')">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="footer down">
                 <div class="left">
-                    <register-old-modal></register-old-modal>
+                    <input type="button" class="btn btn btn-primary" @click="openSingUpModal('PARENT')" value="부모회원">
                 </div>
                 <div class="right">
-                    <register-modal></register-modal>
+                    <input type="button" class="btn btn btn-primary" @click="openSingUpModal('CHILD')" value="자녀회원">
                 </div>
             </div>
             <div class="logo">
@@ -40,13 +39,9 @@
 </template>
 <script>
 import Modal from "@/components/Modal.vue";
-import RegisterModal from '../Modals/RegisterModal';
-import RegisterOldModal from '../Modals/RegisterOldModal';
 export default {
   components: {
-    Modal,
-    RegisterModal,
-    RegisterOldModal
+    Modal
   },
   data() {
     return {
@@ -55,7 +50,13 @@ export default {
         modal1:false
       }
     }
-  }
+  },
+    methods: {
+        openSingUpModal(userType){
+            this.modals.modal1=false;
+            this.$parent.openSignUpModal(userType);
+        }
+    }
 }
 </script>
 <style>
