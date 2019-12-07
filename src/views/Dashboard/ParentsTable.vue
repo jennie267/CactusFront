@@ -59,7 +59,7 @@ import { VueGoodTable } from 'vue-good-table/src'
                 .then(res => {
                     this.parentData = res.data.users;
                     this.parentData.forEach(user => user.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
-                        '<img alt="Image placeholder" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
+                        '<img alt="" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
                         '</a>');
                 });
         }

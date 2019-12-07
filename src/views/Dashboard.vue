@@ -37,17 +37,23 @@
                     <today-messages style="width:100%; height:100%;" :date="date"></today-messages>
                 </div>
             </div>
-            <div class="box box3 card">
+            <div class="box box3">
                 <div>
                     <parents-table v-if="user.type === 'CHILD'" @selectUser="selectUser" style="width:100%; height:100%;"></parents-table>
                     <children-table v-if="user.type === 'PARENT'" @selectUser="selectUser" style="width:100%; height:100%;"></children-table>
                 </div>
             </div>
-            <div class="box box4 card">
+            <div class="box box4">
                 <div>
-                    <dashboard-profile :user="selectedUser" style="width:100%; height:100%;"></dashboard-profile>
+                    <dashboard-profile :chkUser="selectedUser" :user="user" style="width:100%; height:100%;"></dashboard-profile>
                 </div>
             </div>
+           <div class="box box5">
+               <div>
+                   <write-letter ref="letterModal" :revUser="selectedUser" :user="user" style="width:100%; height:100%;"></write-letter>
+               </div>
+           </div>
+
         </div>
     </div>
 </template>
@@ -61,6 +67,7 @@ import ChildrenTable from './Dashboard/ChildrenTable'
 import ParentsSchedule from './Dashboard/ParentsSchedule'
 import ChildrenSchedule from './Dashboard/ChildrenSchedule'
 import TodayMessages from './Dashboard/TodayMessages'
+import WriteLetter from './Dashboard/WriteLetter'
 import dateUtil from '../common/dateUtil'
   export default {
     components: {
@@ -70,7 +77,8 @@ import dateUtil from '../common/dateUtil'
         ChildrenTable,
         ParentsSchedule,
         ChildrenSchedule,
-        TodayMessages
+        TodayMessages,
+        WriteLetter
     },
     data() {
       return {
@@ -167,8 +175,15 @@ import dateUtil from '../common/dateUtil'
     .box2 {
         flex-basis: calc(60% - 40px);
     }
-    .box3 { background-color: white; }
-    .box4 { background-color: white; }
+    .box3 {
+        flex-basis: calc(20% - 40px);
+    }
+    .box4 {
+        flex-basis: calc(35% - 40px);
+    }
+    .box5 {
+        flex-basis: calc(45% - 40px);
+    }
 
     .todaySchHeader {
         background-color: #1e2b37;

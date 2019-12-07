@@ -1,53 +1,47 @@
 <template>
-    <div>
-        <base-header type="gradient-success" class="pb-6 pb-8">
-        </base-header>
-        <div class="container-fluid mt--7">
+    <!-- Modals -->
+    <div class="card shadow text-center">
+        <div class="card-header todaySchHeader">
             <div class="row">
-                <div class="col-xl-8 order-xl-1">
-                    <div class="card card-profile shadow">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-3 order-lg-2">
-                                <div class="card-profile-image">
-                                    <a>
-                                        <img v-if="typeof user.profileUrl=='undefined' || user.profileUrl===''" src="img/theme/typeUser.jpg" class="rounded-circle">
-                                        <img v-else :src="user.profileUrl" class="rounded-circle">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                            <div class="d-flex justify-content-between">
-                            </div>
-                        </div>
-                        <div class="card-body pt-0 pt-md-4 mt-5">
-                            <div class="text-center">
-                                <h1>{{user.name}}</h1>
-                                <h2>{{user.tel}}</h2>
-                                <h2>{{user.addrMain}} {{user.addrSub}}</h2>
-                                <h2>{{user.email}}</h2>
-                                <h2>{{user.birthday}}</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h3 v-if="chkUser.userId == null && user.type == 'PARENT'" class="mb-0 todaySchHeaderStr"><h1 class="ni ni-single-02 todaySchHeaderStr"></h1> 자녀목록에서 자녀를 선택해주세요.</h3>
+                <h3 v-if="chkUser.userId == null && user.type == 'CHILD'" class="mb-0 todaySchHeaderStr"><h1 class="ni ni-single-02 todaySchHeaderStr"></h1> 부모목록에서 부모를 선택해주세요.</h3>
+                <h3 v-if="chkUser.userId != null"  class="mb-0 todaySchHeaderStr"><h1 class="ni ni-single-02 todaySchHeaderStr"></h1> {{chkUser.name}}</h3>
+
             </div>
         </div>
+        <div class="cactusProfile">
+            <a>
+                <img v-if="typeof chkUser.profileUrl=='undefined' || chkUser.profileUrl===''" src="img/theme/typeUser.jpg" class="rounded-circle">
+                <img v-else :src="chkUser.profileUrl" class="rounded-circle">
+            </a>
+        </div>
+        <div class="text-center">
+            <h1>{{chkUser.name}}</h1>
+            <h2>{{chkUser.tel}}</h2>
+            <h2>{{chkUser.addrMain}} {{chkUser.addrSub}}</h2>
+            <h2>{{chkUser.email}}</h2>
+            <h2>{{chkUser.birthday}}</h2>
+        </div>
+
     </div>
 </template>
-
 <script>
+
+
     export default {
         data() {
             return {
             }
         },
         props: {
-            user: Object
+            user: Object,
+            chkUser: Object
         }
     }
+
 </script>
-
-<style scoped>
-
+<style>
+    .cactusProfile img {
+        max-width: 180px;
+    }
 </style>
