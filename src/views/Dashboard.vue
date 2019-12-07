@@ -1,7 +1,7 @@
 <template>
     <div>
         <base-header type="gradient-success" class="pt-5">
-            <h1 class=""><h1 class="ni ni-tv-2"></h1>  {{user.name}}님의 대시보드  </h1>
+            <h1 class="" ><h1 class="ni ni-tv-2"></h1>  {{user.name}}님의 대시보드</h1>
             <hr>
         </base-header>
        <div class="grid2x2 ">
@@ -23,9 +23,10 @@
                     />
                 </div>
             </div>
-            <div class="box box2 card">
+            <div class="box box2">
                 <div>
-                    <parents-schedule v-if="user.type === 'CHILD'" style="width:100%; height:100%;" :date="date"></parents-schedule>
+                    <parents-schedule v-if="user.type === 'PARENT'" style="width:100%; height:100%;" :date="date"></parents-schedule>
+                    <children-schedule v-if="user.type === 'CHILD'" style="width:100%; height:100%;" :date="date"></children-schedule>
                 </div>
             </div>
             <div class="box box3 card">
@@ -40,36 +41,6 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col mx-5">
-                <FullCalendar
-                        defaultView="dayGridMonth"
-                        ref="fullCalendar"
-                        :plugins="calendarPlugins"
-                        locale="ko"
-                        :weekends="true"
-                        :header="{
-                                left: 'prev',
-                                center: 'title',
-                                right: 'next'
-                        }"
-                        :selectable="true"
-                        @dateClick="dateClick"
-                />
-            </div>
-            <div class="col mx-5">
-                <parents-schedule v-if="user.type === 'CHILD'" style="width:100%; height:100%;" :date="date"></parents-schedule>
-            </div>
-        </div>
-        <div class="row" style="margin-top:100px;">
-            <div class="col mx-5">
-                <parents-table v-if="user.type === 'CHILD'" @selectUser="selectUser" style="width:100%; height:100%;"></parents-table>
-                <children-table v-if="user.type === 'PARENT'" @selectUser="selectUser" style="width:100%; height:100%;"></children-table>
-            </div>
-            <div class="col mx-5">
-                <dashboard-profile :user="selectedUser" style="width:100%; height:100%;"></dashboard-profile>
-            </div>
-        </div>
     </div>
 </template>
 <script>
@@ -80,6 +51,7 @@ import DashboardProfile from './Dashboard/DashboardProfile'
 import ParentsTable from './Dashboard/ParentsTable'
 import ChildrenTable from './Dashboard/ChildrenTable'
 import ParentsSchedule from './Dashboard/ParentsSchedule'
+import ChildrenSchedule from './Dashboard/ChildrenSchedule'
 import dateUtil from '../common/dateUtil'
 
   export default {
@@ -89,6 +61,7 @@ import dateUtil from '../common/dateUtil'
         ParentsTable,
         ChildrenTable,
         ParentsSchedule,
+        ChildrenSchedule
     },
     data() {
       return {
@@ -167,7 +140,7 @@ import dateUtil from '../common/dateUtil'
     .grid2x2 > div {
         display: flex;
         flex-basis: calc(50% - 40px);
-        justify-content: center;
+        /*justify-content: center;*/
         flex-direction: column;
     }
     .grid2x2 > div > div {
@@ -178,7 +151,7 @@ import dateUtil from '../common/dateUtil'
 
     .box { margin: 20px; }
     .box1 { background-color: white; }
-    .box2 { background-color: white; }
+    .box2 { }
     .box3 { background-color: white; }
     .box4 { background-color: white; }
 </style>

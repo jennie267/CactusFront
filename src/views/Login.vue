@@ -78,11 +78,14 @@ import RegisterModal from './Modals/RegisterModal'
 
           }
       }, mounted() {
-        if (this.$route.query.go == "main") {
+        if (this.$route.params.go == "main") {
             this.$swal({
                 type: 'warning',
                 title: '다시 로그인해주세요.'
             });
+
+
+
         }
       }
   }

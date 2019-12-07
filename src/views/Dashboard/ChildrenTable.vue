@@ -2,7 +2,7 @@
     <div class="card shadow" style="width:100%;">
         <div class="card-header bg-transparent">
             <div class="row">
-                <h3 class="mb-0">자식목록</h3>
+                <h3 class="mb-0">자녀목록</h3>
             </div>
         </div>
         <div class="card-body">

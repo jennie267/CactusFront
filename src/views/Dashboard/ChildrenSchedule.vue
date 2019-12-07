@@ -20,8 +20,6 @@
 <script>
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table/src'
-var moment = require('moment');
-moment().format();
 
     export default {
         components: {
@@ -29,13 +27,17 @@ moment().format();
         },
         data() {
             return {
-                today: moment(new Date()).format('YYYYMMDD'),
                 user: this.$store.state.user,
                 parentData: [],
                 periodHeader: [
                     {
                         field: 'schdId',
                         hidden: true,
+                    },
+                    {
+                        label: '성함',
+                        field: 'userName',
+                        width: '12%',
                     },
                     {
                         label: '담당자',
@@ -75,27 +77,16 @@ moment().format();
             }
         },
         created() {
-            this.findSchedule();
-/*            this.$http.get(`/user/parents/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+            this.$http.get(`/user/parents/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                 .then(res => {
                     this.parentData = res.data.users;
                     this.findSchedule();
-                });*/
-
+                });
         },
         methods: {
             findSchedule() {
-                console.log('오늘 ' , this.today);
-                this.$http.get(`/period/schedule/day/user/${this.today}/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-                    .then(res => {
-                        console.log('오늘일정 ', res);
-                        console.log('오늘일정 데이터', res.data);
-/*                        if(this.date === saveDate) {
-                            res.data.schedules.every(schedule => {schedule.userName = parent.name});
-                            this.periodData.push(...res.data.schedules);
-                        }*/
-                    });
-/*                this.parentData.forEach(parent => {
+                this.periodData = [];
+                this.parentData.forEach(parent => {
                     let saveDate = this.date;
                     this.$http.get(`/period/schedule/day/user/${this.date.replace(/-/gi,'')}/${parent.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                         .then(res => {
@@ -104,7 +95,7 @@ moment().format();
                                 this.periodData.push(...res.data.schedules);
                             }
                         });
-                });*/
+                });
             }
         }
     }

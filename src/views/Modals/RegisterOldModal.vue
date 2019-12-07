@@ -236,9 +236,18 @@
                         type: 'warning',
                         title: '아이디 중복체크 해주세요.'
                     });
-
-                }else{
-                    this.$http.post(`/user/signup/`, this.user,
+                } else if(user.password.length <8){
+                    this.$swal({
+                        type: 'warning',
+                        title: '비밀번호는 8자리 이상이어야 합니다.'
+                    });
+                } else if(user.password != user.passwordchk){
+                    this.$swal({
+                        type: 'warning',
+                        title: '비밀번호와 비밀번호확인이 같지 않습니다.'
+                    });
+                 }else{
+/*                    this.$http.post(`/user/signup/`, this.user,
                         {
                             headers: {
                                 Authorization: `Bearer ${this.user.token}`
@@ -251,7 +260,7 @@
                             console.log(res);
                             console.log(res.data);
                             Vue.swal('가입을 환영합니다!');
-                        });
+                        });*/
                 }
             },
             idCheck() {
