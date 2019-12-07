@@ -14,17 +14,22 @@
                             locale="ko"
                             :weekends="true"
                             :header="{
-                                left: 'prev',
+                                left: '',
                                 center: 'title',
-                                right: 'next'
+                                right: ''
                         }"
                             @dateClick="dateClick"
+
                     />
                     <!--                            :selectable="true"-->
 <!--                    :events="[
                     { title: 'event 1', date: '2019-12-22' },
                     { title: 'event 2', date: '2019-12-23' }
                     ]"-->
+<!--
+                    left: 'prev',
+                    center: 'title',
+                    right: 'next'-->
                 </div>
             </div>
             <div class="box box2">
@@ -171,6 +176,7 @@ import dateUtil from '../common/dateUtil'
     .box1 {
         background-color: white;
         flex-basis: calc(40% - 40px);
+        height: max-content;
     }
     .box2 {
         flex-basis: calc(60% - 40px);
@@ -184,6 +190,21 @@ import dateUtil from '../common/dateUtil'
     .box5 {
         flex-basis: calc(45% - 40px);
     }
+    .box2Header {
+        background-color: #3a6fa0;
+    }
+    .box22Header {
+        background-color: #d18392;
+    }
+    .box3Header {
+        background-color: #71b284;
+    }
+    .box4Header {
+        background-color: #727bae;
+    }
+    .box5Header {
+        background-color: #b06e6c;
+    }
 
     .todaySchHeader {
         background-color: #1e2b37;
@@ -191,5 +212,6 @@ import dateUtil from '../common/dateUtil'
     .todaySchHeaderStr {
         color: #eff2f7;
     }
+
 
 </style>

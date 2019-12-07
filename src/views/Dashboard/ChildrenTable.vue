@@ -1,6 +1,6 @@
 <template>
     <div class="card shadow" style="width:100%;">
-        <div class="card-header todaySchHeader">
+        <div class="card-header box3Header">
             <div class="row">
                 <h3 class="mb-0 todaySchHeaderStr"><h1 class="ni ni-badge todaySchHeaderStr"></h1>  자녀목록</h3>
             </div>

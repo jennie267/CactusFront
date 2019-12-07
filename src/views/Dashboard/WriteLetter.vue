@@ -1,6 +1,6 @@
 <template>
     <div class="card shadow text-center">
-        <div class="card-header todaySchHeader">
+        <div class="card-header box5Header">
             <div class="row">
                 <h3 v-if="revUser.userId == null && user.type == 'PARENT'" class="mb-0 todaySchHeaderStr"><h1 class="ni ni-email-83 todaySchHeaderStr"></h1> 자녀목록에서 수신자를 선택해주세요.</h3>
                 <h3 v-if="revUser.userId == null && user.type == 'CHILD'" class="mb-0 todaySchHeaderStr"><h1 class="ni ni-email-83 todaySchHeaderStr"></h1> 부모목록에서 수신자를 선택해주세요.</h3>
@@ -35,8 +35,6 @@
         },
         methods: {
             sendMessage: function(revUserId){
-                console.log('받을사람 ', this.revUser);
-
                 if (this.revUser.userId == null){
                     this.$swal({
                         type: 'warning',

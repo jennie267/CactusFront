@@ -1,7 +1,7 @@
 <template>
 <!--    <div>HEllo</div>-->
     <div class="card shadow" style="width:100%; height:100%;">
-        <div class="card-header todaySchHeader">
+        <div class="card-header box22Header">
             <div class="row">
                 <h3 class="mb-0 todaySchHeaderStr"><h1 class="ni ni-email-83 todaySchHeaderStr"></h1>  오늘의 쪽지</h3>
             </div>
