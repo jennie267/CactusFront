@@ -13,22 +13,22 @@
                 <div class="up">
                     <div class="left ">
                         <div class="card-profile-image row-grid ">
-                            <img src="img/theme/userType1.jpg" style="border:1.2px dashed gray" width="120" height="120" @click="openSingUpModal('PARENT')">
+                            <img src="img/theme/userType1.jpg" style="border:1.2px dashed gray; cursor:pointer" width="120" height="120" @click="openSingUpModal('PARENT')">
                         </div>
                     </div>
                     <div class="right">
                         <div class="card-profile-image">
-                            <img src="img/theme/userType2.jpg"  style="border:1.2px dashed gray"  width="120" height="120" @click="openSingUpModal('CHILD')">
+                            <img src="img/theme/userType2.jpg"  style="border:1.2px dashed gray; cursor:pointer"  width="120" height="120" @click="openSingUpModal('CHILD')">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="footer down">
                 <div class="left">
-                    <input type="button" class="btn btn btn-primary" @click="openSingUpModal('PARENT')" value="부모회원">
+                    <input type="button" class="btn btn btn-primary cactusBasicBtn" @click="openSingUpModal('PARENT')" value="부모회원">
                 </div>
                 <div class="right">
-                    <input type="button" class="btn btn btn-primary" @click="openSingUpModal('CHILD')" value="자녀회원">
+                    <input type="button" class="btn btn btn-primary cactusBasicBtn" @click="openSingUpModal('CHILD')" value="자녀회원">
                 </div>
             </div>
             <div class="logo">
@@ -87,6 +87,7 @@ div.right {
 .down {
     text-align: center;
     height: 140px;
+    background-color: white;
 }
 
 
@@ -98,5 +99,29 @@ div.right {
     width: 100%;
     padding: 15px 0;
 }
+
+.cactusBasicBtn {
+    background-color: #172b4d;
+}
+
+ .cactusBasicBtn:hover {
+     background-color: #465978;
+ }
+
+ .cactusBasicBtn:active {
+     background-color: #465978;
+ }
+
+ .cactusCancleBtn {
+     background-color: white;
+ }
+
+ .cactusCancleBtn:hover {
+     background-color: #465978;
+ }
+ .cactusCancleBtn:active {
+     background-color: #465978;
+ }
+
 
 </style>

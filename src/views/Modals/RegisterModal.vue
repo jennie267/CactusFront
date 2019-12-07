@@ -2,10 +2,10 @@
     <div class="col">
         <modal :show.sync="modals.modal1">
             <div class="row">
-                <img src="img/brand/white.png" style="width:30%;">
+                <img src="img/brand/white.png" style="width:25%;">
                 <div id="container" class="card-header bg-transparent row align-items-center">
                     <br>
-                    <h2 slot="header" class="modal-title" id="modal-title-default" align="center">자녀 회원가입</h2><br>
+                    <h2 slot="header" class="modal-title" id="modal-title-default" align="center"><i class="ni ni-badge"></i>   자녀 회원가입</h2><br>
                 </div>
                 <div class="col-lg-12" style="text-align:left">
                     <base-input alternative=""
@@ -153,8 +153,8 @@
             </div>
             <div class="row">
                 <div class="col-lg-12" style="text-align:center">
-                    <input type="button" class="btn btn btn-primary" @click="doOidSignup" value="가입하기">
-                    <base-button type="button" class="btn btn btn-outline-primary" @click="modals.modal1=false">나가기</base-button>
+                    <input type="button" class="btn btn btn-primary cactusBasicBtn" @click="doOidSignup" value="가입하기">
+                    <base-button type="button" class="btn btn btn-outline-primary cactusCancleBtn" @click="modals.modal1=false">나가기</base-button>
                 </div>
             </div>
         </modal>
@@ -254,9 +254,15 @@
                     })
                     .then(res => {
                         if(res==1) {
-                            Vue.swal('동일한 아이디가 존재합니다.');
+                            this.$swal({
+                                type: 'warning',
+                                title: '동일한 아이디가 존재합니다.'
+                            });
                         } else if(res==0) {
-                            Vue.swal('아이디를 사용하실 수 있습니다.');
+                            this.$swal({
+                                type: 'success',
+                                title: '아이디를 사용하실 수 있습니다.'
+                            });
                         }
                     });
             }
