@@ -32,6 +32,10 @@
                     <parents-schedule v-if="user.type === 'PARENT'" style="width:100%; height:100%;" :date="date"></parents-schedule>
                     <children-schedule v-if="user.type === 'CHILD'" style="width:100%; height:100%;" :date="date"></children-schedule>
                 </div>
+                <br>
+                <div>
+                    <today-messages style="width:100%; height:100%;" :date="date"></today-messages>
+                </div>
             </div>
             <div class="box box3 card">
                 <div>
@@ -56,6 +60,7 @@ import ParentsTable from './Dashboard/ParentsTable'
 import ChildrenTable from './Dashboard/ChildrenTable'
 import ParentsSchedule from './Dashboard/ParentsSchedule'
 import ChildrenSchedule from './Dashboard/ChildrenSchedule'
+import TodayMessages from './Dashboard/TodayMessages'
 import dateUtil from '../common/dateUtil'
   export default {
     components: {
@@ -64,7 +69,8 @@ import dateUtil from '../common/dateUtil'
         ParentsTable,
         ChildrenTable,
         ParentsSchedule,
-        ChildrenSchedule
+        ChildrenSchedule,
+        TodayMessages
     },
     data() {
       return {

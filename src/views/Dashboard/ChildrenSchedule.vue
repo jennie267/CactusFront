@@ -89,15 +89,13 @@ moment().format();
                 this.parentData.forEach(parent => {
                     this.$http.get(`/period/schedule/day/user/${this.today}/${parent.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                         .then(res => {
+                            console.log('비교 ', res.data);
                             res.data.schedules.forEach(schedule =>{
                                 schedule.userName = parent.name;
                                 schedule.schdTime = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
                                 console.log(schedule.schdTime);
                                 this.periodData.push(schedule);
                             });
-/*                            res.data.schedules.every(schedule => {schedule.userName = parent.name,
-                                schedule.schdTime = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm')});
-                            this.periodData.push(...res.data.schedules);*/
 
                         });
                 });
