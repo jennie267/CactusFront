@@ -75,11 +75,6 @@ moment().format();
         },
         created() {
             this.findSchedule();
-/*            this.$http.get(`/user/parents/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-                .then(res => {
-                    this.parentData = res.data.users;
-                    this.findSchedule();
-                });*/
 
         },
         methods: {
@@ -87,32 +82,13 @@ moment().format();
                 console.log('오늘 ' , this.today);
                 this.$http.get(`/period/schedule/day/user/${this.today}/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                     .then(res => {
-                        console.log('오늘일정 ', res);
-                        console.log('오늘일정 데이터', res.data.schedules);
-                        // this.periodData.push(res.data.schedules);
-
-                        console.log(this.periodData);
-
                         res.data.schedules.forEach(schedule =>{
                             schedule.schdTime = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
                             console.log(schedule.schdTime);
                             this.periodData.push(schedule);
                         });
-/*                        if(this.date === saveDate) {
-                            res.data.schedules.every(schedule => {schedule.userName = parent.name});
-                            this.periodData.push(...res.data.schedules);
-                        }*/
+
                     });
-/*                this.parentData.forEach(parent => {
-                    let saveDate = this.date;
-                    this.$http.get(`/period/schedule/day/user/${this.date.replace(/-/gi,'')}/${parent.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-                        .then(res => {
-                            if(this.date === saveDate) {
-                                res.data.schedules.every(schedule => {schedule.userName = parent.name});
-                                this.periodData.push(...res.data.schedules);
-                            }
-                        });
-                });*/
             }
         }
     }

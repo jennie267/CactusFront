@@ -1,8 +1,8 @@
 <template>
     <div class="card shadow" style="width:100%;">
-        <div class="card-header bg-transparent">
+        <div class="card-header todaySchHeader">
             <div class="row">
-                <h3 class="mb-0">부모님목록</h3>
+                <h3 class="mb-0 todaySchHeaderStr"><h1 class="ni ni-badge todaySchHeaderStr"></h1>  부모님목록</h3>
             </div>
         </div>
         <div class="card-body">
@@ -34,7 +34,7 @@ import { VueGoodTable } from 'vue-good-table/src'
                         hidden: true,
                     },
                     {
-                        label: '프로필',
+                        label: '사진',
                         field: 'profile',
                         width: '8%',
                         tdClass: 'text-center',
@@ -43,14 +43,6 @@ import { VueGoodTable } from 'vue-good-table/src'
                     {
                         label: '이름',
                         field: 'name',
-                        width: '25%',
-                    },
-                    {
-                        label: '생일',
-                        field: 'birthday',
-                        type: 'date',
-                        dateInputFormat: 'yyyyMMdd',
-                        dateOutputFormat: 'yyyy-MM-dd',
                         width: '25%',
                     },
                 ],
