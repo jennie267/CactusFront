@@ -34,7 +34,7 @@ Vue.prototype.$http = axios;
 axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
-  router.push("/");
+  router.push("/?go=main");
   return Promise.reject(error);
 });
 axios.interceptors.request.use(function (request) {

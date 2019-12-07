@@ -61,8 +61,15 @@ import RegisterModal from './Modals/RegisterModal'
         doLogin(){
             this.$http.get('/user/login/'+this.user.id+'/'+this.user.password)
                 .then((result) => {
-                    this.$store.state.user = result.data
-                    this.$router.push("/main")
+                    if (result.data.length == 0) {
+                        this.$swal({
+                            type: 'warning',
+                            title: '아이디/비밀번호를 확인하세요.'
+                        });
+                    }else {
+                        this.$store.state.user = result.data;
+                        this.$router.push("/main")
+                    }
                 })
         },
           openSignUpModal(userType){
@@ -70,6 +77,13 @@ import RegisterModal from './Modals/RegisterModal'
             else if (userType == 'CHILD') this.$refs.childModal.openModal();
 
           }
+      }, mounted() {
+        if (this.$route.query.go == "main") {
+            this.$swal({
+                type: 'warning',
+                title: '다시 로그인해주세요.'
+            });
+        }
       }
   }
 </script>
