@@ -18,9 +18,13 @@
                                 center: 'title',
                                 right: 'next'
                         }"
-                            :selectable="true"
                             @dateClick="dateClick"
                     />
+                    <!--                            :selectable="true"-->
+<!--                    :events="[
+                    { title: 'event 1', date: '2019-12-22' },
+                    { title: 'event 2', date: '2019-12-23' }
+                    ]"-->
                 </div>
             </div>
             <div class="box box2">
@@ -53,7 +57,6 @@ import ChildrenTable from './Dashboard/ChildrenTable'
 import ParentsSchedule from './Dashboard/ParentsSchedule'
 import ChildrenSchedule from './Dashboard/ChildrenSchedule'
 import dateUtil from '../common/dateUtil'
-
   export default {
     components: {
         FullCalendar,
@@ -105,11 +108,7 @@ import dateUtil from '../common/dateUtil'
     },
     methods: {
         dateClick(info) {
-            this.date = info.dateStr;
-            this.$http.get(`/period/schedule/day/user/${this.date.replace(/-/gi,'')}/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-                .then(res => {
-                    this.periodData = res.data.schedules;
-                });
+            this.$router.push({name:"schedule", params:{requestDate:info.dateStr}});
         },
         selectUser(user) {
             this.selectedUser = user
@@ -138,10 +137,10 @@ import dateUtil from '../common/dateUtil'
         flex-direction: row;
     }
     .grid2x2 > div {
-        display: flex;
+/*        display: flex;
         flex-basis: calc(50% - 40px);
-        /*justify-content: center;*/
-        flex-direction: column;
+        !*justify-content: center;*!
+        flex-direction: column;*/
     }
     .grid2x2 > div > div {
         display: flex;
@@ -149,9 +148,19 @@ import dateUtil from '../common/dateUtil'
         flex-direction: row;
     }
 
-    .box { margin: 20px; }
-    .box1 { background-color: white; }
-    .box2 { }
+    .box { margin: 20px;
+        display: flex;
+        flex-basis: calc(50% - 40px);
+        /*justify-content: center;*/
+        flex-direction: column;
+    }
+    .box1 {
+        background-color: white;
+        flex-basis: calc(40% - 40px);
+    }
+    .box2 {
+        flex-basis: calc(60% - 40px);
+    }
     .box3 { background-color: white; }
     .box4 { background-color: white; }
 </style>

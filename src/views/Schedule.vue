@@ -57,6 +57,7 @@ var moment = require('moment');
 moment().format();
 
 export default {
+    name: 'schedule',
   components: {
     FullCalendar // make the <FullCalendar> tag available
     , DailyScheduleTable
@@ -84,7 +85,9 @@ export default {
         alert("이거야:::"+ arguments)
     },
   }, mounted() {
-      console.log('isStatus 쓰면 오류나니까 처음 들어올 때 오늘날짜로 셋팅');
+        if (this.$route.params.requestDate != null) {
+            console.log('요청일자 : ', this.$route.params.requestDate);
+        }
         let info = {
             dateStr: this.$moment(new Date()).format('YYYY-MM-DD')
         };
