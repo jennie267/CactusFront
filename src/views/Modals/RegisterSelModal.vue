@@ -1,10 +1,8 @@
 <template>
         <div class="col">
         <div style="text-align:right;">
-          <a href="#" class="text-light" @click="modals.modal1=true">
-              <small>
-              회원가입
-          </small>
+          <a href="#" class="" style="color: #f8f9fe; font-weight: bold;" @click="modals.modal1=true">
+              계정이 없으신가요?
           </a>
         </div>
         <modal :show.sync="modals.modal1">
