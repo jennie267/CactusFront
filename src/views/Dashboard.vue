@@ -163,4 +163,12 @@ import dateUtil from '../common/dateUtil'
     }
     .box3 { background-color: white; }
     .box4 { background-color: white; }
+
+    .todaySchHeader {
+        background-color: #1e2b37;
+    }
+    .todaySchHeaderStr {
+        color: #eff2f7;
+    }
+
 </style>

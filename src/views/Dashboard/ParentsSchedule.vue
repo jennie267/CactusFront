@@ -1,9 +1,9 @@
 <template>
 <!--    <div>HEllo</div>-->
     <div class="card shadow" style="width:100%; height:100%;">
-        <div class="card-header bg-transparent">
+        <div class="card-header todaySchHeader">
             <div class="row">
-                <h3 class="mb-0">오늘의 일정</h3>
+                <h3 class="mb-0 todaySchHeaderStr"><h1 class="ni ni-calendar-grid-58 todaySchHeaderStr"></h1>  오늘의 일정</h3>
             </div>
         </div>
         <div class="card-body">
@@ -118,6 +118,6 @@ moment().format();
     }
 </script>
 
-<style scoped>
+<style>
 
 </style>

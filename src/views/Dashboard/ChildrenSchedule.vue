@@ -1,9 +1,9 @@
 <template>
 <!--    <div>HEllo</div>-->
     <div class="card shadow" style="width:100%; height:100%;">
-        <div class="card-header bg-transparent">
+        <div class="card-header todaySchHeader">
             <div class="row">
-                <h3 class="mb-0">오늘의 일정</h3>
+                <h3 class="mb-0 todaySchHeaderStr"><h1 class="ni ni-calendar-grid-58 todaySchHeaderStr"></h1>  오늘의 일정</h3>
             </div>
         </div>
         <div class="card-body">
@@ -20,6 +20,8 @@
 <script>
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table/src'
+var moment = require('moment');
+moment().format();
 
     export default {
         components: {
@@ -27,40 +29,38 @@ import { VueGoodTable } from 'vue-good-table/src'
         },
         data() {
             return {
+                today: moment(new Date()).format('YYYYMMDD'),
                 user: this.$store.state.user,
                 parentData: [],
                 periodHeader: [
                     {
                         field: 'schdId',
                         hidden: true,
-                    },
-                    {
-                        label: '성함',
+                    },                    {
+                        label: '이름',
                         field: 'userName',
-                        width: '12%',
-                    },
-                    {
-                        label: '담당자',
-                        field: 'manager',
-                        width: '12%',
-                    },
-                    {
-                        label: '위치',
-                        field: 'place',
-                        width: '25%',
+                        width: '10%',
                     },
                     {
                         label: '시간',
                         field: 'schdTime',
-                        type: 'date',
-                        dateInputFormat: `yyyy-MM-dd'T'HH:mm:ss`,
-                        dateOutputFormat: 'HH:mm:ss',
+                        type: 'time',
                         width: '10%',
+                    },
+                    {
+                        label: '일정',
+                        field: 'periodName',
+                        width: '25%',
+                    },
+                    {
+                        label: '장소',
+                        field: 'place',
+                        width: '35%',
                     },
                     {
                         label: '내용',
                         field: 'periodRemark',
-                        width: '25%',
+                        width: '30%',
                     },
                 ],
                 periodData: [],
@@ -87,13 +87,18 @@ import { VueGoodTable } from 'vue-good-table/src'
             findSchedule() {
                 this.periodData = [];
                 this.parentData.forEach(parent => {
-                    let saveDate = this.date;
-                    this.$http.get(`/period/schedule/day/user/${this.date.replace(/-/gi,'')}/${parent.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+                    this.$http.get(`/period/schedule/day/user/${this.today}/${parent.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                         .then(res => {
-                            if(this.date === saveDate) {
-                                res.data.schedules.every(schedule => {schedule.userName = parent.name});
-                                this.periodData.push(...res.data.schedules);
-                            }
+                            res.data.schedules.forEach(schedule =>{
+                                schedule.userName = parent.name;
+                                schedule.schdTime = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
+                                console.log(schedule.schdTime);
+                                this.periodData.push(schedule);
+                            });
+/*                            res.data.schedules.every(schedule => {schedule.userName = parent.name,
+                                schedule.schdTime = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm')});
+                            this.periodData.push(...res.data.schedules);*/
+
                         });
                 });
             }
