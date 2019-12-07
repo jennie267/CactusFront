@@ -169,6 +169,9 @@
     import VueSweetalert2 from 'vue-sweetalert2';
     import 'sweetalert2/dist/sweetalert2.min.css';
     Vue.use(VueSweetalert2);
+
+
+    let idValid = false;
     export default {
         methods: {
             openModal(){
@@ -229,20 +232,28 @@
                 this.searchWindow.display = 'block';
             },
             doOidSignup() {
-                this.$http.post(`/user/signup/`, this.user,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${this.user.token}`
-                            ,'Content-Type':'application/json'
-                        },
-                    })
-                    .then(res => {
-                        console.log(this.user);
-                        console.log('전송');
-                        console.log(res);
-                        console.log(res.data);
-                        Vue.swal('가입을 환영합니다!');
+                if (!this.idValid){
+                    this.$swal({
+                        type: 'warning',
+                        title: '아이디 중복체크 해주세요.'
                     });
+
+                }else {
+                    this.$http.post(`/user/signup/`, this.user,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${this.user.token}`
+                                , 'Content-Type': 'application/json'
+                            },
+                        })
+                        .then(res => {
+                            console.log(this.user);
+                            console.log('전송');
+                            console.log(res);
+                            console.log(res.data);
+                            Vue.swal('가입을 환영합니다!');
+                        });
+                }
             },
             idCheck() {
                 this.$http.get(`/user/idcheck/`+this.user.id,
@@ -254,11 +265,13 @@
                     })
                     .then(res => {
                         if(res==1) {
+                            this.idValid = false;
                             this.$swal({
                                 type: 'warning',
                                 title: '동일한 아이디가 존재합니다.'
                             });
                         } else if(res==0) {
+                            this.idValid = true;
                             this.$swal({
                                 type: 'success',
                                 title: '아이디를 사용하실 수 있습니다.'
