@@ -102,81 +102,7 @@ import dateUtil from '../common/dateUtil';
                   "userId": 0,
                   name: '선택'
               },
-              parents: [
-                  {
-                      "userId": 3,
-                      "type": null,
-                      "id": "jslee",
-                      "password": "$2a$10$L3/wYjIzXDE4YFcwFOwAGeXdMyUcbF7qeT8qZWLDjLiY3Z.hjOSWq",
-                      "name": "이지수",
-                      "tel": "010-7109-0695",
-                      "isUse": "Y",
-                      "isAlarm": "Y",
-                      "zipCode": "111-222",
-                      "addrMain": "서울시",
-                      "addrSub": "서울대입구역 ",
-                      "email": "leejs@emaintec.com",
-                      "birthday": "19910505",
-                      "gender": "여",
-                      "profileUrl": null,
-                      "roles": [
-                          {
-                              "roleId": 3,
-                              "role": "MEMBER"
-                          }
-                      ],
-                      "parents": [],
-                      "children": [
-                          {
-                              "childId": 18,
-                              "childUserId": 6
-                          },
-                          {
-                              "childId": 21,
-                              "childUserId": 9
-                          },
-                          {
-                              "childId": 24,
-                              "childUserId": 12
-                          },
-                          {
-                              "childId": 27,
-                              "childUserId": 15
-                          }
-                      ],
-                      "token": null,
-                      "refreshToken": null,
-                      "pushToken": null
-                  },
-                  {
-                      "userId": 6,
-                      "type": null,
-                      "id": "eakim",
-                      "password": "$2a$10$H3YhLK1EUtoKo0rcf9Tm1u02BLgPYlLM7JRP1I86YLx5q.Q9c37US",
-                      "name": "김은아",
-                      "tel": "010-6540-0207",
-                      "isUse": "Y",
-                      "isAlarm": "Y",
-                      "zipCode": "111-222",
-                      "addrMain": "서울시",
-                      "addrSub": "신도림 ",
-                      "email": "eakim@emaintec.com",
-                      "birthday": "19940207",
-                      "gender": "여",
-                      "profileUrl": null,
-                      "roles": [
-                          {
-                              "roleId": 6,
-                              "role": "MEMBER"
-                          }
-                      ],
-                      "parents": [],
-                      "children": [],
-                      "token": null,
-                      "refreshToken": null,
-                      "pushToken": null
-                  }
-              ]
+              parents: []
           }
       },
       methods: {
@@ -197,7 +123,7 @@ import dateUtil from '../common/dateUtil';
                   this.$http.get('/location/footprints/user/date/'+this.selectedParent.userId+'/'+this.date.replace(/-/gi,''), { headers: { Authorization: `Bearer ${this.user.token}` } })
                       .then((result) => {
                           this.markers = [];
-                          let footPrints = result.data;
+                          let footPrints = result.data.footPrints;
                           let marker;
                           footPrints.forEach((footPrint) => {
                               marker = {
