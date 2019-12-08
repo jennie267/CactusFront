@@ -268,9 +268,9 @@
                             tbody-classes="list"
                             :data="tableData">
                           <template slot="columns" style="font-size: 15px;">
-                          <th :style="thStyle"></th>
+                          <th :style="thStyle">사진</th>
+                          <th :style="thStyle">아이디</th>
                           <th :style="thStyle">이름</th>
-                          <th :style="thStyle">최근 온 메시지</th>
                           </template>
                           <template slot-scope="{row}">
                           <td>
@@ -279,10 +279,10 @@
                             </a>
                           </td>
                           <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
-                          {{row.name}}
+                          {{row.id}}
                           </td>
                           <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
-                          {{row.message}}
+                          {{row.name}}
                           </td>
                           <td>
                             <div class="d-flex align-items-center">
@@ -350,8 +350,8 @@ export default {
         tableData: [
           {
             img: 'img/theme/sooki.PNG',
+            id: 'jwkim',
             name: '김정우',
-            message: '어머니 잘 지내시나요?',
           }
         ]
       }
