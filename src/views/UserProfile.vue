@@ -177,7 +177,7 @@
                                                         v-model="modUser.zipCode"
                                             />
                                         </div>
-                                        <input type="button" class="btn btn-sm btn-primary" value="우편번호 찾기" @click="execDaumPostcode">
+                                        <input type="button" class="btn btn-sm btn-primary" style="height: fit-content;" value="우편번호 찾기" @click="execDaumPostcode">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
