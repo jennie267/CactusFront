@@ -1,11 +1,15 @@
-<template >
-    <div>
-        <modal :show.sync="modals.modal1" >
+<template>
+    <div class="col">
+        <input type="button" class="btn btn btn-primary" @click="modals.modal1=true" value="부모 회원가입">
+        <modal :show.sync="modals.modal1">
             <div class="row">
-                <img src="img/brand/white.png" style="width:25%;">
+                <img src="img/brand/white.png" style="width:30%;">
                 <div id="container" class="card-header bg-transparent row align-items-center">
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close" style="float:right;" @click="close()">
+                        <span>×</span>
+                    </button>
                     <br>
-                    <h2 slot="header" class="modal-title" id="modal-title-default" align="center"><i class="ni ni-badge"></i>   부모 회원가입</h2><br>
+                    <h2 slot="header" class="modal-title" id="modal-title-default" align="center">부모 회원가입</h2><br>
                 </div>
                 <div class="col-lg-12" style="text-align:left">
                     <base-input alternative=""
@@ -38,7 +42,6 @@
                                 placeholder="Password"
                                 input-classes="form-control-alternative"
                                 v-model="user.passwordchk"
-                                type="password"
                                 ref="passwordchk"
                     />
                     <small>{{ pwCheck }}</small>
@@ -147,14 +150,13 @@
                                 placeholder="Address"
                                 input-classes="form-control-alternative"
                                 v-model="user.addrSub"
-                                ref="addrSub"
+                                ref="addressDetail"
                     />
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12" style="text-align:center">
-                    <input type="button" class="btn btn btn-primary cactusBasicBtn" @click="doOidSignup" value="가입하기">
-                    <base-button type="button" class="btn btn btn-outline-primary cactusCancleBtn" @click="modals.modal1=false">나가기</base-button>
+                    <input type="button" class="btn btn btn-primary" @click="doOidSignup" value="가입하기">
                 </div>
             </div>
         </modal>
@@ -171,15 +173,11 @@
     import axios from 'axios'
     Vue.use(VueSweetalert2);
     Vue.prototype.$http=axios
-
-
-    let idValid = false;
     export default {
         methods: {
-            openModal(){
-                this.modals.modal1 = true;
-            },
-            close() {
+            pwCheck() {
+            }
+            ,close() {
                 this.$emit('close');
             }
             ,execDaumPostcode() {
@@ -216,11 +214,10 @@
 
                         this.user.zipCode = data.zonecode;
 
-                        //this.$refs.extraAddress.focus();
+                        this.$refs.extraAddress.focus();
 
                         this.searchWindow.display = 'none';
                         document.body.scrollTop = currentScroll;
-                        this.$router.go(-1);
                     },
                     onResize: (size) => {
                         this.searchWindow.height = `${size.height}px`;
@@ -232,56 +229,34 @@
                 this.searchWindow.display = 'block';
             },
             doOidSignup() {
-                if (!this.idValid){
-                    this.$swal({
-                        type: 'warning',
-                        title: '아이디 중복체크 해주세요.'
+                this.$http.post(`/api/user/signup/`, this.user,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.user.token}`
+                            ,'Content-Type':'application/json'
+                        },
+                    })
+                    .then(res => {
+                        console.log(this.user);
+                        console.log('전송');
+                        console.log(res);
+                        console.log(res.data);
+                        Vue.swal('가입을 환영합니다!');
                     });
-                } else if(user.password.length <8){
-                    this.$swal({
-                        type: 'warning',
-                        title: '비밀번호는 8자리 이상이어야 합니다.'
-                    });
-                } else if(user.password != user.passwordchk){
-                    this.$swal({
-                        type: 'warning',
-                        title: '비밀번호와 비밀번호확인이 같지 않습니다.'
-                    });
-                 }else{
-                    this.$http.post(`/user/signup/`, this.user,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${this.user.token}`
-                                ,'Content-Type':'application/json'
-                            },
-                        })
-                        .then(res => {
-                            console.log(this.user);
-                            console.log('전송');
-                            console.log(res);
-                            console.log(res.data);
-                            Vue.swal('가입을 환영합니다!');
-                        });
-                }
             },
             idCheck() {
-                console.log("?");
-                console.log(this.user.id);
-                this.$http.get(`/user/idcheck/`+this.user.id)
+                this.$http.get(`/api/user/idcheck/`+this.user.id,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.user.token}`
+                            ,'Content-Type':'application/json'
+                        },
+                    })
                     .then(res => {
-                        console.log(res.data);
-                        if(res.data==1) {
-                            this.idValid = false;
-                            this.$swal({
-                                type: 'warning',
-                                title: '동일한 아이디가 존재합니다.'
-                            });
-                        } else if(res.data==0) {
-                            this.idValid = true;
-                            this.$swal({
-                                type: 'success',
-                                title: '아이디를 사용하실 수 있습니다.'
-                            });
+                        if(res==1) {
+                            Vue.swal('동일한 아이디가 존재합니다.');
+                        } else if(res==0) {
+                            Vue.swal('아이디를 사용하실 수 있습니다.');
                         }
                     });
             }
@@ -320,7 +295,7 @@
                     zipCode: '',
                     brithday:'',
                     tel:'',
-                    type:'PARENT'
+                    role:'PARENTS'
                 },
                 searchWindow: {
                     display: 'none',
@@ -345,6 +320,4 @@
         display: table-cell;
         vertical-align: middle;
     }
-
-
 </style>

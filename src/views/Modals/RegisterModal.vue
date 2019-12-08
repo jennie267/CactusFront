@@ -1,5 +1,5 @@
 <template>
-    <div class="col">
+    <div>
         <modal :show.sync="modals.modal1">
             <div class="row">
                 <img src="img/brand/white.png" style="width:25%;">
@@ -25,6 +25,7 @@
                                 placeholder="Password"
                                 input-classes="form-control-alternative"
                                 v-model="user.password"
+                                type="password"
                                 ref="password"
                     />
                     <small>{{ pwValidation }}</small>
@@ -37,11 +38,10 @@
                                 placeholder="Password"
                                 input-classes="form-control-alternative"
                                 v-model="user.passwordchk"
+                                type="password"
                                 ref="passwordchk"
                     />
-                    <!--
                     <small>{{ pwCheck }}</small>
-                    -->
                 </div>
             </div>
             <div class="row">
@@ -58,12 +58,12 @@
                 <div class="col-lg-12" style="text-align:left">
                     <base-input label="성별">
                         <div class="custom-control custom-radio mb-3">
-                            <input name="custom-radio-1" class="custom-control-input" id="customRadio1" type="radio" v-model="user.gender" value="여">
-                            <label class="custom-control-label" for="customRadio1"><span>여성</span></label>
+                            <input name="custom-radio-1" class="custom-control-input" id="customRadio3" type="radio" v-model="user.gender" value="여">
+                            <label class="custom-control-label" for="customRadio3"><span>여성</span></label>
                         </div>
                         <div class="custom-control custom-radio mb-3">
-                            <input name="custom-radio-1" class="custom-control-input" id="customRadio2" type="radio" v-model="user.gender" value="남">
-                            <label class="custom-control-label" for="customRadio2"><span>남성</span></label>
+                            <input name="custom-radio-1" class="custom-control-input" id="customRadio4" type="radio" v-model="user.gender" value="남">
+                            <label class="custom-control-label" for="customRadio4"><span>남성</span></label>
                         </div>
                     </base-input>
                 </div>
@@ -168,22 +168,16 @@
     import 'flatpickr/dist/flatpickr.css';
     import VueSweetalert2 from 'vue-sweetalert2';
     import 'sweetalert2/dist/sweetalert2.min.css';
+    import axios from 'axios'
+    Vue.prototype.$http=axios
     Vue.use(VueSweetalert2);
-
-
     let idValid = false;
     export default {
         methods: {
             openModal(){
                 this.modals.modal1 = true;
             },
-            showAlert() {
-                Vue.swal('가입을 축하드립니다!');
-            }
-            ,close() {
-                this.$emit('close');
-            }
-            ,execDaumPostcode() {
+            execDaumPostcode() {
                 const currentScroll = Math.max(
                     document.body.scrollTop,
                     document.documentElement.scrollTop,
@@ -238,22 +232,22 @@
                         type: 'warning',
                         title: '아이디 중복체크 해주세요.'
                     });
-                }else if(user.password.length <8){
+                } else if(this.user.password.length <8){
                     this.$swal({
                         type: 'warning',
                         title: '비밀번호는 8자리 이상이어야 합니다.'
                     });
-                } else if(user.password != user.passwordchk){
+                } else if(this.user.password != this.user.passwordchk){
                     this.$swal({
                         type: 'warning',
                         title: '비밀번호와 비밀번호확인이 같지 않습니다.'
                     });
-                }else {
+                }else{
                     this.$http.post(`/user/signup/`, this.user,
                         {
                             headers: {
                                 Authorization: `Bearer ${this.user.token}`
-                                , 'Content-Type': 'application/json'
+                                ,'Content-Type':'application/json'
                             },
                         })
                         .then(res => {
@@ -266,21 +260,18 @@
                 }
             },
             idCheck() {
-                this.$http.get(`/user/idcheck/`+this.user.id,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${this.user.token}`
-                            ,'Content-Type':'application/json'
-                        },
-                    })
+                console.log("?");
+                console.log(this.user.id);
+                this.$http.get(`/user/idcheck/`+this.user.id)
                     .then(res => {
-                        if(res==1) {
+                        console.log(res.data);
+                        if(res.data==1) {
                             this.idValid = false;
                             this.$swal({
                                 type: 'warning',
                                 title: '동일한 아이디가 존재합니다.'
                             });
-                        } else if(res==0) {
+                        } else if(res.data==0) {
                             this.idValid = true;
                             this.$swal({
                                 type: 'success',
@@ -295,14 +286,14 @@
                 if(!this.user.password.length==0) {
                     return this.user.password.length > 8 ? `` : `[주의] 비밀번호는 8자 이상으로 작성해주세요.`;
                 }
+            },
+            pwCheck : function() {
+                if(!this.user.passwordchk.length==0) {
+                    if(this.user.password != this.user.passwordchk) {
+                        return `[주의] 비밀번호가 동일하지 않습니다.`;
+                    }
+                }
             }
-            // pwCheck : function() {
-            //     if(!this.user.passwordchk.length==0) {
-            //       if(this.user.password != this.user.passwordchk) {
-            //        return `[주의] 비밀번호가 동일하지 않습니다.`;
-            //       }
-            //     }
-            //   }
         },
         components: {
             Modal
@@ -324,7 +315,6 @@
                     zipCode: '',
                     brithday:'',
                     tel:'',
-                    //gender:'',
                     type:'CHILD'
                 },
                 searchWindow: {
@@ -345,7 +335,6 @@
         height:100%;
         text-align: center;
     }
-
     #container span {
         display: table-cell;
         vertical-align: middle;
