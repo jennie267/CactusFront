@@ -248,7 +248,7 @@
                         title: '비밀번호와 비밀번호확인이 같지 않습니다.'
                     });
                  }else{
-/*                    this.$http.post(`/user/signup/`, this.user,
+                    this.$http.post(`/user/signup/`, this.user,
                         {
                             headers: {
                                 Authorization: `Bearer ${this.user.token}`
@@ -261,7 +261,7 @@
                             console.log(res);
                             console.log(res.data);
                             Vue.swal('가입을 환영합니다!');
-                        });*/
+                        });
                 }
             },
             idCheck() {

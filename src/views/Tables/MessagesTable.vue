@@ -16,21 +16,21 @@
                     <th :style="thStyle"></th>
                 </template>
 
-                <template slot-scope="{row}">
-                    <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="showModal(row.messageId, row.sendUserName)">
+                <template slot-scope="{row}" style="width: 100%;">
+                    <td class="name" style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showModal(row.messageId, row.sendUserName)">
                         {{row.insertTime}}
                     </td>
-                    <td class="name" style="font-size: 20px; cursor:pointer" @click.prevent="showModal(row.messageId, row.sendUserName)">
+                    <td class="name" style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showModal(row.messageId, row.sendUserName)">
                         {{row.sendUserName}}
                         <a href="#" class="avatar avatar-sm rounded-circle">
                             <img alt="" :src="row.sendUserProfileUrl" style="width:90%;">
                         </a>
                     </td>
-                    <td class="name overText" style="font-size: 15px; cursor:pointer" @click.prevent="showModal(row.messageId, row.sendUserName)">
+                    <td class="name overText" style="font-size: 15px; cursor:pointer; width:40%;" @click.prevent="showModal(row.messageId, row.sendUserName)">
                        <div class="name overText"> {{row.contents}}</div>
                     </td>
 
-                    <td>
+                    <td style="width:10%">
                         <div class="d-flex align-items-center" id="">
                             <i v-if="row.isLike =='Y'" class="ni ni-favourite-28 " style="color: pink;"></i>
                         </div>
@@ -40,11 +40,6 @@
 
             </base-table>
         </div>
-
-        <!--    <div class="card-footer d-flex justify-content-end"
-                 :class="type === 'dark' ? 'bg-transparent': ''">
-              <base-pagination total="30"></base-pagination>
-            </div>-->
 
         <template>
             <!-- Modals -->
@@ -69,7 +64,6 @@
                     <br>
                     <div class="text-right">
                         <base-button type="primary" @click="replyMessage(modalData.sendUserId)" >답장</base-button>
-                        <!--                        <base-button type="warning" >삭제</base-button>-->
                         <base-button type="neutral" class="ml-auto" @click="modals.modal1 = false">취소
                         </base-button>
                     </div>
@@ -137,10 +131,6 @@
                     })
                     .then(res => {
                         console.log('message table  isLike update',res.data);
-/*                        if (res.date){
-                            if (this.modalData.isLike) this.modalData.isLike = false;
-                            else this.modalData.isLike = true;
-                        }*/
 
                     });
 
@@ -222,8 +212,8 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: 700px;
         font-size: 20px;
+        max-width: 600px;
     }
 
 
