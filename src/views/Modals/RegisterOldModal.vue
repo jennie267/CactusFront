@@ -247,6 +247,36 @@
                         type: 'warning',
                         title: '비밀번호와 비밀번호확인이 같지 않습니다.'
                     });
+                }else if (this.user.id==null||this.user.id=="") {
+                    this.$swal({
+                        type: 'warning',
+                        title: '아이디를 입력하여 주십시오.'
+                    });
+                }else if (this.user.gender==null||this.user.gender=="") {
+                    this.$swal({
+                        type: 'warning',
+                        title: '성별을  입력하여 주십시오.'
+                    });
+                }else if (this.user.email==null||this.user.email=="") {
+                    this.$swal({
+                        type: 'warning',
+                        title: '이메일을  입력하여 주십시오.'
+                    });
+                }else if (this.user.password==null||this.user.password=="") {
+                    this.$swal({
+                        type: 'warning',
+                        title: '비밀번호를  입력하여 주십시오.'
+                    });
+                }else if (this.user.passwordchk==null||this.user.passwordchk=="") {
+                    this.$swal({
+                        type: 'warning',
+                        title: '비밀번호를  입력하여 주십시오.'
+                    });
+                }else if (this.user.name==null||this.user.name=="") {
+                    this.$swal({
+                        type: 'warning',
+                        title: '이름을 입력하여 주십시오.'
+                    });
                 }else{
                     this.$http.post(`/user/signup/`, this.user,
                         {
