@@ -7,7 +7,7 @@
                         {{nameOfChild}} 일정
                     </h3>
                 </div>
-                <write-schedule-modal></write-schedule-modal>
+                <write-schedule-modal :nameOfChild="nameOfChild" :selectedParent="selectedParent"></write-schedule-modal>
             </div>
         </div>
         <div class="table-responsive">
@@ -18,20 +18,18 @@
                 <template slot="columns">
                     <th>제목</th>
                     <th>내용</th>
-                    <th>작성자</th>
+                    <th>시간</th>
                     <th></th>
                 </template>
                 <template slot-scope="{row}">
-                    <div class="media align-items-center">
-                        <div class="media-body">
-                            <a @click="modals.modal1=true"><span class="name mb-0 text-sm">{{row.periodName}}</span></a>
-                        </div>
-                    </div>
+                    <td class="media align-items-center">
+                        {{row.periodName}}
+                    </td>
                     <td class="budget">
                         {{row.periodRemark}}
                     </td>
                     <td>
-                        <!-- 작성자 필요 -->
+                        {{row.schdTime}}
                     </td>
                     <td class="text-right">
                         <button class="btn-primary btn-sm btn-danger" @click="delSchedule(row.schdId)">삭제</button>
@@ -46,28 +44,31 @@
 </template>
 <script>
     import WriteScheduleModal from '../Modals/WriteScheduleModal'
+    var moment = require('moment');
+    moment().format();
 
     let schedules = [];
     export default {
         name: 'daily-schedule-table',
         props: {
-            nameOfChild: String
+            nameOfChild: String,
+            selectedParent: Object,
         },
         components:{
             WriteScheduleModal
         },
         methods: {
-            showScheduleList: function(date) {
-                this.tableData = [];
-                this.$http.get(`/period/schedule/day/user/`+ date + `/`+ this.user.userId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+            showScheduleList: function(date, userId) {
+                this.$http.get(`/period/schedule/day/user/`+ date + `/`+ userId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                     .then(res => {
                         res.data.schedules.forEach(schedule => {
+                            schedule.schdTime = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
                             this.tableData.push(schedule);
                         })
                     });
             },
             delSchedule: function(schdId) {
-                this.$http.get(`/period/schedule/`+schdId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+                this.$http.delete(`/period/schedule/`+schdId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                     .then(res => {
                         console.log(res);
                     })

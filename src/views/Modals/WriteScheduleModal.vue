@@ -6,33 +6,61 @@
             <modal :show.sync="modals.modal1">
                 <h2 slot="header" class="modal-title" id="modal-title-default">일정 등록</h2>
                 <form>
+                    <div class="form-group row" v-if="user.type==='CHILD'">
+                        <label for="periodType" class="col-sm-3 col-form-label">부모님</label>
+                        <div class="col-sm-6">
+                            <multiselect v-model="selectedParent" track-by="name" label="name" placeholder="선택" :options="this.$store.state.parents" :searchable="false" :allow-empty="true">
+                                <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.name }}</strong></template>
+                            </multiselect>
+                        </div>
+                    </div>
                     <div class="form-group row">
-                        <label for="scheduleName" class="col-sm-3 col-form-label">일정타입</label>
+                        <label for="periodType" class="col-sm-3 col-form-label">일정타입</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="period.periodType">
+                            <input type="text" class="form-control" id="periodType" v-model="period.periodType">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="scheduleName" class="col-sm-2 col-form-label">일정명</label>
+                        <label for="periodName" class="col-sm-2 col-form-label">일정명</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="period.name">
+                            <input type="text" class="form-control" id="periodName" v-model="period.name">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="scheduleContents" class="col-sm-2 col-form-label">내용</label>
+                        <label for="periodRemark" class="col-sm-2 col-form-label">내용</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="period.remark">
+                            <input type="text" class="form-control" id="periodRemark" v-model="period.remark">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="scheduleContents" class="col-sm-2 col-form-label">날짜</label>
+                        <label class="col-sm-3 col-form-label">알람여부</label>
+                        <div class="col-sm-9">
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input class="custom-control-input" id="isAlarm" type="checkbox" v-model="isAlarm">
+                                <label class="custom-control-label" for="isAlarm">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">반복일정</label>
+                        <div class="col-sm-9" valign="middle">
+                            <div class="custom-control custom-checkbox mb-3">
+                                <input class="custom-control-input" id="repSchedule1" type="checkbox" v-model="isCycle">
+                                <label class="custom-control-label" for="repSchedule1">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">날짜</label>
                         <base-input class="col-sm-5" addon-left-icon="ni ni-calendar-grid-58">
                             <flat-pickr slot-scope="{focus, blur}"
                                         @on-open="focus"
                                         @on-close="blur"
                                         :config="{allowInput: true}"
                                         class="form-control datepicker"
-                                        v-model="period.startDate">
+                                        v-model="startDate">
                             </flat-pickr>
                         </base-input>
                         <base-input class="col-sm-5">
@@ -41,58 +69,37 @@
                                         @on-close="blur"
                                         :config=timeConfig
                                         class="form-control datepicker"
-                                        v-model="period.startTime">
+                                        v-model="startTime">
                             </flat-pickr>
                         </base-input>
                     </div>
-                    <div class="form-group row">
-                        <label for="scheduleContents" class="col-sm-3 col-form-label">알람여부</label>
-                        <div class="col-sm-9">
-                            <div class="custom-control custom-checkbox mb-3">
-                                <input class="custom-control-input" id="isAlarm" type="checkbox" v-model="period.isAlarm">
-                                <label class="custom-control-label" for="isAlarm">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="scheduleContents" class="col-sm-3 col-form-label">반복일정</label>
-                        <div class="col-sm-9" valign="middle">
-                            <div class="custom-control custom-checkbox mb-3">
-                                <input class="custom-control-input" id="repSchedule1" type="checkbox" v-model="isCycleStatus">
-                                <label class="custom-control-label" for="repSchedule1">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" v-if="isCycleStatus">
+                    <div class="form-group" v-if="isCycle">
                         <div class="form-group row">
-                            <label for="scheduleContents" class="col-sm-2 col-form-label">기간</label>
-                            <base-input class="col-sm-4" addon-left-icon="ni ni-calendar-grid-58">
+                            <div class="col-sm-2"><h1>~</h1></div>
+                            <base-input class="col-sm-5" addon-left-icon="ni ni-calendar-grid-58">
                                 <flat-pickr slot-scope="{focus, blur}"
                                             @on-open="focus"
                                             @on-close="blur"
                                             locale="ko"
                                             :config="{allowInput: true}"
                                             class="form-control datepicker"
-                                            v-model="alarmDate">
+                                            v-model="endDate">
                                 </flat-pickr>
                             </base-input>
-                            <div class="col-sm-1"><h1>~</h1></div>
-                            <base-input class="col-sm-4" addon-left-icon="ni ni-calendar-grid-58">
+                            <base-input class="col-sm-5">
                                 <flat-pickr slot-scope="{focus, blur}"
                                             @on-open="focus"
                                             @on-close="blur"
-                                            :config="{allowInput: true}"
+                                            :config=timeConfig
                                             class="form-control datepicker"
-                                            v-model="alarmTime">
+                                            v-model="endTime">
                                 </flat-pickr>
                             </base-input>
                         </div>
                         <div class="form-group row">
-                            <label for="scheduleContents" class="col-sm-2 col-form-label">주기</label>
+                            <label for="periodFreq" class="col-sm-2 col-form-label">주기</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" v-model="period.freq">
+                                <input type="text" class="form-control" id="periodFreq" v-model="period.freq">
                             </div>
                             <div class="col-sm-6">
                                 <multiselect v-model="cycle" track-by="name" label="name" placeholder="선택" :options="options" :searchable="false" :allow-empty="true">
@@ -102,15 +109,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="scheduleName" class="col-sm-2 col-form-label">시설</label>
+                        <label for="periodPlace" class="col-sm-2 col-form-label">시설</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="period.place">
+                            <input type="text" class="form-control" id="periodPlace" v-model="period.place">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="scheduleName" class="col-sm-2 col-form-label">복지사</label>
+                        <label for="periodManager" class="col-sm-2 col-form-label">복지사</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" v-model="period.manager">
+                            <input type="text" class="form-control" id="periodManager" v-model="period.manager">
                         </div>
                     </div>
                 </form>
@@ -136,13 +143,52 @@
             , flatPickr
             , Multiselect
         },
+        props: {
+            nameOfChild: String,
+            selectedParent: Object,
+        },
+        updated() {
+            this.startDate = this.nameOfChild;
+        },
+        watch: {
+            startDate: function() {
+                this.period.startTime = this.startDate===""?"":this.startDate+'T'+this.startTime;
+            },
+            startTime: function() {
+                this.period.startTime = this.startDate===""?"":this.startDate+'T'+this.startTime;
+            },
+            endDate: function() {
+                this.period.endTime = this.endDate===""?"":this.endDate+'T'+this.endTime;
+            },
+            endTime: function() {
+                this.period.endTime = this.endDate===""?"":this.endDate+'T'+this.endTime;
+            },
+            isAlarm: function() {
+                this.period.isAlarm = this.isAlarm===true?"Y":"N";
+            },
+            isCycle: function() {
+                if(this.isCycle===false) {
+                    this.endDate = "";
+                    this.endTime = "";
+                    this.cycle = null;
+                    this.period.freq = "";
+                }
+            },
+            cycle: function() {
+                this.period.cycle = this.cycle===null?"":this.cycle.value;
+            },
+            selectedParent: function() {
+                this.period.userId = this.selectedParent===null?"":this.selectedParent.userId;
+            }
+        },
         data() {
             return {
                 modals: {
                     modal1: false,
                 },
                 user: this.$store.state.user,
-                isCycleStatus: false,
+                isAlarm: false,
+                isCycle: false,
                 timeConfig:{
                     allowInput: true,
                     enableTime: true,
@@ -165,26 +211,60 @@
                     { name: '시간', value:'H'},
                     { name: '분', value:'MM'},
                 ],
+                startDate: "",
+                startTime: "00:00",
+                endDate: "",
+                endTime: "00:00",
+                cycle: {},
                 period: {
                     name:"",
                     remark: "",
                     periodType: "",
-                    isAlarm: false,
-                    startDate: "",
+                    isAlarm: "N",
                     startTime: "",
+                    endTime: "",
                     freq: "",
                     cycle: "",
                     place: "",
                     manager: "",
+                    userId: this.$store.state.user.type==='PARENT'?this.$store.state.user.userId:"",
+                    regUserId: this.$store.state.user.userId,
+                    isUse: "Y",
                 }
             };
         },
         methods:{
             confirm() {
-
-                this.$http.post(`/period`, this.period, { headers: { Authorization: `Bearer ${this.user.token}` } })
+                this.$http.post(`/period/`, this.period,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.user.token}`,
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        }
+                    }
+                    )
                     .then(res => {
-                        console.log(res);
+                        if(res.status===200) {
+                            this.$swal({
+                                type: 'success',
+                                title: '등록되었습니다.'
+                            });
+                            this.modals.modal1 = false;
+
+                            let period = res.data;
+                            this.$http.post(`/period/schedule/period/${period.periodId}`, period,
+                                {
+                                    headers: {
+                                        Authorization: `Bearer ${this.user.token}`,
+                                        'Content-Type': 'application/json;charset=UTF-8'
+                                    }
+                                }
+                            ).then(res => {
+                                if(res.status===200) {
+                                    console.log("스케쥴 생성 성공")
+                                }
+                            });
+                        }
                     });
             }
         }
