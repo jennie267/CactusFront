@@ -150,14 +150,17 @@ export default {
         let info = {
             dateStr: this.$moment(new Date()).format('YYYY-MM-DD')
         };
-        this.dateClick(info);
 
-        if(this.user.type==='CHILD') {
+        if(this.user.type==='CHILD' && this.$store.state.parents.length===0) {
             this.$http.get(`/user/parents/`+this.user.userId,  { headers: { Authorization: `Bearer `+this.user.token } })
                 .then(res => {
                     this.$store.state.parents = res.data.users;
                     this.findEvents();
+                    this.dateClick(info);
                 });
+        }
+        else {
+            this.dateClick(info);
         }
     }
 }

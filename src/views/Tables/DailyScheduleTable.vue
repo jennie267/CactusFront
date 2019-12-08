@@ -8,6 +8,7 @@
                     </h3>
                 </div>
                 <write-schedule-modal :nameOfChild="nameOfChild" :selectedParent="selectedParent"></write-schedule-modal>
+                <update-schedule-modal ref="updateModal" :nameOfChild="nameOfChild"></update-schedule-modal>
             </div>
         </div>
         <div class="table-responsive">
@@ -20,19 +21,20 @@
                     <th>내용</th>
                     <th>시간</th>
                     <th></th>
+                    <th></th>
                 </template>
                 <template slot-scope="{row}">
-                    <td class="media align-items-center">
+                    <td class="media align-items-center" style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showUpdModal(row.periodId)">
                         {{row.periodName}}
                     </td>
-                    <td class="budget">
+                    <td class="budget" style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showUpdModal(row.periodId)">
                         {{row.periodRemark}}
                     </td>
-                    <td>
+                    <td style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showUpdModal(row.periodId)">
                         {{row.schdTime}}
                     </td>
                     <td class="text-right">
-                        <button class="btn-primary btn-sm btn-danger" @click="delSchedule(row.schdId)">삭제</button>
+                        <button class="btn-primary btn-sm btn-danger" @click="delSchedule(row.periodId)">삭제</button>
                     </td>
                 </template>
             </base-table>
@@ -44,6 +46,7 @@
 </template>
 <script>
     import WriteScheduleModal from '../Modals/WriteScheduleModal'
+    import UpdateScheduleModal from '../Modals/UpdateScheduleModal'
     var moment = require('moment');
     moment().format();
 
@@ -55,9 +58,16 @@
             selectedParent: Object,
         },
         components:{
-            WriteScheduleModal
+            WriteScheduleModal,
+            UpdateScheduleModal
         },
         methods: {
+            showUpdModal: function(id){
+                if (id != null){
+                    this.$refs.updateModal.modal = true;
+                    this.$refs.updateModal.periodId = id;
+                }
+            },
             showScheduleList: function(date, userId) {
                 this.$http.get(`/period/schedule/day/user/`+ date + `/`+ userId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                     .then(res => {
@@ -68,16 +78,22 @@
                     });
             },
             delSchedule: function(schdId) {
-                this.$http.delete(`/period/schedule/`+schdId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+                this.$http.post(`/period/schedule/delete/`+schdId, null,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                     .then(res => {
-                        console.log(res);
+                        if(res.status===200){
+                            this.$swal({
+                                type: 'success',
+                                title: '삭제되었습니다.'
+                            });
+                        }
                     })
-            }
+            },
         },
         data() {
             return {
                 user: this.$store.state.user,
-                tableData:schedules
+                tableData:schedules,
+                selectedId: 0,
             }
         },
     }
