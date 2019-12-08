@@ -1,21 +1,20 @@
 <template>
     <div>
         <base-header type="gradient-success" class="pt-5">
-            <h1 class="" v-if="user.type==='PARENT'"><h1 class="ni ni-tv-2"></h1>  {{user.name}}님의 일정</h1>
-            <h1 class="" v-if="user.type==='CHILD' && selectedParent!=null"><h1 class="ni ni-tv-2"></h1>  {{selectedParent.name}}님의 일정</h1>
+            <h1 class="" v-if="user.type==='PARENT'"><h1 class="ni ni-calendar-grid-58"></h1>  {{user.name}}님의 일정</h1>
+            <h1 class="" v-if="user.type==='CHILD' && selectedParent!=null"><h1 class="ni ni-calendar-grid-58"></h1>  {{selectedParent.name}}님의 일정</h1>
+            <h1 class="" v-if="user.type==='CHILD' && selectedParent==null"><h1 class="ni ni-calendar-grid-58"></h1>  부모님 일정</h1>
             <hr>
         </base-header>
+        <div v-if="user.type==='CHILD'" class="col-sm-3" style="margin-left: 3%; margin-bottom: 1%">
+            <multiselect v-model="selectedParent" track-by="name" label="name" placeholder="부모님선택" :options="this.$store.state.parents" :searchable="false" :allow-empty="true">
+                <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.name }}</strong></template>
+            </multiselect>
+        </div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-                    <div class="card shadow">
-                        <div class="card-header bg-transparent">
-                            <div v-if="user.type==='CHILD'" class="col-sm-2">
-                                <multiselect v-model="selectedParent" track-by="name" label="name" placeholder="선택" :options="this.$store.state.parents" :searchable="false" :allow-empty="true">
-                                    <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.name }}</strong></template>
-                                </multiselect>
-                            </div>
-                        </div>
+                    <div class="card">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-7">
@@ -83,6 +82,8 @@ export default {
         fromDate: '',
         toDate: '',
         events: [],
+        bcolor:['#ba6270','#6287ba','#6672a8','#fff1ab','#ecbbb7','#5555aa','#c1ecb7','#8aba62','#9fd6fa','#62baa4'],
+        fcolor:['#e9ecef','#e9ecef','#e9ecef','#172b4d','#172b4d','#e9ecef','#172b4d','#e9ecef','#172b4d','#e9ecef']
     }
   },
     watch: {
@@ -130,10 +131,20 @@ export default {
           }
       },
       getEvents: function(fromDate, toDate, userId) {
-          this.$http.get(`/period/schedule/from/to/user/${fromDate}/${toDate}/${userId}`,  { headers: { Authorization: `Bearer `+this.user.token } })
+          this.$http.get(`/period/schedule/from/to/user/order/${fromDate}/${toDate}/${userId}`,  { headers: { Authorization: `Bearer `+this.user.token } })
               .then(res => {
+                  let i = 0;
+                  let st = 0;
                   res.data.schedules.forEach(schedule =>{
-                      let event = {};
+                      let event = {}
+                      if (st != schedule.periodId) {
+                          st = schedule.periodId;
+                          if (i == 9) i=0;
+                          else i++;
+                      }
+
+                      event.color = this.bcolor[i];
+                      event.textColor = this.fcolor[i];
                       event.title = schedule.periodName;
                       event.date = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD');
                       this.events.push(event);
