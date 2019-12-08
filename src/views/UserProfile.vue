@@ -32,7 +32,20 @@
                             </div>
                             <div class="text-center">
                                 <h2>{{user.name}}</h2>
-                                 <a href="#!" class="btn btn-sm btn-primary, ni ni-image"> 프로필 사진 수정  </a>
+                                 <a @click="$refs.imageBtn.click()" class="btn btn-sm btn-primary, ni ni-image trigger"> 프로필 사진 수정  </a>
+<!--                                <file-pond
+                                        name="사진수정"
+                                        ref="pond"
+                                        label-idle="변경하실 프로필사진을 여기에 끌어주세요."
+                                        allow-multiple="false"
+                                        accepted-file-types="image/jpeg, image/png, image/jpg"
+                                        server="/user/profile/user.userId"
+                                        v-bind:files="myFiles"
+                                        v-on:init="handleFilePondInit"/>-->
+
+                            </div>
+                            <div class="text-center fileBtn">
+                                <input type="file" ref="imageBtn"  id="imageBtn" accept="image/*" @change="onFileChange" >
                             </div>
                         </div>
                     </div>
@@ -177,7 +190,7 @@
                                                         v-model="modUser.zipCode"
                                             />
                                         </div>
-                                        <input type="button" class="btn btn-sm btn-primary" style="height: fit-content;" value="우편번호 찾기" @click="execDaumPostcode">
+                                        <input type="button" class="btn btn-sm btn-primary" value="우편번호 찾기" @click="execDaumPostcode">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -289,6 +302,10 @@
 </template>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<!--<script src="https://unpkg.com/filepond-plugin-image-preview"></script>
+<script src="https://unpkg.com/filepond"></script>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-filepond"></script>-->
 <script>
 import Vue from 'vue'
 import Datetime from 'vue-datetime'
@@ -300,6 +317,16 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import FamilySelModal from './Modals/FamilySelModal';
 import ChildSelModal from './Modals/ChildSelModal';
 import axios from 'axios'
+
+/*import vueFilePond from 'vue-filepond';
+import 'filepond/dist/filepond.min.css';
+// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+
+
+const FilePond = vueFilePond(FilePondPluginFileValidateType);*/
+
 Vue.use(VueSweetalert2);
 Vue.prototype.$http=axios
 let modUser = {};
@@ -325,27 +352,7 @@ export default {
             img: 'img/theme/sooki.PNG',
             name: '김정우',
             message: '어머니 잘 지내시나요?',
-          },
-          {
-            img: 'img/theme/angular.jpg',
-            name: '이지수',
-            message: '아빠, 잘 지내? 날씨가 춥다.',
-          },
-          {
-            img: 'img/theme/sketch.jpg',
-            name: '김은아',
-            message: '아빠 오늘 일찍 주무세요.',
-          },
-          {
-            img: 'img/theme/react.jpg',
-            name: '김남현',
-            message: '어머니, 안녕하세요.',
-          },
-          {
-            img: 'img/theme/react.jpg',
-            name: '이근환',
-            message: '아버지, 안녕하세요.',
-          },
+          }
         ]
       }
 	},
@@ -355,6 +362,31 @@ export default {
       ChildSelModal
     },
     methods: {
+        onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length) return;
+            console.log('파일들어옴? ' , files[0]);
+
+            let formData = new FormData();
+            formData.append("file", files[0]);
+
+
+            this.$http.post(`/user/profile/${this.user.userId}`, formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.user.token}`
+                        ,'Content-Type':'multipart/form-data'
+                    }
+                })
+                .then(res => {
+                    this.$store.state.user.profileUrl = res.data.profileUrl;
+                    this.$swal({
+                        type: 'success',
+                        title: '프로필 사진을 변경했습니다.'
+                    });
+
+                });
+        },
     execDaumPostcode() {
       const currentScroll = Math.max(
         document.body.scrollTop,
@@ -449,5 +481,9 @@ li {
 }
 a {
   color: #42b983;
+}
+
+.fileBtn {
+    display: none;
 }
 </style>
