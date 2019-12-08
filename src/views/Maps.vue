@@ -5,37 +5,36 @@
                 <div class="main">
                     <h1 class=""><h1 class="ni ni-square-pin"></h1>  부모님 위치</h1>
                 </div>
-                <div class="tot">
-                    <div class="rightOne">
-                        <base-dropdown >
-                            <base-button slot="title"  class="dropdown-toggle" style="background-color: white; color: #172b4d">
-                                {{selectedParent.name}}
-                            </base-button>
-                            <a class="dropdown-item" @click="selectedParent=parent" v-for="parent in parents" :key="parent.id">{{parent.name}}</a>
-                        </base-dropdown>
-                    </div>
-                    <div class="rightTwo">
-                        <base-input class="" addon-left-icon="ni ni-calendar-grid-58" >
-                            <flat-pickr slot-scope="{focus, blur}"
-                                        @on-open="focus"
-                                        @on-close="blur"
-                                        :config="{allowInput: true}"
-                                        class="form-control datepicker"
-                                        v-model="date">
-                            </flat-pickr>
-                        </base-input>
-                    </div>
-                    <div class="rightThree">
-                        <base-button @click="getLocation">검색</base-button>
-                    </div>
-                </div>
-
             </div>
         </base-header>
+        <div class="row">
+            <div class="tot">
+                <div class="rightOne">
+                    <base-dropdown >
+                        <base-button slot="title"  class="dropdown-toggle" style="background-color: white; color: #172b4d">
+                            {{selectedParent.name}}
+                        </base-button>
+                        <a class="dropdown-item" @click="selectedParent=parent" v-for="parent in parents" :key="parent.id">{{parent.name}}</a>
+                    </base-dropdown>
+                </div>
+                <div class="rightTwo">
+                    <base-input class="" addon-left-icon="ni ni-calendar-grid-58" >
+                        <flat-pickr slot-scope="{focus, blur}"
+                                    @on-open="focus"
+                                    @on-close="blur"
+                                    :config="{allowInput: true}"
+                                    class="form-control datepicker"
+                                    v-model="date">
+                        </flat-pickr>
+                    </base-input>
+                </div>
+                <div class="rightThree">
+                    <base-button @click="getLocation">검색</base-button>
+                </div>
+            </div>
+        </div>
 
-            <div class="row">
-                <div class="col">
-                    <div class="">
+            <div class="">
                         <div class="card-body">
                             <div class="row">
                                 <gmap-map
@@ -64,14 +63,14 @@
                                 </gmap-map>
                             </div>
                         </div>
-                    </div>
                 </div>
-        </div>
     </div>
 </template>
 <script>
 import flatPickr from 'vue-flatpickr-component';
 import dateUtil from '../common/dateUtil';
+var moment = require('moment');
+moment().format();
 
   export default {
       components: {
@@ -123,9 +122,9 @@ import dateUtil from '../common/dateUtil';
                       .then((result) => {
                           this.markers = [];
                           let footPrints = result.data.footPrints;
-                          console.log('가져옴?', footPrints);
                           let marker;
                           footPrints.forEach((footPrint) => {
+                              footPrint.insertTime = moment(footPrint.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm:ss');
                               marker = {
                                   position: {
                                       lat: footPrint.latitude,
@@ -167,7 +166,8 @@ import dateUtil from '../common/dateUtil';
     }
 
     .tot {
-        width: 65%;
+        margin-left: 3%;
+        width: 63%;
         float: right;
         /*margin: 10px auto;*/
     }
@@ -175,7 +175,7 @@ import dateUtil from '../common/dateUtil';
     .rightOne {
         /*border: 1px solid red;*/
         float: left;
-        width:10%;
+        width:113px;
         /*box-sizing: border-box;*/
 
     }
@@ -183,7 +183,6 @@ import dateUtil from '../common/dateUtil';
     .rightTwo {
         /*border: 1px solid green;*/
         float: left;
-        margin-left: 5%;
         width:30%;
         /*box-sizing: border-box;*/
     }
@@ -191,7 +190,7 @@ import dateUtil from '../common/dateUtil';
     .rightThree {
         /*border: 1px solid blue;*/
         float: left;
-        width: 15%;
+        width: 10%;
         /*box-sizing: border-box;*/
     }
 </style>
