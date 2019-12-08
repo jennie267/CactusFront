@@ -1,40 +1,40 @@
 <template>
     <div>
-        <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-1">
+        <base-header type="gradient-success" class="pb-5">
+            <div class="card-header bg-transparent row align-items-center">
+                <div class="main">
+                    <h1 class=""><h1 class="ni ni-square-pin"></h1>  부모님 위치</h1>
+                </div>
+            </div>
         </base-header>
-        <div class="container-fluid mt--7">
-            <div class="row">
-                <div class="col">
-                    <div class="card shadow">
-                        <div class="card-header bg-transparent">
-                            <div class="row">
-                                <h3 class="mb-0" style="margin-left:1%;">{{title}}</h3>
-                            </div>
-                            <div class="row mt-5">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <base-input class="col-sm-10" addon-left-icon="ni ni-calendar-grid-58">
-                                            <flat-pickr slot-scope="{focus, blur}"
-                                                        @on-open="focus"
-                                                        @on-close="blur"
-                                                        :config="{allowInput: true}"
-                                                        class="form-control datepicker"
-                                                        v-model="date">
-                                            </flat-pickr>
-                                        </base-input>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <base-dropdown :title=selectedParent.name position="left" tag="li">
-                                            <li class="dropdown-item" @click="selectedParent=defaultParent">{{defaultParent.name}}</li>
-                                            <li class="dropdown-item" @click="selectedParent=parent" v-for="parent in parents" :key="parent.id">{{parent.name}}</li>
-                                        </base-dropdown>
-                                        <base-button @click="getLocation">검색</base-button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div class="row">
+            <div class="tot">
+                <div class="rightOne">
+                    <base-dropdown >
+                        <base-button slot="title"  class="dropdown-toggle" style="background-color: white; color: #172b4d">
+                            {{selectedParent.name}}
+                        </base-button>
+                        <a class="dropdown-item" @click="selectedParent=parent" v-for="parent in parents" :key="parent.id">{{parent.name}}</a>
+                    </base-dropdown>
+                </div>
+                <div class="rightTwo">
+                    <base-input class="" addon-left-icon="ni ni-calendar-grid-58" >
+                        <flat-pickr slot-scope="{focus, blur}"
+                                    @on-open="focus"
+                                    @on-close="blur"
+                                    :config="{allowInput: true}"
+                                    class="form-control datepicker"
+                                    v-model="date">
+                        </flat-pickr>
+                    </base-input>
+                </div>
+                <div class="rightThree">
+                    <base-button @click="getLocation">검색</base-button>
+                </div>
+            </div>
+        </div>
+
+            <div class="">
                         <div class="card-body">
                             <div class="row">
                                 <gmap-map
@@ -63,15 +63,14 @@
                                 </gmap-map>
                             </div>
                         </div>
-                    </div>
                 </div>
-            </div>
-        </div>
     </div>
 </template>
 <script>
 import flatPickr from 'vue-flatpickr-component';
 import dateUtil from '../common/dateUtil';
+var moment = require('moment');
+moment().format();
 
   export default {
       components: {
@@ -79,7 +78,6 @@ import dateUtil from '../common/dateUtil';
       },
       data() {
           return {
-              title: '부모님 경로 검색',
               user: this.$store.state.user,
               date: dateUtil.getToday(),
               center: {
@@ -90,7 +88,7 @@ import dateUtil from '../common/dateUtil';
                   lat: 37.48877560436582,
                   lng: 127.00939031639054
               },
-              zoom: 16,
+              zoom: 20,
               mapType: 'roadmap',
               markers: [],
               plPath: [],
@@ -126,6 +124,7 @@ import dateUtil from '../common/dateUtil';
                           let footPrints = result.data.footPrints;
                           let marker;
                           footPrints.forEach((footPrint) => {
+                              footPrint.insertTime = moment(footPrint.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm:ss');
                               marker = {
                                   position: {
                                       lat: footPrint.latitude,
@@ -150,9 +149,48 @@ import dateUtil from '../common/dateUtil';
           this.$http.get(`/user/parents/`+this.user.userId,  { headers: { Authorization: `Bearer `+this.user.token } })
               .then(res => {
                   this.parents = res.data.users;
+                  if (this.parents.length > 0){
+                      this.selectedParent.name = this.parents[0].name;
+                      this.selectedParent.userId = this.parents[0].userId;
+                      this.getLocation();
+                  }
+
               });
+
       }
   }
 </script>
 <style>
+    .main {
+        float: left;
+    }
+
+    .tot {
+        margin-left: 3%;
+        width: 63%;
+        float: right;
+        /*margin: 10px auto;*/
+    }
+
+    .rightOne {
+        /*border: 1px solid red;*/
+        float: left;
+        width:113px;
+        /*box-sizing: border-box;*/
+
+    }
+
+    .rightTwo {
+        /*border: 1px solid green;*/
+        float: left;
+        width:30%;
+        /*box-sizing: border-box;*/
+    }
+
+    .rightThree {
+        /*border: 1px solid blue;*/
+        float: left;
+        width: 10%;
+        /*box-sizing: border-box;*/
+    }
 </style>

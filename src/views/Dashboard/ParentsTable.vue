@@ -1,6 +1,6 @@
 <template>
     <div class="card shadow" style="width:100%;">
-        <div class="card-header todaySchHeader">
+        <div class="card-header box3Header">
             <div class="row">
                 <h3 class="mb-0 todaySchHeaderStr"><h1 class="ni ni-badge todaySchHeaderStr"></h1>  부모님목록</h3>
             </div>
@@ -59,7 +59,7 @@ import { VueGoodTable } from 'vue-good-table/src'
                 .then(res => {
                     this.parentData = res.data.users;
                     this.parentData.forEach(user => user.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
-                        '<img alt="Image placeholder" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
+                        '<img alt="" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
                         '</a>');
                 });
         }

@@ -6,25 +6,18 @@
         </base-button>
 
         <modal :show.sync="modals.modal1">
-            <h2 class="modal-title text-left" id="modal-title-default">받는사람</h2>
+            <h2 class="modal-title text-left" id="modal-title-default"><h1 class="ni ni-email-83"></h1>  쪽지보내기</h2>
             <br>
             <div class="row"  >
-                <!--<div v-for="child in children" :key="child.id"  class="col custom-control custom-checkbox text-left" >-->
                 <div v-for="child in children" :key="child.userId"  class="custom-control custom-checkbox text-left" style="margin-right: 6%;" >
                     <input class="custom-control-input" type="checkbox" :id="child.userId" :value="child.userId" v-model="checkedNames">
                     <label class="custom-control-label" :for="child.userId">{{child.name}}</label>
                 </div>
-
-                <!--        <div class="custom-control custom-checkbox text-left" style="margin-right: 6%;" >
-                <input class="custom-control-input" type="checkbox" id="김은아1" value="김은아" v-model="checkedNames">
-                <label class="custom-control-label" for="김은아1">김은아</label>
-                </div>
-                -->
             </div>
 
             <br>
             <form>
-                <textarea class="form-control" style="width: 100%;height: 100px;" v-model="message" placeholder="내용을 입력하세요."></textarea>
+                <textarea class="form-control" style="width: 100%;height: 200px;" v-model="message" placeholder="내용을 입력하세요."></textarea>
             </form>
             <br>
             <div class="text-right">

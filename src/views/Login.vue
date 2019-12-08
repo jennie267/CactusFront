@@ -19,7 +19,9 @@
                                         placeholder="비밀번호"
                                         type="password"
                                         addon-left-icon="ni ni-lock-circle-open"
-                                        v-model="user.password">
+                                        v-model="user.password"
+                                        @keyup.enter="doLogin"
+                            >
                             </base-input>
                             <div class="text-center">
                                 <base-button type="primary" class="my-4" @click="doLogin">로그인</base-button>

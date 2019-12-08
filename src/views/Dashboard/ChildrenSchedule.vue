@@ -1,7 +1,7 @@
 <template>
 <!--    <div>HEllo</div>-->
     <div class="card shadow" style="width:100%; height:100%;">
-        <div class="card-header todaySchHeader">
+        <div class="card-header box2Header">
             <div class="row">
                 <h3 class="mb-0 todaySchHeaderStr"><h1 class="ni ni-calendar-grid-58 todaySchHeaderStr"></h1>  오늘의 일정</h3>
             </div>
@@ -11,7 +11,8 @@
                 <vue-good-table
                         style="width:100%;"
                         :columns="periodHeader"
-                        :rows="periodData"/>
+                        :rows="periodData"
+                />
             </div>
         </div>
     </div>
@@ -89,11 +90,9 @@ moment().format();
                 this.parentData.forEach(parent => {
                     this.$http.get(`/period/schedule/day/user/${this.today}/${parent.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                         .then(res => {
-                            console.log('비교 ', res.data);
                             res.data.schedules.forEach(schedule =>{
                                 schedule.userName = parent.name;
                                 schedule.schdTime = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
-                                console.log(schedule.schdTime);
                                 this.periodData.push(schedule);
                             });
 

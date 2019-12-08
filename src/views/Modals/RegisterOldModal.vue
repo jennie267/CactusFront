@@ -147,7 +147,7 @@
                                 placeholder="Address"
                                 input-classes="form-control-alternative"
                                 v-model="user.addrSub"
-                                ref="addressDetail"
+                                ref="addrSub"
                     />
                 </div>
             </div>
@@ -216,10 +216,11 @@
 
                         this.user.zipCode = data.zonecode;
 
-                        this.$refs.extraAddress.focus();
+                        //this.$refs.extraAddress.focus();
 
                         this.searchWindow.display = 'none';
                         document.body.scrollTop = currentScroll;
+                        this.$router.go(-1);
                     },
                     onResize: (size) => {
                         this.searchWindow.height = `${size.height}px`;
@@ -247,7 +248,7 @@
                         title: '비밀번호와 비밀번호확인이 같지 않습니다.'
                     });
                  }else{
-/*                    this.$http.post(`/user/signup/`, this.user,
+                    this.$http.post(`/user/signup/`, this.user,
                         {
                             headers: {
                                 Authorization: `Bearer ${this.user.token}`
@@ -260,7 +261,7 @@
                             console.log(res);
                             console.log(res.data);
                             Vue.swal('가입을 환영합니다!');
-                        });*/
+                        });
                 }
             },
             idCheck() {

@@ -14,17 +14,22 @@
                             locale="ko"
                             :weekends="true"
                             :header="{
-                                left: 'prev',
+                                left: '',
                                 center: 'title',
-                                right: 'next'
+                                right: ''
                         }"
                             @dateClick="dateClick"
+
                     />
                     <!--                            :selectable="true"-->
 <!--                    :events="[
                     { title: 'event 1', date: '2019-12-22' },
                     { title: 'event 2', date: '2019-12-23' }
                     ]"-->
+<!--
+                    left: 'prev',
+                    center: 'title',
+                    right: 'next'-->
                 </div>
             </div>
             <div class="box box2">
@@ -37,17 +42,23 @@
                     <today-messages style="width:100%; height:100%;" :date="date"></today-messages>
                 </div>
             </div>
-            <div class="box box3 card">
+            <div class="box box3">
                 <div>
                     <parents-table v-if="user.type === 'CHILD'" @selectUser="selectUser" style="width:100%; height:100%;"></parents-table>
                     <children-table v-if="user.type === 'PARENT'" @selectUser="selectUser" style="width:100%; height:100%;"></children-table>
                 </div>
             </div>
-            <div class="box box4 card">
+            <div class="box box4">
                 <div>
-                    <dashboard-profile :user="selectedUser" style="width:100%; height:100%;"></dashboard-profile>
+                    <dashboard-profile :chkUser="selectedUser" :user="user" style="width:100%; height:100%;"></dashboard-profile>
                 </div>
             </div>
+           <div class="box box5">
+               <div>
+                   <write-letter ref="letterModal" :revUser="selectedUser" :user="user" style="width:100%; height:100%;"></write-letter>
+               </div>
+           </div>
+
         </div>
     </div>
 </template>
@@ -61,6 +72,7 @@ import ChildrenTable from './Dashboard/ChildrenTable'
 import ParentsSchedule from './Dashboard/ParentsSchedule'
 import ChildrenSchedule from './Dashboard/ChildrenSchedule'
 import TodayMessages from './Dashboard/TodayMessages'
+import WriteLetter from './Dashboard/WriteLetter'
 import dateUtil from '../common/dateUtil'
   export default {
     components: {
@@ -70,7 +82,8 @@ import dateUtil from '../common/dateUtil'
         ChildrenTable,
         ParentsSchedule,
         ChildrenSchedule,
-        TodayMessages
+        TodayMessages,
+        WriteLetter
     },
     data() {
       return {
@@ -163,12 +176,35 @@ import dateUtil from '../common/dateUtil'
     .box1 {
         background-color: white;
         flex-basis: calc(40% - 40px);
+        height: max-content;
     }
     .box2 {
         flex-basis: calc(60% - 40px);
     }
-    .box3 { background-color: white; }
-    .box4 { background-color: white; }
+    .box3 {
+        flex-basis: calc(20% - 40px);
+    }
+    .box4 {
+        flex-basis: calc(35% - 40px);
+    }
+    .box5 {
+        flex-basis: calc(45% - 40px);
+    }
+    .box2Header {
+        background-color: #3a6fa0;
+    }
+    .box22Header {
+        background-color: #d18392;
+    }
+    .box3Header {
+        background-color: #71b284;
+    }
+    .box4Header {
+        background-color: #727bae;
+    }
+    .box5Header {
+        background-color: #b06e6c;
+    }
 
     .todaySchHeader {
         background-color: #1e2b37;
@@ -176,5 +212,6 @@ import dateUtil from '../common/dateUtil'
     .todaySchHeaderStr {
         color: #eff2f7;
     }
+
 
 </style>

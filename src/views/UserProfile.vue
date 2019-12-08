@@ -14,6 +14,7 @@
                                 <div class="card-profile-image">
                                     <a href="#">
                                          <img v-if="user.profileUrl != null" alt="" :src="user.profileUrl" class="rounded-circle">
+                                         <img v-if="user.profileUrl == null" src="img/theme/typeUser.jpg" class="rounded-circle">
                                     </a>
                                 </div>
                             </div>
@@ -35,7 +36,7 @@
                             </div>
                         </div>
                     </div>
-                    <card shadow type="secondary">
+                    <card type="secondary">
                         <div slot="header" class="bg-white border-0">
                             <div class="row align-items-center">
                                 <div class="col-8">
@@ -56,7 +57,7 @@
                                                         readonly="true"
                                             />
                                         </div>
-                                    </div>                                    
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-8">
                                             <base-input alternative=""
@@ -103,7 +104,7 @@
                                                 <div class="custom-control custom-radio mb-3">
                                                     <input name="custom-radio-1" class="custom-control-input" id="customRadio2" type="radio" v-model="modUser.gender" value="남성">
                                                     <label class="custom-control-label" for="customRadio2"><span>남성</span></label>
-                                                </div>            
+                                                </div>
                                             </base-input>
                                         </div>
                                     </div>
@@ -127,7 +128,7 @@
                                                         v-model="modUser.phoneNumber"
                                             />
                                         </div>
-                                    </div>   
+                                    </div>
                                   <div class="row">
                                     <div class="col-lg-8">
                                     <base-input label="생일">
@@ -135,7 +136,7 @@
                                                             </div>
                                         <flat-pickr slot-scope="{focus, blur}"
                                               @on-open="focus"
-                                              @on-close="blur" 
+                                              @on-close="blur"
                                               :config="{allowInput: true}"
                                               class="form-control datepicker"
                                               placeholder="birthday"
@@ -143,7 +144,7 @@
                                         </flat-pickr>
                                     </base-input>
                                     </div>
-                                  </div>   
+                                  </div>
                                   <div class="pl-lg-4">
                                     <div
                                         ref="searchWindow"
@@ -162,7 +163,7 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <base-input alternative=""
-                                                        label="주소"    
+                                                        label="주소"
                                                         placeholder="Address"
                                                         input-classes="form-control-alternative"
                                                         v-model="modUser.addrMain"
@@ -176,7 +177,7 @@
                                                         v-model="modUser.zipCode"
                                             />
                                         </div>
-                                        <input type="button" class="btn btn-sm btn-primary" value="우편번호 찾기" @click="execDaumPostcode">
+                                        <input type="button" class="btn btn-sm btn-primary" style="height: fit-content;" value="우편번호 찾기" @click="execDaumPostcode">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -185,7 +186,7 @@
                                                         placeholder="Address"
                                                         input-classes="form-control-alternative"
                                                         v-model="modUser.addrSub"
-                                                        ref="addressDetail"
+                                                        ref="addrSub"
                                             />
                                         </div>
                                     </div>
@@ -200,17 +201,17 @@
                         <br>
                         <br>
                          <div v-if="user.type=='CHILD'">
-                          <!--유저에게 부모가 존재하면 이 화면을 뿌려줌 --> 
+                          <!--유저에게 부모가 존재하면 이 화면을 뿌려줌 -->
                           <template>
                             <div slot="header">
                                 <div style="font-weight:bold"><span class="glyphicon glyphicon-align-justify"></span>내 부모</div>
                                 <br>
                             </div>
                               <div class="form-group">
-                              <base-table class="table align-items-center table-flush" 
-                                :class="type === 'dark' ? 'table-dark': ''" 
+                              <base-table class="table align-items-center table-flush"
+                                :class="type === 'dark' ? 'table-dark': ''"
                                 :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
-                                  tbody-classes="list" 
+                                  tbody-classes="list"
                                   :data="tableData">
                                 <template slot="columns" style="font-size: 15px;">
                                 <th></th>
@@ -248,10 +249,10 @@
                         <div slot="header">
                            <div style="font-weight:bold"><span class="glyphicon glyphicon-align-justify"></span>내 자녀</div>
                           </div>
-                          <base-table class="table align-items-center table-flush" 
-                          :class="type === 'dark' ? 'table-dark': ''" 
+                          <base-table class="table align-items-center table-flush"
+                          :class="type === 'dark' ? 'table-dark': ''"
                           :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
-                            tbody-classes="list" 
+                            tbody-classes="list"
                             :data="tableData">
                           <template slot="columns" style="font-size: 15px;">
                           <th :style="thStyle"></th>
@@ -344,10 +345,10 @@ export default {
             img: 'img/theme/react.jpg',
             name: '이근환',
             message: '아버지, 안녕하세요.',
-          },          
+          },
         ]
       }
-	}, 
+	},
 	components: {
       flatPickr,
       FamilySelModal,
@@ -362,35 +363,35 @@ export default {
       new daum.Postcode({
         onComplete: (data) => {
           if (data.userSelectedType === 'R') {
-            this.user.addrMain = data.roadAddress;
+            this.modUser.addrMain = data.roadAddress;
           } else {
-            this.user.addrMain = data.jibunAddress;
+            this.modUser.addrMain = data.jibunAddress;
           }
           if (data.userSelectedType === 'R') {
             if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-              this.user.addrSub += data.bname;
+              this.modUser.addrSub += data.bname;
             }
 
             if (data.buildingName !== '' && data.apartment === 'Y') {
-              this.user.addrSub +=
-                this.user.addrSub !== ''
+              this.modUser.addrSub +=
+                this.modUser.addrSub !== ''
                   ? `, ${data.buildingName}`
                   : data.buildingName;
             }
 
-            if (this.user.addrSub !== '') {
-              this.user.addrSub = ` (${this.user.addrSub})`;
+            if (this.modUser.addrSub !== '') {
+              this.modUser.addrSub = ` (${this.modUser.addrSub})`;
             }
           } else {
-            this.user.addrSub = '';
+            this.modUser.addrSub = '';
           }
 
-          this.user.zipCode = data.zonecode;
-
-          this.$refs.extraAddress.focus();
+          this.modUser.zipCode = data.zonecode;
 
           this.searchWindow.display = 'none';
           document.body.scrollTop = currentScroll;
+          this.$router.go(-1);
+
         },
         onResize: (size) => {
           this.searchWindow.height = `${size.height}px`;
@@ -402,7 +403,7 @@ export default {
       this.searchWindow.display = 'block';
     },
     doUserUpdate() {
-      this.$http.put(`/user/update/`, modUser,
+      this.$http.post(`/user/update/`, modUser,
       {
         headers: {
             Authorization: `Bearer ${this.modUser.token}`
@@ -422,15 +423,15 @@ export default {
   pwValidation: function() {
       // if(!this.modUser.password.length==0) {
       //  return this.modUser.password.length > 8 ? `` : `[주의] 비밀번호는 8자 이상으로 작성해주세요.`;
-      // } 
+      // }
   },
   //pwCheck : function() {
       //  if(!this.modUser.passwordchk.length==0) {
       //   if(this.modUser.password != this.modUser.passwordchk) {
-      //    return `[주의] 비밀번호가 동일하지 않습니다.`; 
+      //    return `[주의] 비밀번호가 동일하지 않습니다.`;
       //   }
-      // } 
-   // } 
+      // }
+   // }
   }
 };
 </script>

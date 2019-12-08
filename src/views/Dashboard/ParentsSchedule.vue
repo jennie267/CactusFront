@@ -1,8 +1,8 @@
 <template>
 <!--    <div>HEllo</div>-->
     <div class="card shadow" style="width:100%; height:100%;">
-        <div class="card-header todaySchHeader">
-            <div class="row">
+        <div class="card-header box2Header">
+            <div class="row ">
                 <h3 class="mb-0 todaySchHeaderStr"><h1 class="ni ni-calendar-grid-58 todaySchHeaderStr"></h1>  오늘의 일정</h3>
             </div>
         </div>
@@ -79,12 +79,10 @@ moment().format();
         },
         methods: {
             findSchedule() {
-                console.log('오늘 ' , this.today);
                 this.$http.get(`/period/schedule/day/user/${this.today}/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                     .then(res => {
                         res.data.schedules.forEach(schedule =>{
                             schedule.schdTime = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
-                            console.log(schedule.schdTime);
                             this.periodData.push(schedule);
                         });
 

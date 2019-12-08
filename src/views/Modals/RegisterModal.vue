@@ -147,7 +147,7 @@
                                 placeholder="Address"
                                 input-classes="form-control-alternative"
                                 v-model="user.addrSub"
-                                ref="addressDetail"
+                                ref="addrSub"
                     />
                 </div>
             </div>
@@ -217,10 +217,11 @@
 
                         this.user.zipCode = data.zonecode;
 
-                        this.$refs.extraAddress.focus();
+                        // this.$refs.extraAddress.focus();
 
                         this.searchWindow.display = 'none';
                         document.body.scrollTop = currentScroll;
+                        this.$router.go(-1);
                     },
                     onResize: (size) => {
                         this.searchWindow.height = `${size.height}px`;
@@ -237,7 +238,16 @@
                         type: 'warning',
                         title: '아이디 중복체크 해주세요.'
                     });
-
+                }else if(user.password.length <8){
+                    this.$swal({
+                        type: 'warning',
+                        title: '비밀번호는 8자리 이상이어야 합니다.'
+                    });
+                } else if(user.password != user.passwordchk){
+                    this.$swal({
+                        type: 'warning',
+                        title: '비밀번호와 비밀번호확인이 같지 않습니다.'
+                    });
                 }else {
                     this.$http.post(`/user/signup/`, this.user,
                         {
