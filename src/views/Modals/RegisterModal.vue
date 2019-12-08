@@ -264,21 +264,16 @@
                 }
             },
             idCheck() {
-                this.$http.get(`/user/idcheck/`+this.user.id,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${this.user.token}`
-                            ,'Content-Type':'application/json'
-                        },
-                    })
+                this.$http.get(`/user/idcheck/`+this.user.id)
                     .then(res => {
-                        if(res==1) {
+                        console.log(res.data);
+                        if(res.data==1) {
                             this.idValid = false;
                             this.$swal({
                                 type: 'warning',
                                 title: '동일한 아이디가 존재합니다.'
                             });
-                        } else if(res==0) {
+                        } else if(res.data==0) {
                             this.idValid = true;
                             this.$swal({
                                 type: 'success',
