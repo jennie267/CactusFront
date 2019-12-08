@@ -185,7 +185,7 @@
                                                         placeholder="Address"
                                                         input-classes="form-control-alternative"
                                                         v-model="modUser.addrSub"
-                                                        ref="addressDetail"
+                                                        ref="addrSub"
                                             />
                                         </div>
                                     </div>
@@ -362,32 +362,30 @@ export default {
       new daum.Postcode({
         onComplete: (data) => {
           if (data.userSelectedType === 'R') {
-            this.user.addrMain = data.roadAddress;
+            this.modUser.addrMain = data.roadAddress;
           } else {
-            this.user.addrMain = data.jibunAddress;
+            this.modUser.addrMain = data.jibunAddress;
           }
           if (data.userSelectedType === 'R') {
             if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-              this.user.addrSub += data.bname;
+              this.modUser.addrSub += data.bname;
             }
 
             if (data.buildingName !== '' && data.apartment === 'Y') {
-              this.user.addrSub +=
-                this.user.addrSub !== ''
+              this.modUser.addrSub +=
+                this.modUser.addrSub !== ''
                   ? `, ${data.buildingName}`
                   : data.buildingName;
             }
 
-            if (this.user.addrSub !== '') {
-              this.user.addrSub = ` (${this.user.addrSub})`;
+            if (this.modUser.addrSub !== '') {
+              this.modUser.addrSub = ` (${this.modUser.addrSub})`;
             }
           } else {
-            this.user.addrSub = '';
+            this.modUser.addrSub = '';
           }
 
-          this.user.zipCode = data.zonecode;
-
-          this.$refs.extraAddress.focus();
+          this.modUser.zipCode = data.zonecode;
 
           this.searchWindow.display = 'none';
           document.body.scrollTop = currentScroll;
