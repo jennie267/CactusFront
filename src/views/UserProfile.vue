@@ -36,7 +36,7 @@
                             </div>
                         </div>
                     </div>
-                    <card shadow type="secondary">
+                    <card type="secondary">
                         <div slot="header" class="bg-white border-0">
                             <div class="row align-items-center">
                                 <div class="col-8">
