@@ -402,7 +402,7 @@ export default {
       this.searchWindow.display = 'block';
     },
     doUserUpdate() {
-      this.$http.put(`/user/update/`, modUser,
+      this.$http.post(`/user/update/`, modUser,
       {
         headers: {
             Authorization: `Bearer ${this.modUser.token}`
