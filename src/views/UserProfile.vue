@@ -389,6 +389,8 @@ export default {
 
           this.searchWindow.display = 'none';
           document.body.scrollTop = currentScroll;
+          this.$router.go(-1);
+          
         },
         onResize: (size) => {
           this.searchWindow.height = `${size.height}px`;

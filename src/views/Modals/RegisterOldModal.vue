@@ -147,7 +147,7 @@
                                 placeholder="Address"
                                 input-classes="form-control-alternative"
                                 v-model="user.addrSub"
-                                ref="addressDetail"
+                                ref="addrSub"
                     />
                 </div>
             </div>
@@ -216,10 +216,11 @@
 
                         this.user.zipCode = data.zonecode;
 
-                        this.$refs.extraAddress.focus();
+                        //this.$refs.extraAddress.focus();
 
                         this.searchWindow.display = 'none';
                         document.body.scrollTop = currentScroll;
+                        this.$router.go(-1);
                     },
                     onResize: (size) => {
                         this.searchWindow.height = `${size.height}px`;
