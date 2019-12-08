@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="col">
         <modal :show.sync="modals.modal1">
             <div class="row">
                 <img src="img/brand/white.png" style="width:25%;">
@@ -41,7 +41,9 @@
                                 type="password"
                                 ref="passwordchk"
                     />
+                    <!--
                     <small>{{ pwCheck }}</small>
+                    -->
                 </div>
             </div>
             <div class="row">
@@ -168,16 +170,22 @@
     import 'flatpickr/dist/flatpickr.css';
     import VueSweetalert2 from 'vue-sweetalert2';
     import 'sweetalert2/dist/sweetalert2.min.css';
-    import axios from 'axios'
-    Vue.prototype.$http=axios
     Vue.use(VueSweetalert2);
+
+
     let idValid = false;
     export default {
         methods: {
             openModal(){
                 this.modals.modal1 = true;
             },
-            execDaumPostcode() {
+            showAlert() {
+                Vue.swal('가입을 축하드립니다!');
+            }
+            ,close() {
+                this.$emit('close');
+            }
+            ,execDaumPostcode() {
                 const currentScroll = Math.max(
                     document.body.scrollTop,
                     document.documentElement.scrollTop,
@@ -232,7 +240,7 @@
                         type: 'warning',
                         title: '아이디 중복체크 해주세요.'
                     });
-                } else if(this.user.password.length <8){
+                }else if(this.user.password.length <8){
                     this.$swal({
                         type: 'warning',
                         title: '비밀번호는 8자리 이상이어야 합니다.'
@@ -242,36 +250,35 @@
                         type: 'warning',
                         title: '비밀번호와 비밀번호확인이 같지 않습니다.'
                     });
-                }else{
+                }else {
                     this.$http.post(`/user/signup/`, this.user,
                         {
                             headers: {
                                 Authorization: `Bearer ${this.user.token}`
-                                ,'Content-Type':'application/json'
+                                , 'Content-Type': 'application/json'
                             },
                         })
                         .then(res => {
-                            console.log(this.user);
-                            console.log('전송');
-                            console.log(res);
-                            console.log(res.data);
                             Vue.swal('가입을 환영합니다!');
                         });
                 }
             },
             idCheck() {
-                console.log("?");
-                console.log(this.user.id);
-                this.$http.get(`/user/idcheck/`+this.user.id)
+                this.$http.get(`/user/idcheck/`+this.user.id,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.user.token}`
+                            ,'Content-Type':'application/json'
+                        },
+                    })
                     .then(res => {
-                        console.log(res.data);
-                        if(res.data==1) {
+                        if(res==1) {
                             this.idValid = false;
                             this.$swal({
                                 type: 'warning',
                                 title: '동일한 아이디가 존재합니다.'
                             });
-                        } else if(res.data==0) {
+                        } else if(res==0) {
                             this.idValid = true;
                             this.$swal({
                                 type: 'success',
@@ -315,6 +322,7 @@
                     zipCode: '',
                     brithday:'',
                     tel:'',
+                    //gender:'',
                     type:'CHILD'
                 },
                 searchWindow: {
@@ -335,6 +343,7 @@
         height:100%;
         text-align: center;
     }
+
     #container span {
         display: table-cell;
         vertical-align: middle;
