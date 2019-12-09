@@ -83,32 +83,44 @@ export default {
         toDate: '',
         events: [],
         bcolor:['#ba6270','#6287ba','#6672a8','#fff1ab','#ecbbb7','#5555aa','#c1ecb7','#8aba62','#9fd6fa','#62baa4'],
-        fcolor:['#e9ecef','#e9ecef','#e9ecef','#172b4d','#172b4d','#e9ecef','#172b4d','#e9ecef','#172b4d','#e9ecef']
+        fcolor:['#e9ecef','#e9ecef','#e9ecef','#172b4d','#172b4d','#e9ecef','#172b4d','#e9ecef','#172b4d','#e9ecef'],
+        isEnter: true,
     }
   },
     watch: {
         fromDate: function(){this.findEvents()},
         selectedParent: function(){this.findEvents()},
+        getDeletedSchdId (val) {
+            this.deleteEventsBySchdId(val);
+        },
+        getDeletedPeriodId (val) {
+            console.log('d',val)
+            this.deleteEventsByPeriodId(val);
+        },
+        getUpdatedPeriodId (val) {
+            console.log('u',val)
+            this.updateEventsByPeriodId(val);
+        },
+    },
+    computed: {
+        getDeletedSchdId () {
+            return this.$store.getters.getDeletedSchdId;
+        },
+        getDeletedPeriodId () {
+            return this.$store.getters.getDeletedPeriodId;
+        },
+        getUpdatedPeriodId () {
+            return this.$store.getters.getUpdatedPeriodId;
+        },
     },
   methods: {
     dateClick(info) {
-        // this.isStatus = true;
-        this.name = info.dateStr
-        this.today = moment(info.dateStr, "YYYY-MM-DD").format('YYYYMMDD');
         this.$refs.dailyTable.tableData = [];
-        if(this.user.type==='PARENT'){
-            this.$refs.dailyTable.showScheduleList(this.today, this.$store.state.user.userId);
-        }
-        else if(this.user.type==='CHILD'){
-            if(this.selectedParent!=null){
-                this.$refs.dailyTable.showScheduleList(this.today, this.selectedParent.userId);
+        this.events.forEach(event => {
+            if(moment(event.schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD') === info.dateStr) {
+                this.$refs.dailyTable.tableData.push(event.schedule);
             }
-            else{
-                this.$store.state.parents.forEach(parent => {
-                    this.$refs.dailyTable.showScheduleList(this.today, parent.userId);
-                })
-            }
-        }
+        });
     },
       saveFromTo: function(arg) {
           this.fromDate = moment(arg.view.activeStart).format('YYYYMMDD');
@@ -143,6 +155,53 @@ export default {
                           else i++;
                       }
 
+                      event.schedule = schedule;
+                      event.color = this.bcolor[i];
+                      event.textColor = this.fcolor[i];
+                      event.title = schedule.periodName;
+                      event.date = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD');
+                      this.events.push(event);
+                  });
+                  if(this.isEnter) {
+                      this.dateClick({dateStr: this.$moment(new Date()).format('YYYY-MM-DD')});
+                      this.isEnter = false;
+                  }
+              });
+      },
+    eventClick (eventArg) {
+        this.dateClick({dateStr: moment(eventArg.event.extendedProps.schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD')});
+    },
+      deleteEventsBySchdId(schdId) {
+        if(schdId===0) return;
+        this.events.forEach((event, index) => {
+            if(event.schedule.schdId===schdId) {
+                this.events.splice(index, 1);
+            }
+        });
+      },
+      deleteEventsByPeriodId(periodId) {
+          if(periodId===0) return;
+          this.events.forEach((event, index) => {
+              if(event.schedule.periodId===periodId) {
+                  this.events.splice(index, 1);
+              }
+          });
+      },
+      updateEventsByPeriodId(periodId) {
+          if(periodId===0) return;
+          this.$http.get(`/period/schedule/from/to/period/${this.fromDate}/${this.toDate}/${periodId}`,  { headers: { Authorization: `Bearer `+this.user.token } })
+              .then(res => {
+                  let i = 0;
+                  let st = 0;
+                  res.data.schedules.forEach(schedule =>{
+                      let event = {}
+                      if (st != schedule.periodId) {
+                          st = schedule.periodId;
+                          if (i == 9) i=0;
+                          else i++;
+                      }
+
+                      event.schedule = schedule;
                       event.color = this.bcolor[i];
                       event.textColor = this.fcolor[i];
                       event.title = schedule.periodName;
@@ -151,27 +210,13 @@ export default {
                   });
               });
       },
-    eventClick () {
-        console.log(arguments)
-    },
   }, mounted() {
-        if (this.$route.params.requestDate != null) {
-            console.log('요청일자 : ', this.$route.params.requestDate);
-        }
-        let info = {
-            dateStr: this.$moment(new Date()).format('YYYY-MM-DD')
-        };
-
         if(this.user.type==='CHILD' && this.$store.state.parents.length===0) {
             this.$http.get(`/user/parents/`+this.user.userId,  { headers: { Authorization: `Bearer `+this.user.token } })
                 .then(res => {
                     this.$store.state.parents = res.data.users;
                     this.findEvents();
-                    this.dateClick(info);
                 });
-        }
-        else {
-            this.dateClick(info);
         }
     }
 }

@@ -266,6 +266,7 @@
                                 }
                             ).then(res => {
                                 if(res.status===200) {
+                                    this.$store.commit('setDeletedPeriodId', this.period.periodId);
                                     this.$http.post(`/period/schedule/period/${this.period.periodId}`, this.period,
                                         {
                                             headers: {
@@ -275,9 +276,11 @@
                                         }
                                     ).then(res => {
                                         if(res.status===200) {
-                                            console.log("스케쥴 생성 성공")
+                                            this.$store.commit('setUpdatedPeriodId', this.period.periodId);
+                                            this.$store.commit('setUpdatedPeriodId', 0);
                                         }
                                     });
+                                    this.$store.commit('setDeletedPeriodId', 0);
                                 }
                             });
                         }

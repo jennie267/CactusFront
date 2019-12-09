@@ -34,7 +34,7 @@
                         {{row.schdTime}}
                     </td>
                     <td class="text-right">
-                        <button class="btn-primary btn-sm btn-danger" @click="delSchedule(row.periodId)">삭제</button>
+                        <button class="btn-primary btn-sm btn-danger" @click="delSchedule(row.schdId)">삭제</button>
                     </td>
                 </template>
             </base-table>
@@ -50,7 +50,6 @@
     var moment = require('moment');
     moment().format();
 
-    let schedules = [];
     export default {
         name: 'daily-schedule-table',
         props: {
@@ -68,16 +67,8 @@
                     this.$refs.updateModal.periodId = id;
                 }
             },
-            showScheduleList: function(date, userId) {
-                this.$http.get(`/period/schedule/day/user/`+ date + `/`+ userId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-                    .then(res => {
-                        res.data.schedules.forEach(schedule => {
-                            schedule.schdTime = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
-                            this.tableData.push(schedule);
-                        })
-                    });
-            },
             delSchedule: function(schdId) {
+                if(schdId===0) return;
                 this.$http.post(`/period/schedule/delete/`+schdId, null,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                     .then(res => {
                         if(res.status===200){
@@ -85,6 +76,13 @@
                                 type: 'success',
                                 title: '삭제되었습니다.'
                             });
+                            this.$store.commit('setDeletedSchdId', schdId);
+                            this.tableData.forEach((schedule, index) => {
+                                if(schedule.schdId===schdId) {
+                                    this.tableData.splice(index, 1);
+                                }
+                            });
+                            this.$store.commit('setDeletedSchdId', 0);
                         }
                     })
             },
@@ -92,7 +90,7 @@
         data() {
             return {
                 user: this.$store.state.user,
-                tableData:schedules,
+                tableData: [],
                 selectedId: 0,
             }
         },

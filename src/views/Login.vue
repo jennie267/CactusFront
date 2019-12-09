@@ -69,7 +69,7 @@ import RegisterModal from './Modals/RegisterModal'
                             title: '아이디/비밀번호를 확인하세요.'
                         });
                     }else {
-                        this.$store.state.user = result.data;
+                        this.$store.commit('setUser', result.data);
                         this.$router.push("/main")
                     }
                 })
