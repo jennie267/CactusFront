@@ -9,7 +9,7 @@
           <div class="search-wrapper panel-heading col-sm-12">
           <input class="form-control" type="text" placeholder="Search" />
           <br>
-          </div>                        
+          </div>
           </div>
           <div class="table-responsive">
         <base-table class="table align-items-center table-flush" :data="tableData">
@@ -73,19 +73,23 @@ export default {
           {
             id: 'eakim3',
             name: '김은아3',
-          }        
+          }
         ]
     }
-  }
+  }, methods:{
+        openModal: function (){
+            this.modals.modal1 = true;
+        }
+    }
 }
 </script>
 <style>
 .headerDivider {
-     border-left:0.5px solid #38546d; 
-     border-right:0.5px solid #16222c; 
+     border-left:0.5px solid #38546d;
+     border-right:0.5px solid #16222c;
      height:200px;
      position:absolute;
      right:249px;
-     top:10px; 
+     top:10px;
 }
 </style>

@@ -35,7 +35,7 @@ axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
   console.log('에러', error);
-  router.push({name:"login", params:{go:"main"}});
+  // router.push({name:"login", params:{go:"main"}});
   return Promise.reject(error);
 });
 axios.interceptors.request.use(function (request) {
