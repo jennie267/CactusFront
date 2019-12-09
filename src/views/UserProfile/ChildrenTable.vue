@@ -1,19 +1,22 @@
 <template>
     <div class="card shadow" style="width:100%;">
-        <div class="card-header box3Header">
+        <div class="card-header box3Header2">
             <div class="row">
-                <h3 class="mb-0 todaySchHeaderStr"><h1 class="ni ni-badge todaySchHeaderStr"></h1>  부모님목록</h3>
+                <h3 class="mb-0 todaySchHeaderStr"><h1 class="ni ni-badge todaySchHeaderStr"></h1>  자녀목록</h3>
             </div>
         </div>
         <div class="card-body">
             <div class="row">
                 <vue-good-table
                         style="width:100%; height:100%;"
-                        :columns="parentHeader"
-                        :rows="parentData"
+                        :columns="childHeader"
+                        :rows="childData"
                         @on-row-click="onRowClick"/>
             </div>
         </div>
+        <base-button style="background-color: #3a6fa0; border-color: #3a6fa0" @click="addChildrenModal()">자녀등록</base-button>
+
+        <child-sel-modal ref="addChild"></child-sel-modal>
     </div>
 </template>
 
@@ -21,14 +24,17 @@
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table/src'
 
+import ChildSelModal from './ChildSelModal'
+
     export default {
         components: {
             VueGoodTable,
+            ChildSelModal
         },
         data() {
             return {
                 user: this.$store.state.user,
-                parentHeader: [
+                childHeader: [
                     {
                         field: 'userId',
                         hidden: true,
@@ -45,29 +51,50 @@ import { VueGoodTable } from 'vue-good-table/src'
                         field: 'name',
                         width: '25%',
                     },
+                    {
+                        label: '아이디',
+                        field: 'id',
+                        width: '25%',
+                    },
+                    {
+                        label: '생일',
+                        field: 'birthday',
+                        width: '25%',
+                    },
                 ],
-                parentData: [],
+                childData: [],
             }
         },
         methods: {
             onRowClick(select) {
                 this.$emit('selectUser', select.row)
-            },getParents(){
-                this.$http.get(`/user/parents/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
+            },
+            addChildrenModal(){
+                this.$refs.addChild.openModal();
+            },
+            getChildren(){
+                this.$http.get(`/user/children/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                     .then(res => {
-                        this.parentData = res.data.users;
-                        this.parentData.forEach(user => user.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
+                        this.childData = res.data.users;
+                        this.childData.forEach(user => user.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
                             '<img alt="" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
                             '</a>');
                     });
+            },
+            delChildren(users){
+                this.childData = users;
+            }, addChildren(users){
+                this.childData.push(users);
             }
         },
         mounted() {
-            this.getParents();
+            this.getChildren();
         }
     }
 </script>
 
 <style scoped>
+
+    /*#f5c836*/
 
 </style>

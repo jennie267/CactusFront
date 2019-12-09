@@ -23,10 +23,10 @@
             </div>
             <div class="footer down">
                 <div class="left">
-                    <input type="button" class="btn btn btn-primary cactusBasicBtn" @click="openSingUpModal('PARENT')" value="부모회원">
+                    <input type="button" ref="parentTable" class="btn btn btn-primary cactusBasicBtn" @click="openSingUpModal('PARENT')" value="부모회원">
                 </div>
                 <div class="right">
-                    <input type="button" class="btn btn btn-primary cactusBasicBtn" @click="openSingUpModal('CHILD')" value="자녀회원">
+                    <input type="button" ref="childrenTable" class="btn btn btn-primary cactusBasicBtn" @click="openSingUpModal('CHILD')" value="자녀회원">
                 </div>
             </div>
             <div class="logo">

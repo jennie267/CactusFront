@@ -14,6 +14,9 @@
                         @on-row-click="onRowClick"/>
             </div>
         </div>
+        <base-button style="background-color: #3a6fa0; border-color: #3a6fa0" @click="addParentModal()">부모등록</base-button>
+
+        <family-sel-modal ref="addParent"></family-sel-modal>
     </div>
 </template>
 
@@ -21,9 +24,11 @@
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table/src'
 
+import FamilySelModal from './FamilySelModal'
     export default {
         components: {
             VueGoodTable,
+            FamilySelModal
         },
         data() {
             return {
@@ -45,6 +50,16 @@ import { VueGoodTable } from 'vue-good-table/src'
                         field: 'name',
                         width: '25%',
                     },
+                    {
+                        label: '아이디',
+                        field: 'id',
+                        width: '25%',
+                    },
+                    {
+                        label: '생일',
+                        field: 'birthday',
+                        width: '25%',
+                    },
                 ],
                 parentData: [],
             }
@@ -52,7 +67,8 @@ import { VueGoodTable } from 'vue-good-table/src'
         methods: {
             onRowClick(select) {
                 this.$emit('selectUser', select.row)
-            },getParents(){
+            },
+            getParents(){
                 this.$http.get(`/user/parents/${this.user.userId}`,  { headers: { Authorization: `Bearer ${this.user.token}` } })
                     .then(res => {
                         this.parentData = res.data.users;
@@ -60,6 +76,15 @@ import { VueGoodTable } from 'vue-good-table/src'
                             '<img alt="" src="'+user.profileUrl+'" style="width:90%;"/>\n' +
                             '</a>');
                     });
+            },
+            addParentModal(){
+                this.$refs.addParent.openModal();
+            },
+            delParents(users){
+                this.parentData = users;
+
+            },addParent(users){
+                this.parentData.push(users);
             }
         },
         mounted() {

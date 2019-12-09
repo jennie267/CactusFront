@@ -33,15 +33,6 @@
                             <div class="text-center">
                                 <h2>{{user.name}}</h2>
                                  <a @click="$refs.imageBtn.click()" class="btn btn-sm btn-primary, ni ni-image trigger"> 프로필 사진 수정  </a>
-<!--                                <file-pond
-                                        name="사진수정"
-                                        ref="pond"
-                                        label-idle="변경하실 프로필사진을 여기에 끌어주세요."
-                                        allow-multiple="false"
-                                        accepted-file-types="image/jpeg, image/png, image/jpg"
-                                        server="/user/profile/user.userId"
-                                        v-bind:files="myFiles"
-                                        v-on:init="handleFilePondInit"/>-->
 
                             </div>
                             <div class="text-center fileBtn">
@@ -112,12 +103,12 @@
                                         <div class="col-lg-8">
                                             <base-input label="성별">
                                                 <div class="custom-control custom-radio mb-3">
-                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio1" type="radio" v-model="modUser.gender" value="여성">
-                                                    <label class="custom-control-label" for="customRadio1"><span>여성</span></label>
+                                                    <input checked="modUser.gender == '여성'" name="custom-radio-1"  class="custom-control-input" id="customRadio5" type="radio" v-model="modUser.gender" value="여성">
+                                                    <label checked="modUser.gender == '남성'" class="custom-control-label" for="customRadio5"><span>여성</span></label>
                                                 </div>
                                                 <div class="custom-control custom-radio mb-3">
-                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio2" type="radio" v-model="modUser.gender" value="남성">
-                                                    <label class="custom-control-label" for="customRadio2"><span>남성</span></label>
+                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio6" type="radio" v-model="modUser.gender" value="남성">
+                                                    <label class="custom-control-label" for="customRadio6"><span>남성</span></label>
                                                 </div>
                                             </base-input>
                                         </div>
@@ -139,7 +130,7 @@
                                                         label="전화번호"
                                                         placeholder="Phone number"
                                                         input-classes="form-control-alternative"
-                                                        v-model="modUser.phoneNumber"
+                                                        v-model="modUser.tel"
                                             />
                                         </div>
                                     </div>
@@ -205,7 +196,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr class="my-4"/>
                                 <div class="col-4 text-right" style="float:right;">
                                 <input @click="doUserUpdate" style="float: right;" type="button" class="btn btn btn-primary" value="저장">
                                 </div>
@@ -214,87 +204,24 @@
 
                         <br>
                         <br>
-                         <div v-if="user.type=='CHILD'">
-                          <!--유저에게 부모가 존재하면 이 화면을 뿌려줌 -->
-                          <template>
-                            <div slot="header">
-                                <div style="font-weight:bold"><span class="glyphicon glyphicon-align-justify"></span>내 부모</div>
-                                <br>
-                            </div>
-                              <div class="form-group">
-                              <base-table class="table align-items-center table-flush"
-                                :class="type === 'dark' ? 'table-dark': ''"
-                                :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
-                                  tbody-classes="list"
-                                  :data="tableData">
-                                <template slot="columns" style="font-size: 15px;">
-                                <th></th>
-                                <th>이름</th>
-                                <th>최근 온 메시지</th>
-                              </template>
-                              <template slot-scope="{row}">
-                                <td>
-                                  <a href="#" class="avatar avatar-sm rounded-circle">
-                                  <img alt="Image placeholder" :src="row.img" style="width:80%;">
-                                  </a>
-                                </td>
-                                <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
-                                {{row.name}}
-                                </td>
-                                <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
-                                {{row.message}}
-                                </td>
-                                <td>
-                                <div class="d-flex align-items-center">
-                                <i v-if="row.like" class="ni ni-favourite-28 " style="color: pink;"></i>
+    <hr>
+
+                        <div class="grid1x2">
+                            <div class="box_user box3_user">
+                                <div>
+                                    <parents-table ref="parentT" v-if="user.type === 'CHILD'" @selectUser="selectUser" style="width:100%; height:100%;"></parents-table>
+                                    <children-table ref="childTable" v-if="user.type === 'PARENT'" @selectUser="selectUser" style="width:100%; height:100%;"></children-table>
                                 </div>
-                                </td>
-                              </template>
-                            </base-table>
-                            <family-sel-modal></family-sel-modal>
                             </div>
-                          </template>
+                            <div class="box_user box4_user">
+                                <div>
+                                    <user-profile-detail :chkUser="selectedUser"  :user="user" style="width:100%; height:100%;"></user-profile-detail>
+                                </div>
+                            </div>
                         </div>
-                      <br>
-                      <br>
-                      <!-- 유저에게 자녀가 존재하면 이 화면을 뿌려줌 -->
-                      <div v-if="user.type=='PARENT'">
-                        <template>
-                        <div slot="header">
-                           <div style="font-weight:bold"><span class="glyphicon glyphicon-align-justify"></span>내 자녀</div>
-                          </div>
-                          <base-table class="table align-items-center table-flush"
-                          :class="type === 'dark' ? 'table-dark': ''"
-                          :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
-                            tbody-classes="list"
-                            :data="tableData">
-                          <template slot="columns" style="font-size: 15px;">
-                          <th :style="thStyle">사진</th>
-                          <th :style="thStyle">아이디</th>
-                          <th :style="thStyle">이름</th>
-                          </template>
-                          <template slot-scope="{row}">
-                          <td>
-                            <a href="#" class="avatar avatar-sm rounded-circle">
-                            <img alt="Image placeholder" :src="row.img" style="width:80%;">
-                            </a>
-                          </td>
-                          <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
-                          {{row.id}}
-                          </td>
-                          <td class="name" style="font-size: 15px; cursor:pointer" @click="modals.modal1 = true">
-                          {{row.name}}
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                            <i v-if="row.like" class="ni ni-favourite-28 " style="color: pink;"></i>
-                            </div>
-                          </td>
-                          </template>
-                          </base-table>
-                          <child-sel-modal></child-sel-modal>
-                        </template>
-                      </div>
+
+
+
                     </card>
                 </div>
             </div>
@@ -303,10 +230,7 @@
 </template>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-<!--<script src="https://unpkg.com/filepond-plugin-image-preview"></script>
-<script src="https://unpkg.com/filepond"></script>
-<script src="https://unpkg.com/vue"></script>
-<script src="https://unpkg.com/vue-filepond"></script>-->
+
 <script>
 import Vue from 'vue'
 import Datetime from 'vue-datetime'
@@ -317,16 +241,10 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import FamilySelModal from './Modals/FamilySelModal';
 import ChildSelModal from './Modals/ChildSelModal';
+import ParentsTable from './UserProfile/ParentsTable'
+import ChildrenTable from './UserProfile/ChildrenTable'
+import UserProfileDetail from './UserProfile/UserProfileDetail'
 import axios from 'axios'
-
-/*import vueFilePond from 'vue-filepond';
-import 'filepond/dist/filepond.min.css';
-// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-
-
-const FilePond = vueFilePond(FilePondPluginFileValidateType);*/
 
 Vue.use(VueSweetalert2);
 Vue.prototype.$http=axios
@@ -344,23 +262,23 @@ export default {
         user: this.$store.state.user
         ,modUser: JSON.parse(JSON.stringify(this.$store.state.user))
         ,checked:[]
+          ,selectedUser: {}
         ,searchWindow: {
         display: 'none',
         height: '300px',
-        },
-        tableData: [
-          {
-            img: 'img/theme/sooki.PNG',
-            id: 'jwkim',
-            name: '김정우',
-          }
-        ]
+        }
       }
 	},
+    mounted () {
+        this.modUser.password = null;
+    },
 	components: {
       flatPickr,
       FamilySelModal,
-      ChildSelModal
+      ChildSelModal,
+        ParentsTable,
+        ChildrenTable,
+        UserProfileDetail
     },
     methods: {
         onFileChange(e) {
@@ -387,6 +305,17 @@ export default {
                     });
 
                 });
+        },
+        selectUser(user) {
+            this.selectedUser = user
+        },
+        delUserId: function(){
+            console.log('왜안들어오?');
+            if (this.user.type == 'PARENT'){
+                this.$refs.childTable.getChildren();
+            }else if (this.user.type == 'CHILD'){
+
+            }
         },
     execDaumPostcode() {
       const currentScroll = Math.max(
@@ -436,7 +365,8 @@ export default {
       this.searchWindow.display = 'block';
     },
     doUserUpdate() {
-      this.$http.post(`/user/update/`, modUser,
+            console.log(this.modUser);
+      this.$http.post(`/user/update/`, this.modUser,
       {
         headers: {
             Authorization: `Bearer ${this.modUser.token}`
@@ -486,5 +416,46 @@ a {
 
 .fileBtn {
     display: none;
+}
+
+
+.box_user {
+    margin: 10px;
+    display: flex;
+    flex-basis: calc(50% - 20px);
+    /*justify-content: center;*/
+    flex-direction: column;
+}
+.grid1x2 {
+    min-height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.grid1X2 > div {
+    /*        display: flex;
+            flex-basis: calc(50% - 40px);
+            !*justify-content: center;*!
+            flex-direction: column;*/
+}
+.grid1X2 > div > div {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.box3_user {
+    flex-basis: calc(50% - 20px);
+}
+.box4_user {
+    flex-basis: calc(50% - 20px);
+}
+
+.box3Header2 {
+    background-color: #f3c32a;
+}
+.box4Header2 {
+    background-color: #838bae;
 }
 </style>
