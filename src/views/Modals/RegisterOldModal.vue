@@ -1,6 +1,6 @@
 <template >
     <div>
-        <modal :show.sync="modals.modal1" >
+        <modal :show.sync="modals.modal1">
             <div class="row">
                 <img src="img/brand/white.png" style="width:25%;">
                 <div id="container" class="card-header bg-transparent row align-items-center">
@@ -100,7 +100,7 @@
                                     :config="{allowInput: true}"
                                     class="form-control datepicker"
                                     placeholder="birthday"
-                                    v-model="user.brithday">
+                                    v-model="user.birthday">
                         </flat-pickr>
                     </base-input>
                 </div>
@@ -154,7 +154,7 @@
             <div class="row">
                 <div class="col-lg-12" style="text-align:center">
                     <input type="button" class="btn btn btn-primary cactusBasicBtn" @click="doOidSignup" value="가입하기">
-                    <base-button type="button" class="btn btn btn-outline-primary cactusCancleBtn" @click="modals.modal1=false">나가기</base-button>
+                    <base-button type="button" class="btn btn btn-outline-primary cactusCancleBtn" @click="click()">나가기</base-button>
                 </div>
             </div>
         </modal>
@@ -178,6 +178,10 @@
         methods: {
             openModal(){
                 this.modals.modal1 = true;
+            },
+            click(){
+                this.modals.modal1=false;
+                Object.assign(this.$data, this.$options.data());
             },
             close() {
                 this.$emit('close');
@@ -287,6 +291,7 @@
                         })
                         .then(res => {
                             Vue.swal('가입을 환영합니다!');
+                            this.modals.modal1=false;
                         });
                 }
             },
@@ -342,7 +347,7 @@
                     addrMain: '',
                     addrSub: '',
                     zipCode: '',
-                    brithday:'',
+                    birthday:'',
                     tel:'',
                     type:'PARENT'
                 },
