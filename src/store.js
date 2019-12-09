@@ -6,6 +6,8 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     mutations: {
         setUser: function (state, payload) {state.user = payload},
+        setInsertedPeriodId: function (state, payload) {state.insertedPeriodId = payload},
+        setInsertedSchdId: function (state, payload) {state.insertedSchdId = payload},
         setUpdatedPeriodId: function (state, payload) {state.updatedPeriodId = payload},
         setUpdatedSchdId: function (state, payload) {state.updatedSchdId = payload},
         setDeletedPeriodId: function (state, payload) {state.deletedPeriodId = payload},
@@ -13,6 +15,8 @@ export const store = new Vuex.Store({
     },
     getters: {
         getUser: function (state) {return state.user},
+        getInsertedPeriodId: function (state) {return state.insertedPeriodId},
+        getInsertedSchdId: function (state) {return state.insertedSchdId},
         getUpdatedPeriodId: function (state) {return state.updatedPeriodId},
         getUpdatedSchdId: function (state) {return state.updatedSchdId},
         getDeletedPeriodId: function (state) {return state.deletedPeriodId},
@@ -22,6 +26,8 @@ export const store = new Vuex.Store({
         user: {},
         parents: [],
         gateway: 'http://zuul.paas-ta.org/',
+        insertedPeriodId: 0,
+        insertedSchdId: 0,
         updatedPeriodId: 0,
         updatedSchdId: 0,
         deletedPeriodId: 0,

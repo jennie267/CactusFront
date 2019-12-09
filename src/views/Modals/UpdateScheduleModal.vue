@@ -136,12 +136,6 @@
             , flatPickr
             , Multiselect
         },
-        props: {
-            nameOfChild: String,
-        },
-        updated() {
-            this.startDate = this.nameOfChild;
-        },
         watch: {
             modal: function() {
                 if(this.periodId!==null) {
@@ -217,7 +211,6 @@
                     dateFormat: "H:i",
                     defaultDate: "00:00"
                 },
-                date: new Date(),
                 config: {
                     wrap: true,
                     altFormat: 'M j, Y',
@@ -266,7 +259,6 @@
                                 }
                             ).then(res => {
                                 if(res.status===200) {
-                                    this.$store.commit('setDeletedPeriodId', this.period.periodId);
                                     this.$http.post(`/period/schedule/period/${this.period.periodId}`, this.period,
                                         {
                                             headers: {
@@ -277,10 +269,8 @@
                                     ).then(res => {
                                         if(res.status===200) {
                                             this.$store.commit('setUpdatedPeriodId', this.period.periodId);
-                                            this.$store.commit('setUpdatedPeriodId', 0);
                                         }
                                     });
-                                    this.$store.commit('setDeletedPeriodId', 0);
                                 }
                             });
                         }

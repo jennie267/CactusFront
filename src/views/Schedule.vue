@@ -39,7 +39,7 @@
                                     <div class="row mt-5">
                                         <!--<div class="row mt-5" v-if="isStatus">-->
                                         <div class="col">
-                                            <dailySchedule-table ref="dailyTable" :nameOfChild="name" :selectedParent="selectedParent" title="Light Table"></dailySchedule-table>
+                                            <dailySchedule-table ref="dailyTable" :selectedParent="selectedParent" title="Light Table"></dailySchedule-table>
                                         </div>
                                     </div>
                                 </div>
@@ -79,6 +79,7 @@ export default {
         today:'',
         schedule:'',
         selectedParent: this.$store.state.user.type==='CHILD'?null:this.$store.state.user,
+        selectedDate: '',
         fromDate: '',
         toDate: '',
         events: [],
@@ -94,12 +95,13 @@ export default {
             this.deleteEventsBySchdId(val);
         },
         getDeletedPeriodId (val) {
-            console.log('d',val)
             this.deleteEventsByPeriodId(val);
         },
         getUpdatedPeriodId (val) {
-            console.log('u',val)
             this.updateEventsByPeriodId(val);
+        },
+        getInsertedPeriodId (val) {
+            this.insertEventsByPeriodId(val);
         },
     },
     computed: {
@@ -112,9 +114,14 @@ export default {
         getUpdatedPeriodId () {
             return this.$store.getters.getUpdatedPeriodId;
         },
+        getInsertedPeriodId () {
+            return this.$store.getters.getInsertedPeriodId;
+        },
     },
   methods: {
     dateClick(info) {
+        this.selectedDate = info.dateStr;
+        this.$refs.dailyTable.date = info.dateStr;
         this.$refs.dailyTable.tableData = [];
         this.events.forEach(event => {
             if(moment(event.schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD') === info.dateStr) {
@@ -178,6 +185,8 @@ export default {
                 this.events.splice(index, 1);
             }
         });
+        this.dateClick({dateStr: this.selectedDate});
+        this.$store.commit('setDeletedSchdId', 0);
       },
       deleteEventsByPeriodId(periodId) {
           if(periodId===0) return;
@@ -186,8 +195,36 @@ export default {
                   this.events.splice(index, 1);
               }
           });
+          this.dateClick({dateStr: this.selectedDate});
+          this.$store.commit('setDeletedPeriodId', 0);
       },
       updateEventsByPeriodId(periodId) {
+          if(periodId===0) return;
+          let color;
+          let textColor;
+          this.events = this.events.filter(function(event){
+              if(event.schedule.periodId===periodId) {
+                  color = event.color;
+                  textColor = event.textColor;
+              }
+              return event.schedule.periodId!==periodId;
+          });
+          this.$http.get(`/period/schedule/from/to/period/${this.fromDate}/${this.toDate}/${periodId}`,  { headers: { Authorization: `Bearer `+this.user.token } })
+              .then(res => {
+                  res.data.schedules.forEach(schedule =>{
+                      let event = {}
+                      event.schedule = schedule;
+                      event.color = color;
+                      event.textColor = textColor;
+                      event.title = schedule.periodName;
+                      event.date = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD');
+                      this.events.push(event);
+                  });
+                  this.dateClick({dateStr: this.selectedDate});
+                  this.$store.commit('setUpdatedPeriodId', 0);
+              });
+      },
+      insertEventsByPeriodId(periodId) {
           if(periodId===0) return;
           this.$http.get(`/period/schedule/from/to/period/${this.fromDate}/${this.toDate}/${periodId}`,  { headers: { Authorization: `Bearer `+this.user.token } })
               .then(res => {
@@ -208,6 +245,8 @@ export default {
                       event.date = moment(schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD');
                       this.events.push(event);
                   });
+                  this.dateClick({dateStr: this.selectedDate});
+                  this.$store.commit('setUpdatedPeriodId', 0);
               });
       },
   }, mounted() {

@@ -4,11 +4,11 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h3 id="clickSchedule" class="mb-0">
-                        {{nameOfChild}} 일정
+                        {{date}} 일정
                     </h3>
                 </div>
-                <write-schedule-modal :nameOfChild="nameOfChild" :selectedParent="selectedParent"></write-schedule-modal>
-                <update-schedule-modal ref="updateModal" :nameOfChild="nameOfChild"></update-schedule-modal>
+                <write-schedule-modal :date="date" :selectedParent="selectedParent"></write-schedule-modal>
+                <update-schedule-modal ref="updateModal"></update-schedule-modal>
             </div>
         </div>
         <div class="table-responsive">
@@ -34,7 +34,7 @@
                         {{row.schdTime}}
                     </td>
                     <td class="text-right">
-                        <button class="btn-primary btn-sm btn-danger" @click="delSchedule(row.schdId)">삭제</button>
+                        <base-button class="btn-primary btn-sm" @click="delSchedule(row.schdId)">삭제</base-button>
                     </td>
                 </template>
             </base-table>
@@ -53,7 +53,6 @@
     export default {
         name: 'daily-schedule-table',
         props: {
-            nameOfChild: String,
             selectedParent: Object,
         },
         components:{
@@ -77,12 +76,6 @@
                                 title: '삭제되었습니다.'
                             });
                             this.$store.commit('setDeletedSchdId', schdId);
-                            this.tableData.forEach((schedule, index) => {
-                                if(schedule.schdId===schdId) {
-                                    this.tableData.splice(index, 1);
-                                }
-                            });
-                            this.$store.commit('setDeletedSchdId', 0);
                         }
                     })
             },
@@ -90,6 +83,7 @@
         data() {
             return {
                 user: this.$store.state.user,
+                date: '',
                 tableData: [],
                 selectedId: 0,
             }

@@ -144,11 +144,11 @@
             , Multiselect
         },
         props: {
-            nameOfChild: String,
+            date: String,
             selectedParent: Object,
         },
         updated() {
-            this.startDate = this.nameOfChild;
+            this.startDate = this.date;
         },
         watch: {
             startDate: function() {
@@ -196,7 +196,6 @@
                     dateFormat: "H:i",
                     defaultDate: "00:00"
                 },
-                date: new Date(),
                 config: {
                     wrap: true,
                     altFormat: 'M j, Y',
@@ -261,7 +260,7 @@
                                 }
                             ).then(res => {
                                 if(res.status===200) {
-                                    console.log("스케쥴 생성 성공")
+                                    this.$store.commit('setInsertedPeriodId', period.periodId);
                                 }
                             });
                         }
