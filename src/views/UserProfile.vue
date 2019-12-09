@@ -88,6 +88,7 @@
                                             <base-input alternative=""
                                                         label="비밀번호 확인"
                                                         placeholder="Password"
+                                                        type="password"
                                                         input-classes="form-control-alternative"
                                                         v-model="modUser.passwordchk"
                                             />
