@@ -105,6 +105,7 @@
             }
             ,showModal:function (revUserId) {
                 this.checkedNames = [];
+                this.message = '';
                 this.modals.modal1 = true;
                 if (revUserId != null) this.checkedNames.push(revUserId);
             }
