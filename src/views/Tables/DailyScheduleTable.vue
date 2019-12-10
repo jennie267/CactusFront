@@ -88,7 +88,7 @@
         },
     }
 </script>
-<style>
+<style scoped>
     .overText {
         overflow: hidden;
         text-overflow: ellipsis;
