@@ -23,17 +23,17 @@
                     <th></th>
                     <th></th>
                 </template>
-                <template slot-scope="{row}">
-                    <td class="media align-items-center" style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showUpdModal(row.periodId)">
+                <template slot-scope="{row}" style="width: 100%;">
+                    <td class="media align-items-center" style="font-size: 15px; cursor:pointer; width:15%;" @click.prevent="showUpdModal(row)">
                         {{row.periodName}}
                     </td>
-                    <td class="budget" style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showUpdModal(row.periodId)">
-                        {{row.periodRemark}}
+                    <td class="budget" style="font-size: 15px; cursor:pointer; width:15%;" @click.prevent="showUpdModal(row)">
+                        <div class="name overText"> {{row.periodRemark}}</div>
                     </td>
-                    <td style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showUpdModal(row.periodId)">
-                        {{row.schdTime}}
+                    <td style="font-size: 15px; cursor:pointer; width:15%;" @click.prevent="showUpdModal(row)">
+                        {{row.formattedTime}}
                     </td>
-                    <td class="text-right">
+                    <td class="text-right" style="width:10%">
                         <base-button class="btn-primary btn-sm" @click="delSchedule(row.schdId)">삭제</base-button>
                     </td>
                 </template>
@@ -60,11 +60,9 @@
             UpdateScheduleModal
         },
         methods: {
-            showUpdModal: function(id){
-                if (id != null){
-                    this.$refs.updateModal.modal = true;
-                    this.$refs.updateModal.periodId = id;
-                }
+            showUpdModal: function(period){
+                this.$refs.updateModal.period = period;
+                this.$refs.updateModal.modal = true;
             },
             delSchedule: function(schdId) {
                 if(schdId===0) return;
@@ -91,4 +89,11 @@
     }
 </script>
 <style>
+    .overText {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 15px;
+        max-width: 220px;
+    }
 </style>

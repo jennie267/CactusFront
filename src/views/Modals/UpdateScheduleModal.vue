@@ -6,12 +6,6 @@
                 <h2 slot="header" class="modal-title" id="modal-title-default">일정 수정</h2>
                 <form>
                     <div class="form-group row">
-                        <label for="periodType3" class="col-sm-3 col-form-label">일정타입</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="periodType3" v-model="period.periodType">
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label for="periodName3" class="col-sm-2 col-form-label">일정명</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="periodName3" v-model="period.name">
@@ -113,7 +107,7 @@
                     </div>
                 </form>
                 <template slot="footer">
-                    <base-button type="primary" class="active btn-primary" @click="confirm">등록</base-button>
+                    <base-button type="primary" class="active btn-primary" @click="confirm">수정</base-button>
                     <base-button type="secondary" class="active ml-3" @click="modal = false">취소
                     </base-button>
                 </template>
@@ -138,34 +132,28 @@
         },
         watch: {
             modal: function() {
-                if(this.periodId!==null) {
-                    this.$http.get(`/period/`+ this.periodId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-                        .then(res => {
-                            this.period = res.data[0];
-                            if(this.period.isAlarm==='Y') this.isAlarm = true;
-                            else this.isAlarm = false;
-                            if(this.period.cycle !== null && this.period.freq !== null) this.isCycle = true;
-                            else this.isCycle = false;
-                            if(this.period.cycle !== null) {
-                                let tmpCycle = {name:"",value:""};
-                                this.options.forEach(option => {
-                                   if(option.value === this.period.cycle) tmpCycle.name = option.name;
-                                });
-                                tmpCycle.value = this.period.cycle;
+                if(this.period.isAlarm==='Y') this.isAlarm = true;
+                else this.isAlarm = false;
+                if(this.period.cycle !== null && this.period.freq !== null) this.isCycle = true;
+                else this.isCycle = false;
+                if(this.period.cycle !== null) {
+                    let tmpCycle = {name:"",value:""};
+                    this.options.forEach(option => {
+                       if(option.value === this.period.cycle) tmpCycle.name = option.name;
+                    });
+                    tmpCycle.value = this.period.cycle;
 
-                                this.cycle = tmpCycle;
-                            }
-                            if(this.period.startTime !== null) {
-                                this.startDate = moment(this.period.startTime, "YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD');
-                                this.startTime = moment(this.period.startTime, "YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
-                            }
-                            if(this.period.endTime !== null) {
-                                this.endDate = moment(this.period.endTime, "YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD');
-                                this.endTime = moment(this.period.endTime, "YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
-                            }
-                            this.period.lastTime = null;
-                        });
+                    this.cycle = tmpCycle;
                 }
+                if(this.period.startTime !== null) {
+                    this.startDate = moment(this.period.startTime, "YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD');
+                    this.startTime = moment(this.period.startTime, "YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
+                }
+                if(this.period.endTime !== null) {
+                    this.endDate = moment(this.period.endTime, "YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD');
+                    this.endTime = moment(this.period.endTime, "YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
+                }
+                this.period.lastTime = null;
             },
             startDate: function() {
                 this.period.startTime = this.startDate===""?"":this.startDate+'T'+this.startTime;
@@ -221,6 +209,7 @@
                 options: [
                     { name: '년', value:'Y'},
                     { name: '월', value:'M'},
+                    { name: '주', value:'W'},
                     { name: '일', value:'D'},
                     { name: '시간', value:'H'},
                     { name: '분', value:'MM'},
