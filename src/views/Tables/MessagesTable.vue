@@ -17,16 +17,16 @@
                 </template>
 
                 <template slot-scope="{row}" style="width: 100%;">
-                    <td class="name" style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showModal(row.messageId, row.sendUserName)">
+                    <td class="name" style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showModal(row)">
                         {{row.insertTime}}
                     </td>
-                    <td class="name" style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showModal(row.messageId, row.sendUserName)">
+                    <td class="name" style="font-size: 20px; cursor:pointer; width:15%;" @click.prevent="showModal(row)">
                         {{row.sendUserName}}
                         <a href="#" class="avatar avatar-sm rounded-circle">
                             <img alt="" :src="row.sendUserProfileUrl" style="width:90%;">
                         </a>
                     </td>
-                    <td class="name overText" style="font-size: 15px; cursor:pointer; width:40%;" @click.prevent="showModal(row.messageId, row.sendUserName)">
+                    <td class="name overText" style="font-size: 15px; cursor:pointer; width:40%;" @click.prevent="showModal(row)">
                        <div class="name overText"> {{row.contents}}</div>
                     </td>
 
@@ -135,25 +135,18 @@
                     });
 
             },
-            showModal: function(msgId, sendUserName){
-                if (msgId != null){
-                    this.$http.get(`/message/`+msgId,  { headers: { Authorization: `Bearer ${this.user.token}` } })
-                        .then(res => {
-                            console.log('Messages Table  showModal : ',res.data);
-                            this.modalData.messageId = msgId;
-                            this.modalData.name = sendUserName;
-                            this.modalData.contents = res.data.contents;
-                            this.modalData.receivedUserId = res.data.receivedUserId;
-                            if (res.data.isLike == 'Y') this.modalData.isLike = true;
-                            else this.modalData.isLike = false;
+            showModal: function(msg){
+                console.log('가져와봐라 ', msg);
+                this.modalData.messageId = msg.messageId;
+                this.modalData.name = msg.sendUserName;
+                this.modalData.contents = msg.contents;
+                this.modalData.receivedUserId = msg.receivedUserId;
+                if (msg.isLike == 'Y') this.modalData.isLike = true;
+                else this.modalData.isLike = false;
+                this.modalData.sendUserId = msg.sendUserId;
+                this.modalData.date = msg.insertTime;
 
-                            this.modalData.sendUserId = res.data.sendUserId;
-                            this.modalData.date = moment(res.data.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD HH:mm');
-
-                        });
-
-                    this.modals.modal1 = true;
-                }
+                this.modals.modal1 = true;
             },receiveMsg: function(sendUserId, user){
                 this.tableData = [];
 
