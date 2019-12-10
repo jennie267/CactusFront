@@ -125,6 +125,7 @@ export default {
         this.$refs.dailyTable.tableData = [];
         this.events.forEach(event => {
             if(moment(event.schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD') === info.dateStr) {
+                event.schedule.formattedTime = moment(event.schedule.schdTime,"YYYY-MM-DDTHH:mm:ssZ").format('HH:mm');
                 this.$refs.dailyTable.tableData.push(event.schedule);
             }
         });

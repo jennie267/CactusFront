@@ -15,12 +15,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="periodType" class="col-sm-3 col-form-label">일정타입</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="periodType" v-model="period.periodType">
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label for="periodName" class="col-sm-2 col-form-label">일정명</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="periodName" v-model="period.name">
@@ -206,6 +200,7 @@
                 options: [
                     { name: '년', value:'Y'},
                     { name: '월', value:'M'},
+                    { name: '주', value:'W'},
                     { name: '일', value:'D'},
                     { name: '시간', value:'H'},
                     { name: '분', value:'MM'},
