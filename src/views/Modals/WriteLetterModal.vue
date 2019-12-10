@@ -66,6 +66,7 @@
                 } else {
                     let rtn = true;
 
+                    // msg.contents = this.message.replace(/(?:\r\n|\r|\n)/g, '<br/>');
                     msg.contents = this.message;
                     msg.sendUserId = this.user.userId;
 

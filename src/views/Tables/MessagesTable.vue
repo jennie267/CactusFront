@@ -27,12 +27,12 @@
                         </a>
                     </td>
                     <td class="name overText" style="font-size: 15px; cursor:pointer; width:40%;" @click.prevent="showModal(row)">
-                       <div class="name overText"> {{row.contents}}</div>
+                       <div class="name overText"  v-html="row.contents"> </div>
                     </td>
 
                     <td style="width:10%">
-                        <div class="d-flex align-items-center" id="">
-                            <i v-if="row.isLike =='Y'" class="ni ni-favourite-28 " style="color: pink;"></i>
+                        <div class="d-flex align-items-center" id="row.messageId">
+                            <i v-if="row.isLike =='Y'" class="ni ni-favourite-28 " id="" style="color: pink;"></i>
                         </div>
                     </td>
 
@@ -58,7 +58,7 @@
                     <br>
 
                     <div class="text-left" style="height: 100%">
-                        <p class="description"> {{modalData.contents}}</p>
+                        <p class="description" v-html="modalData.contents"> </p>
                     </div>
                     <br>
                     <br>
@@ -119,6 +119,11 @@
                 }else{
                     this.modalData.isLike = true;
                 }
+                this.tableData.forEach((msg, ind) => {
+                    if(msg.messageId==this.modalData.messageId) {
+                        this.tableData[ind].isLike = this.modalData.isLike?'Y':'N';
+                    }
+                })
                 if (this.modalData.isLike) message.isLike="Y";
                 else message.isLike="N";
                 message.messageId = this.modalData.messageId;
@@ -136,7 +141,6 @@
 
             },
             showModal: function(msg){
-                console.log('가져와봐라 ', msg);
                 this.modalData.messageId = msg.messageId;
                 this.modalData.name = msg.sendUserName;
                 this.modalData.contents = msg.contents;
@@ -154,6 +158,7 @@
                     this.$http.get(`/message/receive/user/`+user.userId,  { headers: { Authorization: `Bearer `+user.token } })
                         .then(res => {
                             res.data.messages.forEach(message =>{
+                                message.contents = message.contents.replace(/(?:\r\n|\r|\n)/g, '<br />');
                                 message.insertTime = moment(message.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD HH:mm');
                                 this.tableData.push(message);
                             });
@@ -163,6 +168,7 @@
                     this.$http.get(`/message/send/user/`+user.userId+`/`+sendUserId,  { headers: { Authorization: `Bearer `+user.token } })
                         .then(res => {
                             res.data.messages.forEach(message =>{
+                                message.contents = message.contents.replace(/(?:\r\n|\r|\n)/g, '<br />');
                                 message.insertTime = moment(message.insertTime,"YYYY-MM-DDTHH:mm:ssZ").format('YYYY-MM-DD HH:mm');
                                 this.tableData.push(message);
                             });
