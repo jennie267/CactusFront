@@ -94,13 +94,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="periodPlace3" class="col-sm-2 col-form-label">시설</label>
+                        <label for="periodPlace3" class="col-sm-2 col-form-label">장소</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="periodPlace3" v-model="period.place">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="periodManager3" class="col-sm-2 col-form-label">복지사</label>
+                        <label for="periodManager3" class="col-sm-2 col-form-label">담당자</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="periodManager3" v-model="period.manager">
                         </div>

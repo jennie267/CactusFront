@@ -1,7 +1,7 @@
 <template>
     <!-- Modals -->
     <div class="row">
-        <base-button class="btn-primary" @click="modals.modal1=true">등록</base-button>
+        <base-button class="btn-primary" @click="showModal()">등록</base-button>
         <div class="col-md-4">
             <modal :show.sync="modals.modal1">
                 <h2 slot="header" class="modal-title" id="modal-title-default">일정 등록</h2>
@@ -103,13 +103,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="periodPlace" class="col-sm-2 col-form-label">시설</label>
+                        <label for="periodPlace" class="col-sm-2 col-form-label">장소</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="periodPlace" v-model="period.place">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="periodManager" class="col-sm-2 col-form-label">복지사</label>
+                        <label for="periodManager" class="col-sm-2 col-form-label">담당자</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="periodManager" v-model="period.manager">
                         </div>
@@ -228,6 +228,24 @@
             };
         },
         methods:{
+            showModal(){
+                this.period =                {
+                    name:"",
+                        remark: "",
+                        periodType: "",
+                        isAlarm: "N",
+                        startTime: "",
+                        endTime: "",
+                        freq: "",
+                        cycle: "",
+                        place: "",
+                        manager: "",
+                        userId: this.$store.state.user.type==='PARENT'?this.$store.state.user.userId:"",
+                        regUserId: this.$store.state.user.userId,
+                        isUse: "Y",
+                };
+                this.modals.modal1=true;
+            },
             confirm() {
                 this.$http.post(`/period/`, this.period,
                     {

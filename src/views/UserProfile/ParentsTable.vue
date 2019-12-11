@@ -30,6 +30,16 @@ import FamilySelModal from './FamilySelModal'
             VueGoodTable,
             FamilySelModal
         },
+        watch: {
+            getDeletedParentId (val) {
+                this.deleteParent(val);
+            },
+        },
+        computed: {
+            getDeletedParentId () {
+                return this.$store.getters.getDeletedParentId;
+            },
+        },
         data() {
             return {
                 user: this.$store.state.user,
@@ -84,8 +94,16 @@ import FamilySelModal from './FamilySelModal'
                 this.parentData = users;
 
             },addParent(users){
+                users.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
+                    '<img alt="" src="'+users.profileUrl+'" style="width:90%;"/>\n' +
+                    '</a>';
                 this.parentData.push(users);
-            }
+            },
+            deleteParent(userId){
+                this.parentData = this.parentData.filter(function(parent){
+                    return parent.userId !== userId;
+                });
+            },
         },
         mounted() {
             this.getParents();

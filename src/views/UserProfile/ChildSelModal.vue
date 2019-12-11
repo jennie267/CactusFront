@@ -90,26 +90,27 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log('자녀등록' , res.data);
-                    this.$swal({
-                        type: 'success',
-                        title: '자녀를 등록했습니다.'
-                    });
-                    this.modals.modal1 = false;
+                    if(res.status===200){
+                        this.$swal({
+                            type: 'success',
+                            title: '자녀를 등록했습니다.'
+                        });
+                        this.modals.modal1 = false;
 
-                });
-            this.$http.post('/user/parent/'+childId+'/'+this.user.userId, null,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.user.token}`
-                        ,'Content-Type':'application/json'
+                        this.$http.post('/user/parent/'+childId+'/'+this.user.userId, null,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${this.user.token}`
+                                    ,'Content-Type':'application/json'
+                                }
+                            })
+                            .then(res => {
+                                if(res.status===200) {
+                                    this.$parent.addChildren(res.data);
+                                }
+                            });
                     }
-                })
-                .then(res => {
-                    console.log('부모등록', res.data);
-                    this.$parent.addChildren(res.data);
                 });
-
         }
     }
 }

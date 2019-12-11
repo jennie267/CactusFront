@@ -31,6 +31,16 @@ import ChildSelModal from './ChildSelModal'
             VueGoodTable,
             ChildSelModal
         },
+        watch: {
+            getDeletedChildId (val) {
+                this.deleteChild(val);
+            },
+        },
+        computed: {
+            getDeletedChildId () {
+                return this.$store.getters.getDeletedChildId;
+            },
+        },
         data() {
             return {
                 user: this.$store.state.user,
@@ -84,8 +94,16 @@ import ChildSelModal from './ChildSelModal'
             delChildren(users){
                 this.childData = users;
             }, addChildren(users){
+                users.profile = '<a class="avatar avatar-sm rounded-circle" style="cursor: pointer;">\n' +
+                    '<img alt="" src="'+users.profileUrl+'" style="width:90%;"/>\n' +
+                    '</a>';
                 this.childData.push(users);
-            }
+            },
+            deleteChild(userId){
+                this.childData = this.childData.filter(function(child){
+                    return child.userId !== userId;
+                });
+            },
         },
         mounted() {
             this.getChildren();

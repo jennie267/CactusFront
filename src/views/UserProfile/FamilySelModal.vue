@@ -77,7 +77,7 @@ export default {
                 });
         },
         addParent: function (parentId) {
-            this.$http.post('/user/parent/'+parentId+'/'+this.user.userId, null,
+            this.$http.post('/user/parent/'+this.user.userId+'/'+parentId, null,
                 {
                     headers: {
                         Authorization: `Bearer ${this.user.token}`
@@ -85,24 +85,27 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log('부모등록', res.data);
-                    this.$parent.addParent(res.data);
-                    this.$swal({
-                        type: 'success',
-                        title: '부모를 등록했습니다.'
-                    });
-                    this.modals.modal1 = false;
-                });
-            // 자녀등록
-            this.$http.post(`/user/child/${this.user.userId}/`+parentId, null,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.user.token}`
-                        ,'Content-Type':'application/json'
+                    if(res.status===200){
+                        this.$parent.addParent(res.data);
+                        this.$swal({
+                            type: 'success',
+                            title: '부모를 등록했습니다.'
+                        });
+                        this.modals.modal1 = false;
+                        // 자녀등록
+                        this.$http.post(`/user/child/${parentId}/${this.user.userId}`, null,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${this.user.token}`
+                                    ,'Content-Type':'application/json'
+                                }
+                            })
+                            .then(res => {
+                                if(res.status===200){
+                                    this.$parent.addParent(res.data);
+                                }
+                            });
                     }
-                })
-                .then(res => {
-                    console.log('자녀등록' , res.data);
                 });
 
 

@@ -12,6 +12,8 @@ export const store = new Vuex.Store({
         setUpdatedSchdId: function (state, payload) {state.updatedSchdId = payload},
         setDeletedPeriodId: function (state, payload) {state.deletedPeriodId = payload},
         setDeletedSchdId: function (state, payload) {state.deletedSchdId = payload},
+        setDeletedChildId: function (state, payload) {state.deletedChildId = payload},
+        setDeletedParentId: function (state, payload) {state.deletedParentId = payload},
     },
     getters: {
         getUser: function (state) {return state.user},
@@ -21,6 +23,8 @@ export const store = new Vuex.Store({
         getUpdatedSchdId: function (state) {return state.updatedSchdId},
         getDeletedPeriodId: function (state) {return state.deletedPeriodId},
         getDeletedSchdId: function (state) {return state.deletedSchdId},
+        getDeletedChildId: function (state) {return state.deletedChildId},
+        getDeletedParentId: function (state) {return state.deletedParentId},
     },
     state: {
         user: {},
@@ -32,5 +36,7 @@ export const store = new Vuex.Store({
         updatedSchdId: 0,
         deletedPeriodId: 0,
         deletedSchdId: 0,
+        deletedChildId: 0,
+        deletedParentId: 0,
     },
 });
