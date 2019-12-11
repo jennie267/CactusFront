@@ -31,8 +31,6 @@
 <script>
     import Modal from "@/components/Modal.vue";
 
-    let msg = {contents:"", receivedUserId:0, sendUserId:0,isLike:"N"};
-
     export default {
         components: {
             Modal
@@ -64,16 +62,14 @@
                         title: '받는 사람을 선택해주세요.'
                     });
                 } else {
-                    let rtn = true;
-
-                    // msg.contents = this.message.replace(/(?:\r\n|\r|\n)/g, '<br/>');
-                    msg.contents = this.message;
-                    msg.sendUserId = this.user.userId;
-
                     this.checkedNames.forEach(checkedId => {
-                        msg.receivedUserId = checkedId;
+                        let msg = {
+                            contents: this.message,
+                            receivedUserId: checkedId,
+                            sendUserId: this.user.userId,
+                            isLike: "N",
+                        };
 
-                        console.log('[Message Send]  received : ' + msg.receivedUserId +' sendId : ' + msg.sendUserId + ' checked : '+ checkedId );
                         this.$http.post(`/message/`, msg,
                             {
                                 headers: {
@@ -82,26 +78,22 @@
                                 }
                             })
                             .then(res => {
-                                if (res == null) rtn = false;
+                                if (res.status===2000){
+                                    this.modals.modal1 = false;
+                                    this.$swal({
+                                        type: 'success',
+                                        title: '전송 성공했습니다.'
+                                    });
+                                }
+                                else{
+                                    this.$swal({
+                                        type: 'warning',
+                                        title: '전송 실패했습니다.'
+                                    });
+                                }
                             });
                     });
-                    if (rtn) {
-
-                        this.modals.modal1 = false;
-                        // Use sweetalert2
-                        this.$swal({
-                            type: 'success',
-                            title: '전송 성공했습니다.'
-                        });
-                    } else {
-                        this.$swal({
-                            type: 'warning',
-                            title: '전송 실패했습니다.'
-                        });
-                    }
-
                 }
-
             }
             ,showModal:function (revUserId) {
                 this.checkedNames = [];
