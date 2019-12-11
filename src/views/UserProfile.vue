@@ -103,11 +103,11 @@
                                         <div class="col-lg-8">
                                             <base-input label="성별">
                                                 <div class="custom-control custom-radio mb-3">
-                                                    <input checked="modUser.gender == '여성'" name="custom-radio-1"  class="custom-control-input" id="customRadio5" type="radio" v-model="modUser.gender" value="여성">
-                                                    <label checked="modUser.gender == '남성'" class="custom-control-label" for="customRadio5"><span>여성</span></label>
+                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio5" type="radio" v-model="modUser.gender" value="여">
+                                                    <label class="custom-control-label" for="customRadio5"><span>여성</span></label>
                                                 </div>
                                                 <div class="custom-control custom-radio mb-3">
-                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio6" type="radio" v-model="modUser.gender" value="남성">
+                                                    <input name="custom-radio-1" class="custom-control-input" id="customRadio6" type="radio" v-model="modUser.gender" value="남">
                                                     <label class="custom-control-label" for="customRadio6"><span>남성</span></label>
                                                 </div>
                                             </base-input>
@@ -365,21 +365,57 @@ export default {
       this.searchWindow.display = 'block';
     },
     doUserUpdate() {
+        if (this.modUser.password==null||this.modUser.password=="") {
+            this.$swal({
+                type: 'warning',
+                title: '비밀번호를 입력하여 주십시오.'
+            });
+        } else if(this.modUser.password.length <8){
+            this.$swal({
+                type: 'warning',
+                title: '비밀번호는 8자리 이상이어야 합니다.'
+            });
+        }else if (this.modUser.passwordchk==null||this.modUser.passwordchk=="") {
+            this.$swal({
+                type: 'warning',
+                title: '비밀번호확인을 입력하여 주십시오.'
+            });
+        } else if(this.modUser.password != this.modUser.passwordchk){
+            this.$swal({
+                type: 'warning',
+                title: '비밀번호와 비밀번호확인이 같지 않습니다.'
+            });
+        }else if (this.modUser.gender==null||this.modUser.gender=="") {
+            this.$swal({
+                type: 'warning',
+                title: '성별을 입력하여 주십시오.'
+            });
+        }else if (this.modUser.email==null||this.modUser.email=="") {
+            this.$swal({
+                type: 'warning',
+                title: '이메일을 입력하여 주십시오.'
+            });
+        }else if (this.modUser.name==null||this.modUser.name=="") {
+            this.$swal({
+                type: 'warning',
+                title: '이름을 입력하여 주십시오.'
+            });
+        }else {
+            this.$http.post(`/user/update/`, this.modUser,
+          {
+            headers: {
+                Authorization: `Bearer ${this.modUser.token}`
+                ,'Content-Type':'application/json'
+            },
+          })
+          .then(res => {
             console.log(this.modUser);
-      this.$http.post(`/user/update/`, this.modUser,
-      {
-        headers: {
-            Authorization: `Bearer ${this.modUser.token}`
-            ,'Content-Type':'application/json'
-        },
-      })
-      .then(res => {
-        console.log(this.modUser);
-          console.log('전송');
-          console.log(res);
-          console.log(res.data);
-          Vue.swal('회원정보가 수정되었습니다.');
-      });
+              console.log('전송');
+              console.log(res);
+              console.log(res.data);
+              Vue.swal('회원정보가 수정되었습니다.');
+          });
+        }
     }
   },
   computed: {
